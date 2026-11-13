@@ -314,6 +314,7 @@ const APP_CONFIG = {
     trialLessons: 1,        // số bài học thử cho tài khoản chưa kích hoạt (0 = phải kích hoạt mới học được)
     speakingMinScore: 80,
     minRecordSeconds: 2,
+    speakingFallback: "block", // "block": phần Nói chỉ đạt khi máy chấm được phát âm; "self": cho tự thu âm – nghe lại khi trình duyệt không chấm được
     rewindSeconds: 10,
     homophones: ["他她它", "的地得", "在再", "做作"]
   },
@@ -673,7 +674,7 @@ const APP_CONFIG = {
         ]
       },
       previewNew: {
-        title: "Bài 6: 我来介绍一下",
+        title: "Bài 6: 我来介绍一下儿",
         vocabulary: [
           { word: "认识", phonetic: "rènshi", meaning: "quen biết" },
           { word: "高兴", phonetic: "gāoxìng", meaning: "vui" },
@@ -691,7 +692,7 @@ const APP_CONFIG = {
 
     {
       id: "bai-6",
-      title: "Bài 6: 我来介绍一下",
+      title: "Bài 6: 我来介绍一下儿",
       subtitle: "Tôi xin giới thiệu",
       lang: "zh-CN",
       unlocked: false,
@@ -1191,7 +1192,7 @@ const APP_CONFIG = {
         ]
       },
       previewNew: {
-        title: "Bài 13: 您给我参谋参谋",
+        title: "Bài 13: 您给我介绍介绍",
         vocabulary: [
           { word: "手机", phonetic: "shǒujī", meaning: "điện thoại di động" },
           { word: "便宜", phonetic: "piányi", meaning: "rẻ" },
@@ -1209,12 +1210,12 @@ const APP_CONFIG = {
 
     {
       id: "bai-13",
-      title: "Bài 13: 您给我参谋参谋",
+      title: "Bài 13: 您给我介绍介绍",
       subtitle: "Cô giới thiệu cho tôi với",
       lang: "zh-CN",
       unlocked: false,
       videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
-      cover: "参谋",
+      cover: "试试",
       checkpoints: [
         { id: "cp1", time: "auto", question: "Động từ lặp lại như 试试, 介绍介绍 diễn tả điều gì?", options: ["Làm thử, làm nhanh, nói nhẹ nhàng hơn", "Làm rất nhiều lần", "Đã làm xong", "Không muốn làm"], correct: 0, hint: "我可以试试吗？" },
         { id: "cp2", time: "auto", question: "这个橘子有点儿贵 thể hiện thái độ gì?", options: ["Hài lòng", "Không vừa ý", "Vui mừng", "Không quan tâm"], correct: 1, hint: "有点儿 + tính từ = hơi… (chê)." },
@@ -1446,7 +1447,7 @@ const fmtTime = (seconds) => {
   const s = Math.max(0, Math.floor(seconds || 0));
   return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
 };
-const SETTINGS = Object.assign({ trialLessons: 1, speakingMinScore: 80, minRecordSeconds: 2, rewindSeconds: 10, homophones: [] }, APP_CONFIG.settings || {});
+const SETTINGS = Object.assign({ trialLessons: 1, speakingMinScore: 80, minRecordSeconds: 2, speakingFallback: 'block', rewindSeconds: 10, homophones: [] }, APP_CONFIG.settings || {});
 
 function shuffled(list) {
   const a = list.slice();
@@ -1552,7 +1553,9 @@ function alignSpeech(targetText, spokenText) {
     else j++;
   }
   const matched = n ? dp[0][0] : 0;
-  return { charBased, hit, matched, total: n, score: n ? Math.round((matched / n) * 100) : 0 };
+  // Đọc thừa quá 2 chữ / từ so với câu mẫu thì bị trừ điểm, để đọc lan man không lọt qua.
+  const base = Math.max(n, m - 2);
+  return { charBased, hit, matched, total: n, extra: Math.max(0, m - n), score: n ? Math.round((matched / base) * 100) : 0 };
 }
 // Tỷ lệ khớp 0–100: số chữ / từ của câu mẫu được đọc đúng theo thứ tự (bỏ qua dấu câu, khoảng trắng, hoa thường).
 function calculateSimilarity(targetText, spokenText) {
@@ -1691,6 +1694,10 @@ window.resetProgress = resetProgress;
 /* ========================================================================== */
 /* 5. TRẠNG THÁI HOÀN THÀNH VÀ ĐIỀU KIỆN MỞ KHÓA                               */
 /* ========================================================================== */
+// Một câu Nói đạt khi máy chấm đủ điểm; câu tự thu âm (mode 'self') chỉ được tính khi cài đặt cho phép.
+function speakingPassed(entry) {
+  return !!(entry && entry.passed && (entry.mode !== 'self' || SETTINGS.speakingFallback === 'self'));
+}
 function exerciseDone(exercise, saved) {
   if (!exercise) return true;
   if (exercise.type === 'flashcards') {
@@ -1708,7 +1715,7 @@ function lessonStatus(lesson) {
   const videoWatched = !!p.ended;
   const skills = {
     listeningDone: s.listening.every((_, i) => p.listening.includes(i)),
-    speakingDone: s.speaking.every((_, i) => !!(p.speaking[i] && p.speaking[i].passed)),
+    speakingDone: s.speaking.every((_, i) => speakingPassed(p.speaking[i])),
     readingDone: s.reading.questions.every((_, i) => p.reading.includes(i)),
     writingDone: s.writing.every((_, i) => p.writing.includes(i))
   };
@@ -2276,9 +2283,10 @@ const Voice = {
   session: null,
   clipUrls: {},
 
+  get fallback() { return SETTINGS.speakingFallback === 'self'; },
   get mode() {
     if (this.Recognition && !this.asrBroken) return 'asr';
-    if (this.canRecord) return 'record';
+    if (this.canRecord && this.fallback) return 'record';
     return 'none';
   },
   async getStream() {
@@ -2423,6 +2431,9 @@ const Voice = {
       const hard = ['service-not-allowed', 'language-not-supported', 'network', 'start-failed'];
       if (s.error === 'not-allowed' && !s.clipUrl) {
         error = 'mic';
+      } else if ((hard.includes(s.error) || (s.error === 'not-allowed' && s.clipUrl)) && !this.fallback) {
+        // Dịch vụ nhận diện không chạy được: không cho qua bằng thu âm, báo lỗi để học viên thử lại hoặc đổi trình duyệt.
+        error = 'asr:' + s.error;
       } else if (hard.includes(s.error) || (s.error === 'not-allowed' && s.clipUrl)) {
         // Dịch vụ nhận diện không chạy được: dùng bản thu âm để đối chiếu.
         this.asrBroken = true;
@@ -3400,7 +3411,8 @@ const EXTRA_KEYS = ['review', 'preview'];
 const PART_KEYS = STEP_KEYS.concat(EXTRA_KEYS);
 const SPEAK_ERRORS = {
   mic: 'Chưa dùng được micro. Cho phép micro rồi đọc lại.',
-  unsupported: 'Trình duyệt này không thu âm được. Mở trang bằng Chrome hoặc Safari.',
+  unsupported: 'Trình duyệt này không chấm được phát âm. Mở trang bằng Chrome hoặc Edge trên máy tính, hoặc Chrome trên điện thoại Android.',
+  asr: 'Chưa chấm được phát âm. Kiểm tra mạng, tắt trình chặn quảng cáo cho trang này rồi đọc lại; nếu vẫn lỗi, mở bằng Chrome hoặc Edge.',
   silent: 'Chưa nghe rõ. Đọc to và rõ hơn nhé.',
   retry: 'Bấm đọc lại lần nữa.',
   short: `Thu âm ít nhất ${SETTINGS.minRecordSeconds} giây.`
@@ -3641,7 +3653,7 @@ const Panels = {
     const items = lesson.skills.speaking;
     if (!items.length) return emptyPanel();
     const p = LP(lesson.id);
-    const isDone = (i) => !!(p.speaking[i] && p.speaking[i].passed);
+    const isDone = (i) => speakingPassed(p.speaking[i]);
     const current = currentPage('speaking', items.length, isDone);
     const item = items[current];
     const st = ui.sp[current] || {};
@@ -3654,7 +3666,7 @@ const Panels = {
     if (recording) {
       feedback = `<p id="sp-live" class="hz min-h-7 text-lg text-ink-2" lang="${esc(lesson.lang)}">${esc(st.live || '')}</p>`;
     } else if (st.error) {
-      feedback = `<p class="inline-flex items-center gap-1.5 text-sm text-rose-600" role="alert">${icon('alert')}${esc(SPEAK_ERRORS[st.error] || SPEAK_ERRORS.retry)}</p>`;
+      feedback = `<p class="inline-flex items-center gap-1.5 text-sm text-rose-600" role="alert">${icon('alert')}${esc(SPEAK_ERRORS[st.error] || (String(st.error).startsWith('asr:') ? SPEAK_ERRORS.asr + ' (' + String(st.error).slice(4) + ')' : SPEAK_ERRORS.retry))}</p>`;
     } else if (st.result) {
       const pass = st.result.score >= min;
       feedback = `<div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1" role="status">
@@ -3665,7 +3677,7 @@ const Panels = {
     } else if (st.mode === 'record' && st.recorded) {
       const chip = (ok, label) => `<span class="inline-flex items-center gap-1 h-7 px-2.5 rounded-full text-xs font-semibold ${ok ? 'bg-emerald-50 text-emerald-700' : 'bg-paper text-ink-2'}">${icon(ok ? 'check' : 'clock', 'size-3.5')}${label}</span>`;
       feedback = `<div class="flex flex-wrap justify-center gap-2" role="status">${chip(true, 'Thu âm ' + st.seconds.toFixed(1) + 's')}${chip(!!st.heardSample, 'Nghe mẫu')}${chip(!!st.heardSelf, 'Nghe lại giọng của bạn')}</div>`;
-    } else if (saved && saved.passed) {
+    } else if (speakingPassed(saved)) {
       feedback = `<span class="inline-flex items-center gap-1 h-7 px-2.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700" role="status">${icon('check', 'size-3.5')}${typeof saved.score === 'number' ? 'Đạt ' + saved.score + '%' : 'Đạt'}</span>`;
     }
 
@@ -4753,7 +4765,7 @@ function finishSpeaking(lesson, index, result) {
     const previous = p.speaking[index];
     const top = Math.max(best.score, (previous && previous.score) || 0);
     if (best.score >= min) p.speaking[index] = { passed: true, score: top, mode: 'asr' };   // đạt từ 80% trở lên
-    else if (!previous || !previous.passed) p.speaking[index] = { passed: false, score: top, mode: 'asr' };
+    else if (!speakingPassed(previous)) p.speaking[index] = { passed: false, score: top, mode: 'asr' };
   } else if (!st.error && result.mode === 'record') {
     st.recorded = st.seconds >= SETTINGS.minRecordSeconds && !!result.clipUrl;
     if (!st.recorded) st.error = 'short';
