@@ -326,7 +326,10 @@ const APP_CONFIG = {
     bank: "Vietcombank",
     accountNumber: "0921000715279",
     accountName: "NGUYEN NHAT ANH",
-    // Bảng giá hiện trong hộp Kích hoạt / Gia hạn. Học viên chọn một gói, gói đó được ghi vào email báo chuyển khoản.
+    // Học viên tự chọn bài muốn mua: cứ mỗi blockSize bài (làm tròn lên) giá blockPrice đồng.
+    blockSize: 5,
+    blockPrice: 50000,
+    // (Bảng gói cũ, không còn hiện trên trang; giữ để tham khảo.)
     prices: [
       { name: "5 bài", price: "50.000đ" },
       { name: "10 bài", price: "100.000đ" },
@@ -3566,6 +3569,37 @@ function checkLessonUnlock(lessonId) {
 
 // 'open' = học được · 'locked' = chờ hoàn thành bài trước · 'plan' = cần kích hoạt tài khoản hoặc nằm ngoài gói học · 'soon' = bài chưa có video
 // Khoảng bài được học theo cột "Số bài tối đa": [bài đầu, bài cuối], đánh số từ 1.
+// Tập số bài được học theo cột "Số bài tối đa": trống = toàn bộ; số N = Bài 1 – N; "Sách 1", "Sách 2";
+// hoặc liệt kê tự chọn: "Bài 1-5, 12, 20-23" (có chữ "Bài" để Google Sheet không đổi thành số / ngày).
+function lessonSet(spec) {
+  const total = APP_CONFIG.lessons.length;
+  const set = new Set();
+  const add = (a, b) => { for (let n = Math.max(1, Math.min(a, b)); n <= Math.min(total, Math.max(a, b)); n++) set.add(n); };
+  if (spec === '' || spec == null || spec === 0) { add(1, total); return set; }
+  if (typeof spec === 'number' || /^\s*\d+\s*$/.test(String(spec))) { const n = Number(spec); add(1, n > 0 ? n : total); return set; }
+  let text = String(spec);
+  const books = APP_CONFIG.books || [];
+  text = text.replace(/s(?:á|a)ch\s*((?:\d+\s*(?:[+,&]|và|\s)\s*)*\d+)/gi, (_, nums) => {
+    (nums.match(/\d+/g) || []).forEach((d) => { const b = books[Number(d) - 1]; if (b) add(b.from, b.to); });
+    return ' ';
+  });
+  const re = /(\d+)\s*[-–—~]\s*(\d+)|(\d+)/g;
+  let m;
+  while ((m = re.exec(text))) { if (m[3]) add(+m[3], +m[3]); else add(+m[1], +m[2]); }
+  return set;   // ghi sai: tập rỗng, không mở bài nào để giáo viên sửa lại
+}
+// Viết gọn một tập số bài: {1,2,3,4,5,12,20,21} → "Bài 1-5, 12, 20-21".
+function lessonSpec(set) {
+  const list = Array.from(set).map(Number).filter((n) => n > 0).sort((a, b) => a - b);
+  const parts = [];
+  for (let i = 0; i < list.length; i++) {
+    let j = i;
+    while (j + 1 < list.length && list[j + 1] === list[j] + 1) j++;
+    parts.push(j > i ? `${list[i]}-${list[j]}` : String(list[i]));
+    i = j;
+  }
+  return parts.length ? 'Bài ' + parts.join(', ') : '';
+}
 function lessonRange(spec) {
   const total = APP_CONFIG.lessons.length;
   if (spec === '' || spec == null || spec === 0) return [1, total];
@@ -3590,9 +3624,9 @@ function lessonAccess(lesson) {
   if (!session.active) {   // chưa kích hoạt hoặc đã hết hạn: chỉ học thử
     if (index >= Math.max(0, Number(SETTINGS.trialLessons) || 0)) return 'plan';
   } else {
-    const [from, to] = lessonRange(session.maxLessons);
-    if (index + 1 < from || index + 1 > to) return 'plan';
-    if (index + 1 === from) return testBlocking(index + 1) ? 'locked' : 'open';
+    const owned = lessonSet(session.maxLessons);
+    if (!owned.has(index + 1)) return 'plan';
+    if (!owned.has(index)) return testBlocking(index + 1) ? 'locked' : 'open';   // bài đầu của một đoạn đã mua: mở ngay
   }
   if (testBlocking(index + 1)) return 'locked';   // bài kiểm tra trước chưa đạt: làm lại kỹ năng đã
   if (index === 0 || lesson.unlocked === true) return 'open';
@@ -5850,36 +5884,107 @@ const Modal = {
       </div>`);
   },
   // Hộp thanh toán: mã QR, số tài khoản, nội dung chuyển khoản (= email), nút "Tôi đã chuyển khoản" báo cho giáo viên.
-  activate() {
+  activate(mode) {
     const session = store.session || {};
     const renew = !!(session.expired || session.active);   // còn hạn vẫn gia hạn / mua thêm trước được
     const pay = APP_CONFIG.payment || {};
-    const line = (label, value, copy) => value ? `<div class="flex items-center gap-2 h-11 px-3 rounded-xl bg-paper border border-line">
-        <span class="w-24 shrink-0 text-xs text-ink-3">${esc(label)}</span>
-        <span class="min-w-0 flex-1 truncate font-semibold select-all">${esc(value)}</span>
-        ${copy ? `<button type="button" data-action="copy-text" data-text="${esc(value)}" aria-label="Sao chép ${esc(label)}" class="size-8 shrink-0 grid place-items-center rounded-lg text-ink-3 hover:bg-white hover:text-brand">${icon('copy', 'size-4')}</button>` : ''}
-      </div>` : '';
-    const prices = (pay.prices || []).filter((p) => p && p.name && p.price);
-    this.open(`<div class="flex items-start gap-3">
+    const head = (title) => `<div class="flex items-start gap-3">
         <span class="size-11 shrink-0 grid place-items-center rounded-2xl bg-brand-soft text-brand">${icon('key', 'size-5')}</span>
         <div class="min-w-0 flex-1 pt-0.5">
-          <h2 id="modal-title" class="font-semibold leading-tight">${renew ? 'Gia hạn khóa học' : 'Kích hoạt tài khoản'}</h2>
+          <h2 id="modal-title" class="font-semibold leading-tight">${title}</h2>
           <p class="mt-0.5 text-sm text-ink-2 truncate">${esc(session.email || '')}</p>
         </div>
         <button type="button" data-action="modal-close" aria-label="Đóng" class="size-9 -mt-1 -mr-1 grid place-items-center rounded-lg text-ink-3 hover:bg-paper hover:text-ink">${icon('x', 'size-5')}</button>
+      </div>`;
+    // Chưa đóng tiền: chọn trước là học viên lớp (miễn phí) hay đóng học phí. Chỉ người đóng học phí mới chọn bài.
+    if (!session.active && mode !== 'pay') {
+      const card = (action, tone, ic, title, text) => `<button type="button" data-action="${action}" class="w-full text-left flex items-center gap-3 p-4 rounded-2xl border-2 ${tone} transition">
+          <span class="size-11 shrink-0 grid place-items-center rounded-xl bg-white/70">${icon(ic, 'size-5')}</span>
+          <span class="min-w-0 flex-1"><span class="block font-semibold">${title}</span><span class="block mt-0.5 text-sm opacity-80">${text}</span></span>
+          ${icon('chevron-right', 'size-5 opacity-60')}
+        </button>`;
+      this.open(`${head(session.expired ? 'Gia hạn khóa học' : 'Kích hoạt tài khoản')}
+        <div class="mt-4 grid gap-3">
+          ${card('pay-mode', 'border-brand/30 bg-brand-soft text-brand hover:border-brand', 'key', 'Đóng học phí', `Tự chọn bài muốn học · ${esc(Number(pay.blockPrice || 50000).toLocaleString('vi-VN'))}đ / ${pay.blockSize || 5} bài`)}
+          ${card('free-form', 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-400', 'user', 'Đang là học viên tại lớp', 'Miễn phí · gửi họ tên và lớp để cô mở khóa')}
+        </div>`);
+      return;
+    }
+    const line = (label, value, copy, id) => value ? `<div class="flex items-center gap-2 h-11 px-3 rounded-xl bg-paper border border-line">
+        <span class="w-24 shrink-0 text-xs text-ink-3">${esc(label)}</span>
+        <span ${id ? `id="${id}"` : ''} class="min-w-0 flex-1 truncate font-semibold select-all">${esc(value)}</span>
+        ${copy ? `<button type="button" data-action="copy-text" data-text="${esc(value)}" aria-label="Sao chép ${esc(label)}" class="size-8 shrink-0 grid place-items-center rounded-lg text-ink-3 hover:bg-white hover:text-brand">${icon('copy', 'size-4')}</button>` : ''}
+      </div>` : '';
+    // Bài đã có (còn hạn) thì không chọn lại; mặc định chọn sẵn 5 bài kế tiếp chưa có.
+    const owned = session.active ? lessonSet(session.maxLessons) : new Set();
+    const total = APP_CONFIG.lessons.length;
+    if (ui.pick) owned.forEach((n) => ui.pick.delete(n));
+    if (!ui.pick || !ui.pick.size) {
+      ui.pick = new Set();
+      for (let n = 1; n <= total && ui.pick.size < (pay.blockSize || 5); n++) if (!owned.has(n)) ui.pick.add(n);
+    }
+    const chip = (n) => {
+      const lesson = APP_CONFIG.lessons[n - 1];
+      const have = owned.has(n);
+      const on = ui.pick.has(n);
+      return `<button type="button" data-action="pick-lesson" data-n="${n}" ${have ? 'disabled' : ''} aria-pressed="${on}" title="${esc(lesson ? lesson.title : 'Bài ' + n)}${have ? ' (đã có)' : ''}"
+        class="pick-chip h-10 rounded-lg border-2 text-sm font-bold tabular-nums transition ${have ? 'border-emerald-200 bg-emerald-50 text-emerald-600' : on ? 'border-brand bg-brand text-white' : 'border-line text-ink-2 hover:border-brand/60'}">${have ? icon('check', 'size-4 mx-auto') : n}</button>`;
+    };
+    const books = (APP_CONFIG.books && APP_CONFIG.books.length ? APP_CONFIG.books : [{ name: 'Bài học', from: 1, to: total }]).map((book) => `<div class="mt-3">
+        <div class="flex items-center justify-between gap-2"><span class="text-xs font-semibold text-ink-2">${esc(book.name)} · Bài ${book.from} – ${book.to}</span>
+          <button type="button" data-action="pick-book" data-from="${book.from}" data-to="${book.to}" class="h-7 px-2.5 rounded-lg text-xs font-semibold text-brand hover:bg-brand-soft">Chọn cả sách</button></div>
+        <div class="mt-1.5 grid grid-cols-5 sm:grid-cols-8 gap-1.5">${Array.from({ length: book.to - book.from + 1 }, (_, i) => chip(book.from + i)).join('')}</div>
+      </div>`).join('');
+    this.open(`${head(session.active ? 'Gia hạn / Mua thêm bài' : 'Đóng học phí')}
+      ${session.active ? '' : `<button type="button" data-action="activate" class="mt-2 h-8 px-2 -ml-2 rounded-lg text-sm text-ink-2 inline-flex items-center gap-1 hover:text-brand">${icon('chevron-left', 'size-4')}Quay lại</button>`}
+      <div class="mt-3 p-3 rounded-2xl border border-line">
+        <div class="flex items-center justify-between gap-2">
+          <span class="font-semibold">Chọn bài muốn học</span>
+          <button type="button" data-action="pick-clear" class="h-7 px-2.5 rounded-lg text-xs font-medium text-ink-3 hover:text-rose-600">Bỏ chọn</button>
+        </div>
+        <p class="text-xs text-ink-2">${esc(Number(pay.blockPrice || 50000).toLocaleString('vi-VN'))}đ / ${pay.blockSize || 5} bài${owned.size ? ' · ' + icon('check', 'size-3 inline text-emerald-600') + ' = bài đã có' : ''}</p>
+        ${books}
+        <p id="pick-hint" class="mt-3 text-xs font-medium text-gold"></p>
       </div>
-      <button type="button" data-action="free-form" class="mt-4 w-full h-11 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-semibold inline-flex items-center justify-center gap-2 hover:bg-emerald-100">${icon('user', 'size-4')}Đang là học viên (Free)</button>
-      ${prices.length ? `<div class="mt-4 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Chọn gói">${prices.map((p, i) => `<button type="button" role="radio" aria-checked="${i === 0}" data-action="pick-plan" data-price="${esc(p.price)}" data-plan="${esc(p.name + ' – ' + p.price)}" class="plan-opt rounded-xl border-2 px-3 py-2.5 text-center transition ${i === 0 ? 'border-brand bg-brand-soft' : 'border-line hover:border-brand/50'}"><div class="text-xs text-ink-2">${esc(p.name)}</div><div class="text-lg font-bold text-ink">${esc(p.price)}</div></button>`).join('')}</div>` : ''}
       ${pay.qrImage ? `<img src="${esc(pay.qrImage)}" alt="Mã QR chuyển khoản" class="mt-4 mx-auto w-full max-w-[260px] aspect-square object-contain rounded-xl border border-line bg-white" onerror="this.remove()">` : ''}
       <div class="mt-4 grid gap-2">
-        ${prices.length ? `<div class="flex items-center gap-2 h-11 px-3 rounded-xl bg-brand-soft border border-brand/30"><span class="w-24 shrink-0 text-xs text-ink-3">Số tiền</span><span id="pay-amount" class="min-w-0 flex-1 truncate font-bold text-brand">${esc(prices[0].price)}</span></div>` : ''}
+        <div class="flex items-center gap-2 min-h-11 py-2 px-3 rounded-xl bg-brand-soft border border-brand/30"><span class="w-24 shrink-0 text-xs text-ink-3">Số tiền</span><span id="pay-amount" class="min-w-0 flex-1 font-bold text-brand"></span></div>
         ${line('Ngân hàng', pay.bank, false)}
         ${line('Số tài khoản', pay.accountNumber, true)}
         ${line('Chủ tài khoản', pay.accountName, false)}
         ${line('Nội dung CK', session.email || '', true)}
       </div>
-      <button type="button" data-action="paid" data-kind="${renew ? 'renew' : 'activate'}" data-plan="${esc(prices[0] ? prices[0].name + ' – ' + prices[0].price : '')}" class="mt-4 w-full h-12 rounded-xl bg-brand text-white font-semibold inline-flex items-center justify-center gap-2 hover:bg-brand-dark disabled:opacity-60">${icon('check')}<span>Tôi đã chuyển khoản</span></button>
+      <button type="button" data-action="paid" data-kind="${renew ? 'renew' : 'activate'}" class="mt-4 w-full h-12 rounded-xl bg-brand text-white font-semibold inline-flex items-center justify-center gap-2 hover:bg-brand-dark disabled:opacity-60">${icon('check')}<span>Tôi đã chuyển khoản</span></button>
       <a href="mailto:${esc(APP_CONFIG.teacherEmail || '')}?subject=${encodeURIComponent(renew ? 'Gia hạn khóa học E-Learning' : 'Kích hoạt tài khoản E-Learning')}&body=${encodeURIComponent('Email tài khoản: ' + (session.email || ''))}" class="mt-2 h-10 w-full rounded-xl text-sm text-ink-2 inline-flex items-center justify-center gap-2 hover:text-brand">${icon('mail', 'size-4')}${esc(APP_CONFIG.teacherEmail || '')}</a>`);
+    this.updatePick();
+  },
+  // Cập nhật số bài đã chọn, số tiền và nút báo chuyển khoản (không vẽ lại cả hộp thoại).
+  updatePick() {
+    const pay = APP_CONFIG.payment || {};
+    const size = Number(pay.blockSize) || 5;
+    const price = Number(pay.blockPrice) || 50000;
+    const count = ui.pick ? ui.pick.size : 0;
+    const blocks = Math.ceil(count / size);
+    const money = (blocks * price).toLocaleString('vi-VN') + 'đ';
+    $$('#modal-card .pick-chip').forEach((b) => {
+      if (b.disabled) return;
+      const on = ui.pick.has(Number(b.dataset.n));
+      b.setAttribute('aria-pressed', String(on));
+      b.className = b.className.replace(/border-brand bg-brand text-white|border-line text-ink-2 hover:border-brand\/60/, on ? 'border-brand bg-brand text-white' : 'border-line text-ink-2 hover:border-brand/60');
+    });
+    const amount = $('#pay-amount');
+    if (amount) amount.textContent = count ? `${money} · ${count} bài (${lessonSpec(ui.pick)})` : 'Chưa chọn bài';
+    const hint = $('#pick-hint');
+    if (hint) hint.textContent = count && count % size ? `Chọn thêm ${size - (count % size)} bài nữa vẫn cùng giá ${money}` : '';
+    const paid = $('#modal-card [data-action="paid"]');
+    if (paid) {
+      paid.disabled = !count;
+      paid.dataset.plan = count ? `${count} bài – ${money}` : '';
+      paid.dataset.lessons = lessonSpec(ui.pick);
+      const session = store.session || {};
+      const all = new Set([...(session.active ? lessonSet(session.maxLessons) : []), ...ui.pick]);
+      paid.dataset.merged = lessonSpec(all);
+    }
   },
   // Học viên đang học tại lớp: nhập họ tên và lớp, gửi yêu cầu mở khóa miễn phí cho giáo viên.
   freeForm() {
@@ -5901,7 +6006,7 @@ const Modal = {
         ${field('free-class', 'Lớp đang học', '', 'Ví dụ: Sơ cấp 1 – tối thứ 3, 5')}
       </div>
       <button type="button" data-action="free-send" class="mt-4 w-full h-12 rounded-xl bg-emerald-600 text-white font-semibold inline-flex items-center justify-center gap-2 hover:bg-emerald-700 disabled:opacity-60">${icon('send')}<span>Gửi yêu cầu mở khóa</span></button>
-      <button type="button" data-action="activate" class="mt-2 w-full h-10 rounded-xl text-sm text-ink-2 inline-flex items-center justify-center gap-2 hover:text-brand">${icon('chevron-left', 'size-4')}Bảng giá</button>`);
+      <button type="button" data-action="activate" class="mt-2 w-full h-10 rounded-xl text-sm text-ink-2 inline-flex items-center justify-center gap-2 hover:text-brand">${icon('chevron-left', 'size-4')}Quay lại</button>`);
   },
   forgot() {
     const email = cleanEmail(($('#gate-email') || {}).value);
@@ -6037,6 +6142,7 @@ const App = {
     this.show('app');
     ui.testId = null;
     ui.test = null;
+    ui.pick = null;
     applyTestRedo(null);
     this.renderHeader();
     Cloud.setStatus('ok');
@@ -6372,6 +6478,7 @@ const Actions = {
     toast(ok ? 'Đã sao chép' : 'Chưa sao chép được', ok ? 'ok' : 'err', 1600);
   },
   'free-form'() { Modal.freeForm(); },
+  'pay-mode'() { Modal.activate('pay'); },
   async 'free-send'(button) {
     const session = store.session;
     if (!session) return;
@@ -6400,20 +6507,19 @@ const Actions = {
       : /mail|quyền|permission|authoriz/i.test(detail) ? 'Máy chủ chưa được cấp quyền gửi email (chạy hàm thuGuiMail)'
       : 'Chưa gửi được, bấm lại hoặc gửi email cho giáo viên', 'err', 6000);
   },
-  'pick-plan'(button) {
-    document.querySelectorAll('#modal-card .plan-opt').forEach((b) => {
-      const on = b === button;
-      b.setAttribute('aria-checked', String(on));
-      b.classList.toggle('border-brand', on);
-      b.classList.toggle('bg-brand-soft', on);
-      b.classList.toggle('border-line', !on);
-    });
-    const paid = document.querySelector('#modal-card [data-action="paid"]');
-    if (paid) paid.dataset.plan = button.dataset.plan;
-    const amount = document.getElementById('pay-amount');
-    if (amount) amount.textContent = button.dataset.price || '';
+  'pick-lesson'(button) {
+    const n = Number(button.dataset.n);
+    if (ui.pick.has(n)) ui.pick.delete(n); else ui.pick.add(n);
+    Modal.updatePick();
   },
-  // Học viên báo đã chuyển khoản: máy chủ gửi email cho giáo viên và ghi vào cột "Ghi chú".
+  'pick-book'(button) {
+    const from = Number(button.dataset.from), to = Number(button.dataset.to);
+    const chips = $$('#modal-card .pick-chip').filter((b) => !b.disabled && +b.dataset.n >= from && +b.dataset.n <= to);
+    const all = chips.every((b) => ui.pick.has(+b.dataset.n));
+    chips.forEach((b) => { if (all) ui.pick.delete(+b.dataset.n); else ui.pick.add(+b.dataset.n); });
+    Modal.updatePick();
+  },
+  'pick-clear'() { ui.pick.clear(); Modal.updatePick(); },
   async paid(button) {
     const session = store.session;
     if (!session) return;
@@ -6421,7 +6527,7 @@ const Actions = {
     button.disabled = true;
     if (label) label.textContent = 'Đang gửi…';
     let result;
-    if (Cloud.enabled()) result = await Account.request({ action: 'notify', email: session.email, token: session.token, kind: button.dataset.kind, plan: button.dataset.plan || '' });
+    if (Cloud.enabled()) result = await Account.request({ action: 'notify', email: session.email, token: session.token, kind: button.dataset.kind, plan: button.dataset.plan || '', lessons: button.dataset.lessons || '', merged: button.dataset.merged || '' });
     else result = { ok: true };
     if (result.ok) {
       if (label) label.textContent = 'Đã báo cho giáo viên';
