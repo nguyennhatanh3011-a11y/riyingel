@@ -6065,9 +6065,10 @@ const App = {
     $$('[data-brand]').forEach((node) => { node.textContent = APP_CONFIG.brand || 'E-Learning'; });
     $$('[data-seal]').forEach((node) => {
       if (APP_CONFIG.logo) {
-        node.style.background = '#192030';
+        node.style.background = '#fefcf0';
+        node.style.boxShadow = 'inset 0 0 0 1px rgb(20 33 61 / .12)';
         node.innerHTML = `<img src="${esc(APP_CONFIG.logo)}" alt="" class="size-full rounded-[inherit] object-cover">`;
-        node.firstChild.onerror = () => { node.style.background = ''; node.textContent = APP_CONFIG.seal || '学'; };
+        node.firstChild.onerror = () => { node.style.background = ''; node.style.boxShadow = ''; node.textContent = APP_CONFIG.seal || '学'; };
       } else node.textContent = APP_CONFIG.seal || '学';
     });
     const banner = $('#gate-banner');
