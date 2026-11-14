@@ -3587,6 +3587,23 @@ function lessonStatus(lesson) {
 }
 
 // Bài kế tiếp chỉ mở khi: qua hết mốc câu hỏi + xem hết video + đạt đủ 4 kỹ năng + xong Ôn bài cũ / Xem trước bài mới.
+// Bài đã đủ điều kiện hoàn thành nhưng chưa được đánh dấu (ví dụ sau khi hạ điểm qua câu phần Nói): đánh dấu luôn, không bắn pháo hoa.
+function reconcileDone() {
+  if (!store.session) return false;
+  const up = userProgress();
+  let changed = false;
+  APP_CONFIG.lessons.forEach((lesson, i) => {
+    const p = LP(lesson.id);
+    if (p.done || !checkLessonUnlock(lesson.id)) return;
+    p.done = true;
+    p.doneAt = new Date().toISOString();
+    const next = APP_CONFIG.lessons[i + 1];
+    if (next) addUnique(up.unlocked, next.id);
+    changed = true;
+  });
+  if (changed) { persist(); Cloud.schedule(); }
+  return changed;
+}
 function checkLessonUnlock(lessonId) {
   const lesson = getLesson(lessonId);
   if (!lesson) return false;
@@ -6228,6 +6245,7 @@ const App = {
     ui.pick = null;
     ui.months = null;
     applyTestRedo(null);
+    reconcileDone();
     this.renderHeader();
     Cloud.setStatus('ok');
     const up = userProgress();
@@ -8407,6 +8425,7 @@ async function syncAccount(minGap = 0) {
         if (opened) toast('Tài khoản đã được kích hoạt', 'ok', 5000);
       } else {
         App.renderHeader();
+        reconcileDone();
         if (ui.view === 'app' && JSON.stringify(userProgress()) !== progressBefore) { App.renderSidebar(); if (ui.lessonId) App.renderStepper(); }   // tiến trình từ thiết bị khác
       }
     } else if (result.reason === 'session') {
