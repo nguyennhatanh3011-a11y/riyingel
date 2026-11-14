@@ -6161,7 +6161,7 @@ const App = {
     Voice.release();
     Modal.close();
     this.show('gate');
-    this.setGateMode('login');
+    this.setGateMode(location.hash === '#dang-ky' ? 'register' : 'login');
     const error = $('#gate-error');
     error.hidden = !message;
     error.innerHTML = message ? `${icon('alert')}<span>${esc(message)}</span>` : '';
