@@ -5138,6 +5138,7 @@ const Modal = {
         </div>
         <button type="button" data-action="modal-close" aria-label="Đóng" class="size-9 -mt-1 -mr-1 grid place-items-center rounded-lg text-ink-3 hover:bg-paper hover:text-ink">${icon('x', 'size-5')}</button>
       </div>
+      <button type="button" data-action="free-form" class="mt-4 w-full h-11 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-semibold inline-flex items-center justify-center gap-2 hover:bg-emerald-100">${icon('user', 'size-4')}Đang là học viên (Free)</button>
       ${prices.length ? `<div class="mt-4 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Chọn gói">${prices.map((p, i) => `<button type="button" role="radio" aria-checked="${i === 0}" data-action="pick-plan" data-price="${esc(p.price)}" data-plan="${esc(p.name + ' – ' + p.price)}" class="plan-opt rounded-xl border-2 px-3 py-2.5 text-center transition ${i === 0 ? 'border-brand bg-brand-soft' : 'border-line hover:border-brand/50'}"><div class="text-xs text-ink-2">${esc(p.name)}</div><div class="text-lg font-bold text-ink">${esc(p.price)}</div></button>`).join('')}</div>` : ''}
       ${pay.qrImage ? `<img src="${esc(pay.qrImage)}" alt="Mã QR chuyển khoản" class="mt-4 mx-auto w-full max-w-[260px] aspect-square object-contain rounded-xl border border-line bg-white" onerror="this.remove()">` : ''}
       <div class="mt-4 grid gap-2">
@@ -5148,7 +5149,6 @@ const Modal = {
         ${line('Nội dung CK', session.email || '', true)}
       </div>
       <button type="button" data-action="paid" data-kind="${renew ? 'renew' : 'activate'}" data-plan="${esc(prices[0] ? prices[0].name + ' – ' + prices[0].price : '')}" class="mt-4 w-full h-12 rounded-xl bg-brand text-white font-semibold inline-flex items-center justify-center gap-2 hover:bg-brand-dark disabled:opacity-60">${icon('check')}<span>Tôi đã chuyển khoản</span></button>
-      <button type="button" data-action="free-form" class="mt-2 w-full h-11 rounded-xl border border-line text-sm font-semibold text-ink-2 inline-flex items-center justify-center gap-2 hover:border-brand hover:text-brand">${icon('user', 'size-4')}Học viên đang học tại lớp · Miễn phí</button>
       <a href="mailto:${esc(APP_CONFIG.teacherEmail || '')}?subject=${encodeURIComponent(renew ? 'Gia hạn khóa học E-Learning' : 'Kích hoạt tài khoản E-Learning')}&body=${encodeURIComponent('Email tài khoản: ' + (session.email || ''))}" class="mt-2 h-10 w-full rounded-xl text-sm text-ink-2 inline-flex items-center justify-center gap-2 hover:text-brand">${icon('mail', 'size-4')}${esc(APP_CONFIG.teacherEmail || '')}</a>`);
   },
   // Học viên đang học tại lớp: nhập họ tên và lớp, gửi yêu cầu mở khóa miễn phí cho giáo viên.
