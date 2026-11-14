@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Riying Laoshi E-Learning</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Riying">
+<meta name="theme-color" content="#ffffff">
 <meta name="description" content="Học tiếng Trung tại nhà cùng Riying Laoshi: 30 bài video, luyện Nghe – Nói – Đọc – Viết, máy chấm phát âm, kiểm tra sau mỗi 5 bài. Học thử Bài 1 miễn phí.">
 <link rel="icon" type="image/png" href="logo-icon.png">
 <link rel="apple-touch-icon" href="logo-icon.png">
@@ -306,6 +310,14 @@
 
 <div id="modal" hidden class="fixed inset-0 z-50 grid place-items-center p-4 bg-ink/45 backdrop-blur-[2px]">
   <div id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="w-full max-w-sm max-h-full overflow-y-auto overflow-x-hidden scroll-thin bg-surface rounded-3xl p-5 sm:p-6 shadow-2xl animate-rise"></div>
+</div>
+<!-- Mở trong trình duyệt của Zalo / Facebook…: nhắc mở bằng Safari / Chrome -->
+<div id="inapp-note" hidden class="fixed z-[70] inset-x-0 bottom-0 p-3 sm:p-4 flex justify-center pointer-events-none">
+  <div class="pointer-events-auto w-full max-w-lg flex items-start gap-3 p-3.5 rounded-2xl bg-ink text-white shadow-2xl">
+    <svg class="ico size-5 shrink-0 mt-0.5 text-amber-300" aria-hidden="true"><use href="#i-alert"></use></svg>
+    <p class="min-w-0 flex-1 text-sm leading-snug"><b>Mở bằng Safari hoặc Chrome để học tốt nhất.</b><br>Bấm <b>⋯</b> ở góc trên → <b>Mở bằng trình duyệt</b>. Trình duyệt trong Zalo / Facebook hay lỗi micro, toàn màn hình và hiện nhỏ trên iPad.</p>
+    <button type="button" data-action="inapp-close" aria-label="Đóng" class="size-8 shrink-0 grid place-items-center rounded-lg text-white/70 hover:text-white"><svg class="ico size-4" aria-hidden="true"><use href="#i-x"></use></svg></button>
+  </div>
 </div>
 <div id="toasts" aria-live="polite" class="fixed z-[60] inset-x-0 top-[4.25rem] px-4 flex flex-col items-center gap-2 pointer-events-none"></div>
 <canvas id="confetti" hidden class="fixed inset-0 z-[55] w-full h-full pointer-events-none"></canvas>
@@ -4608,7 +4620,7 @@ const Player = (() => {
     ready = false;
     closeOverlay();
     setLocked(false);
-    if (document.fullscreenElement) { try { document.exitFullscreen(); } catch (err) { /* bỏ qua */ } }
+    if (fsElement()) { try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch (err) { /* bỏ qua */ } }
   }
   function load(nextLesson) {
     destroy();
@@ -4874,9 +4886,14 @@ const Player = (() => {
     el.btnMute.innerHTML = icon(muted ? 'mute' : 'volume', 'size-[18px]');
     el.btnMute.setAttribute('aria-label', muted ? 'Bật tiếng' : 'Tắt tiếng');
   }
+  // Toàn màn hình: chuẩn mới, bản có tiền tố webkit (iPad / Safari cũ), và trình phát video riêng của iPhone.
+  const fsElement = () => document.fullscreenElement || document.webkitFullscreenElement || null;
   function toggleFullscreen() {
-    if (document.fullscreenElement) { document.exitFullscreen(); return; }
-    if (el.player.requestFullscreen) el.player.requestFullscreen().catch(() => {});
+    if (fsElement()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+    const p = el.player;
+    if (p.requestFullscreen) { p.requestFullscreen().catch(() => {}); return; }
+    if (p.webkitRequestFullscreen) { p.webkitRequestFullscreen(); return; }
+    if (!el.media.hidden && el.media.webkitEnterFullscreen) { try { el.media.webkitEnterFullscreen(); } catch (err) { /* bỏ qua */ } }
   }
   function seekFromPointer(event) {
     const rect = el.seek.getBoundingClientRect();
@@ -4954,12 +4971,14 @@ const Player = (() => {
       seekTo(adapter.time() + step);
     });
     document.addEventListener('keydown', onKey);
-    document.addEventListener('fullscreenchange', () => {
-      const on = document.fullscreenElement === el.player;
+    const onFs = () => {
+      const on = fsElement() === el.player;
       el.btnFull.innerHTML = icon(on ? 'minimize' : 'maximize', 'size-[18px]');
       el.btnFull.setAttribute('aria-label', on ? 'Thoát toàn màn hình' : 'Toàn màn hình');
-    });
-    if (!document.fullscreenEnabled) el.btnFull.hidden = true;
+    };
+    document.addEventListener('fullscreenchange', onFs);
+    document.addEventListener('webkitfullscreenchange', onFs);
+    if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled && !el.media.webkitEnterFullscreen) el.btnFull.hidden = true;
     renderMute();
   }
 
@@ -6534,6 +6553,7 @@ const Actions = {
   },
   'free-form'() { Modal.freeForm(); },
   'pay-mode'() { Modal.activate('pay'); },
+  'inapp-close'() { $('#inapp-note').hidden = true; try { sessionStorage.setItem('inapp-note', '1'); } catch (err) { /* bỏ qua */ } },
   async 'free-send'(button) {
     const session = store.session;
     if (!session) return;
@@ -8328,6 +8348,12 @@ async function boot() {
   ui.content = await loadContentFile();   // link video + mốc dừng từ file Excel cạnh trang (nếu có)
   $('#boot-wait').hidden = true;
   App.renderHeader();
+  // Trình duyệt bên trong Zalo / Facebook / Messenger / Instagram / TikTok / Line: nhắc mở bằng trình duyệt thật.
+  if (/Zalo|FBAN|FBAV|FB_IAB|Messenger|Instagram|TikTok|musical_ly|Line\//i.test(navigator.userAgent)) {
+    let seen = false;
+    try { seen = sessionStorage.getItem('inapp-note') === '1'; } catch (err) { /* bỏ qua */ }
+    if (!seen) $('#inapp-note').hidden = false;
+  }
 
   // Quay lại tab / mở lại ứng dụng: hỏi lại máy chủ (cô vừa kích hoạt, vừa thêm bài, vừa gia hạn…).
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncAccount(60000); });
