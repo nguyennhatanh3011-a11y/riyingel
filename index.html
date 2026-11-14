@@ -2,6 +2,18 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
+<script>
+/* Học viên đã đăng nhập (đọc chung bộ nhớ với hoc.html): vào thẳng trang học.
+   Muốn xem trang giới thiệu khi đang đăng nhập: thêm #gioi-thieu vào cuối link. */
+(function () {
+  try {
+    if (location.hash === "#gioi-thieu") return;
+    var data = JSON.parse(localStorage.getItem("riying-elearning:v1") || "null");
+    var s = data && data.session;
+    if (s && s.email && s.token) location.replace("hoc.html");
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Riying Laoshi · Học tiếng Trung tại nhà</title>
 <meta name="description" content="Học tiếng Trung tại nhà cùng Riying Laoshi: 30 bài video, luyện Nghe – Nói – Đọc – Viết, máy chấm phát âm, kiểm tra sau mỗi 5 bài. Học thử Bài 1 miễn phí, từ 50.000đ / 5 bài.">
