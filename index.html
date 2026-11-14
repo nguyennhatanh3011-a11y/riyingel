@@ -437,12 +437,14 @@ const APP_CONFIG = {
         listening: [
           { audioText: "你好吗？", audioUrl: "", question: "Người nói hỏi điều gì?", options: ["Bạn tên gì?", "Bạn khỏe không?", "Bạn ăn gì?", "Bạn đi đâu?"], correct: 1 },
           { audioText: "我爸爸很好，我妈妈也很好。", audioUrl: "", question: "Ai khỏe?", options: ["Chỉ ba", "Chỉ mẹ", "Cả ba và mẹ", "Không ai cả"], correct: 2 },
-          { audioText: "他们都听老师说。", audioUrl: "", question: "Câu vừa nghe nói gì?", options: ["Họ đều nghe thầy / cô nói", "Họ đều không nghe", "Thầy / cô nghe họ nói", "Tôi nghe thầy / cô nói"], correct: 0 }
+          { audioText: "他们都听老师说。", audioUrl: "", question: "Câu vừa nghe nói gì?", options: ["Họ đều nghe thầy / cô nói", "Họ đều không nghe", "Thầy / cô nghe họ nói", "Tôi nghe thầy / cô nói"], correct: 0 },
+          /*+*/{ audioText: "老师好吗？——老师很好。", audioUrl: "", question: "Thầy giáo thế nào?", options: ["Rất khỏe", "Không khỏe", "Rất mệt", "Không biết"], correct: 0 }
         ],
         speaking: [
           { text: "你好吗？", phonetic: "Nǐ hǎo ma?", meaning: "Bạn khỏe không?", audioUrl: "", minScore: 80 },
           { text: "我很好，你呢？", phonetic: "Wǒ hěn hǎo, nǐ ne?", meaning: "Tôi rất khỏe, còn bạn?", audioUrl: "", minScore: 80 },
-          { text: "我爸爸、妈妈都很好。", phonetic: "Wǒ bàba, māma dōu hěn hǎo.", meaning: "Ba mẹ tôi đều rất khỏe.", audioUrl: "", minScore: 80 }
+          { text: "我爸爸、妈妈都很好。", phonetic: "Wǒ bàba, māma dōu hěn hǎo.", meaning: "Ba mẹ tôi đều rất khỏe.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "他们都很好。", phonetic: "Tāmen dōu hěn hǎo.", meaning: "Họ đều khỏe.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 你好吗？\nB: 我很好，你呢？\nA: 我也很好。你爸爸、妈妈呢？\nB: 他们都很好。谢谢！",
@@ -450,13 +452,15 @@ const APP_CONFIG = {
           questions: [
             { question: "B có khỏe không?", options: ["Rất khỏe", "Không khỏe"], correct: 0 },
             { question: "他们 ở câu cuối chỉ ai?", options: ["Thầy cô của B", "Ba mẹ của B", "Anh chị của A", "Các bạn của A"], correct: 1 },
-            { question: "A không khỏe.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "A không khỏe.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "A hỏi thăm bố mẹ của B.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tôi cũng rất khỏe.", words: ["很", "我", "好", "也"], answer: "我也很好", acceptedAnswers: [] },
           { type: "order", prompt: "Ba mẹ tôi đều rất khỏe.", words: ["都", "妈妈", "我", "好", "爸爸", "很"], answer: "我爸爸妈妈都很好", acceptedAnswers: ["我妈妈爸爸都很好"] },
-          { type: "input", prompt: "Viết câu hỏi “Bạn khỏe không?” bằng chữ Hán hoặc pinyin.", answer: "你好吗", acceptedAnswers: ["nǐ hǎo ma", "ni hao ma"], hint: "你好 + trợ từ nghi vấn" }
+          { type: "input", prompt: "Viết câu hỏi “Bạn khỏe không?” bằng chữ Hán hoặc pinyin.", answer: "你好吗", acceptedAnswers: ["nǐ hǎo ma", "ni hao ma"], hint: "你好 + trợ từ nghi vấn" },
+          /*+*/{ type: "order", prompt: "Bố mẹ tôi cũng rất khỏe.", words: ["也", "很好", "我爸爸妈妈"], answer: "我爸爸妈妈也很好", acceptedAnswers: [] }
         ]
       },
       reviewOld: {
@@ -510,12 +514,16 @@ const APP_CONFIG = {
         listening: [
           { audioText: "你吃什么？我吃饺子。", audioUrl: "", question: "Người thứ hai ăn gì?", options: ["Cơm", "Mì sợi", "Sủi cảo", "Bánh mì"], correct: 2 },
           { audioText: "我哥哥不喝啤酒。", audioUrl: "", question: "Anh trai của người nói…", options: ["uống bia", "không uống bia", "mua bia", "không uống trà"], correct: 1 },
-          { audioText: "你买什么？我买书。", audioUrl: "", question: "Người thứ hai mua gì?", options: ["Sách", "Bút", "Vở", "Từ điển"], correct: 0 }
+          { audioText: "你买什么？我买书。", audioUrl: "", question: "Người thứ hai mua gì?", options: ["Sách", "Bút", "Vở", "Từ điển"], correct: 0 },
+          /*+*/{ audioText: "我不吃面条，我吃米饭。", audioUrl: "", question: "Người nói ăn gì?", options: ["Mì", "Cơm", "Sủi cảo", "Bánh bao"], correct: 1 },
+          /*+*/{ audioText: "你喝茶吗？我不喝茶，我喝咖啡。", audioUrl: "", question: "Người trả lời uống gì?", options: ["Trà", "Bia", "Cà phê", "Nước"], correct: 2 }
         ],
         speaking: [
           { text: "你吃什么？", phonetic: "Nǐ chī shénme?", meaning: "Bạn ăn gì?", audioUrl: "", minScore: 80 },
           { text: "我吃米饭，不吃面条。", phonetic: "Wǒ chī mǐfàn, bù chī miàntiáo.", meaning: "Tôi ăn cơm, không ăn mì.", audioUrl: "", minScore: 80 },
-          { text: "我不喝咖啡，我喝茶。", phonetic: "Wǒ bù hē kāfēi, wǒ hē chá.", meaning: "Tôi không uống cà phê, tôi uống trà.", audioUrl: "", minScore: 80 }
+          { text: "我不喝咖啡，我喝茶。", phonetic: "Wǒ bù hē kāfēi, wǒ hē chá.", meaning: "Tôi không uống cà phê, tôi uống trà.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我买书。", phonetic: "Wǒ mǎi shū.", meaning: "Tôi mua sách.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "你喝什么？", phonetic: "Nǐ hē shénme?", meaning: "Bạn uống gì?", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 你吃什么？\nB: 我吃饺子。你呢？\nA: 我不吃饺子，我吃面条。\nB: 你喝什么？\nA: 我喝茶。谢谢！",
@@ -523,13 +531,17 @@ const APP_CONFIG = {
           questions: [
             { question: "A ăn gì?", options: ["Sủi cảo", "Mì sợi", "Cơm", "Bánh bao"], correct: 1 },
             { question: "B ăn gì?", options: ["Sủi cảo", "Mì sợi"], correct: 0 },
-            { question: "A uống cà phê.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "A uống cà phê.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "A uống gì?", options: ["Trà", "Cà phê", "Bia"], correct: 0 },
+            /*+*/{ question: "B có hỏi A uống gì không?", options: ["Có", "Không"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Ba bạn mua gì?", words: ["买", "你", "什么", "爸爸"], answer: "你爸爸买什么", acceptedAnswers: [] },
           { type: "order", prompt: "Tôi không uống cà phê, tôi uống trà.", words: ["茶", "我", "咖啡", "喝", "不", "我", "喝"], answer: "我不喝咖啡我喝茶", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết câu hỏi “Bạn uống gì?” bằng chữ Hán hoặc pinyin.", answer: "你喝什么", acceptedAnswers: ["nǐ hē shénme", "ni he shenme"], hint: "你 + 喝 + 什么" }
+          { type: "input", prompt: "Viết câu hỏi “Bạn uống gì?” bằng chữ Hán hoặc pinyin.", answer: "你喝什么", acceptedAnswers: ["nǐ hē shénme", "ni he shenme"], hint: "你 + 喝 + 什么" },
+          /*+*/{ type: "order", prompt: "Tôi ăn sủi cảo.", words: ["我", "饺子", "吃"], answer: "我吃饺子", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “uống” bằng chữ Hán hoặc pinyin.", answer: "喝", acceptedAnswers: ["hē", "he"], hint: "h…" }
         ]
       },
       reviewOld: {
@@ -584,12 +596,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "包子多少钱？一个包子两块。", audioUrl: "", question: "Một cái bánh bao giá bao nhiêu?", options: ["1 đồng", "2 đồng", "5 đồng", "10 đồng"], correct: 1 },
           { audioText: "我要一杯咖啡，不要啤酒。", audioUrl: "", question: "Người nói muốn gì?", options: ["Một ly cà phê", "Một chai bia", "Một ly trà", "Một chai nước suối"], correct: 0 },
-          { audioText: "你要换多少钱？我换一百美元。", audioUrl: "", question: "Người thứ hai đổi bao nhiêu?", options: ["10 đô la", "100 đô la", "1.000 đô la", "100 tệ"], correct: 1 }
+          { audioText: "你要换多少钱？我换一百美元。", audioUrl: "", question: "Người thứ hai đổi bao nhiêu?", options: ["10 đô la", "100 đô la", "1.000 đô la", "100 tệ"], correct: 1 },
+          /*+*/{ audioText: "一瓶啤酒三块。", audioUrl: "", question: "Một chai bia giá bao nhiêu?", options: ["2 tệ", "3 tệ", "5 tệ", "10 tệ"], correct: 1 },
+          /*+*/{ audioText: "我买三本书，三本书六十块。", audioUrl: "", question: "Người nói mua mấy quyển sách?", options: ["2", "3", "6", "10"], correct: 1 },
+          /*+*/{ audioText: "我不要咖啡，我要一杯茶。", audioUrl: "", question: "Người nói muốn gì?", options: ["Một ly cà phê", "Một ly trà", "Một chai bia", "Bánh bao"], correct: 1 }
         ],
         speaking: [
           { text: "包子多少钱？", phonetic: "Bāozi duōshao qián?", meaning: "Bánh bao bao nhiêu tiền?", audioUrl: "", minScore: 80 },
           { text: "我要两瓶啤酒。", phonetic: "Wǒ yào liǎng píng píjiǔ.", meaning: "Tôi muốn hai chai bia.", audioUrl: "", minScore: 80 },
-          { text: "我换一百美元。", phonetic: "Wǒ huàn yìbǎi měiyuán.", meaning: "Tôi đổi một trăm đô la.", audioUrl: "", minScore: 80 }
+          { text: "我换一百美元。", phonetic: "Wǒ huàn yìbǎi měiyuán.", meaning: "Tôi đổi một trăm đô la.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "一杯咖啡多少钱？", phonetic: "Yì bēi kāfēi duōshao qián?", meaning: "Một ly cà phê bao nhiêu tiền?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我要三个包子。", phonetic: "Wǒ yào sān ge bāozi.", meaning: "Tôi muốn ba cái bánh bao.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "你要换多少钱？", phonetic: "Nǐ yào huàn duōshao qián?", meaning: "Bạn muốn đổi bao nhiêu tiền?", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 你要什么？\nB: 我要两个包子，一杯咖啡。多少钱？\nA: 两个包子四块，一杯咖啡五块。\nB: 谢谢！",
@@ -597,13 +615,19 @@ const APP_CONFIG = {
           questions: [
             { question: "B mua mấy cái bánh bao?", options: ["Một", "Hai", "Ba", "Bốn"], correct: 1 },
             { question: "Một ly cà phê giá bao nhiêu?", options: ["4 đồng", "5 đồng", "9 đồng"], correct: 1 },
-            { question: "B mua trà.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "B mua trà.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Hai cái bánh bao giá bao nhiêu?", options: ["2 tệ", "4 tệ", "5 tệ"], correct: 1 },
+            /*+*/{ question: "B mua cả bánh bao và cà phê.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "Ai là người bán?", options: ["A", "B"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Bạn muốn đổi bao nhiêu tiền?", words: ["多少", "你", "钱", "要", "换"], answer: "你要换多少钱", acceptedAnswers: [] },
           { type: "order", prompt: "Tôi mua mười hai quyển sách.", words: ["书", "我", "十二", "买", "本"], answer: "我买十二本书", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết số 520 bằng chữ Hán hoặc pinyin.", answer: "五百二十", acceptedAnswers: ["wǔbǎi èrshí", "wubai ershi"], hint: "五百 + 二十" }
+          { type: "input", prompt: "Viết số 520 bằng chữ Hán hoặc pinyin.", answer: "五百二十", acceptedAnswers: ["wǔbǎi èrshí", "wubai ershi"], hint: "五百 + 二十" },
+          /*+*/{ type: "order", prompt: "Bánh bao bao nhiêu tiền?", words: ["多少", "钱", "包子"], answer: "包子多少钱", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Tôi muốn hai ly cà phê.", words: ["我要", "咖啡", "两杯"], answer: "我要两杯咖啡", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “bao nhiêu” bằng chữ Hán hoặc pinyin.", answer: "多少", acceptedAnswers: ["duōshao", "duoshao"], hint: "d… sh…" }
         ]
       },
       reviewOld: {
@@ -657,12 +681,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "请问，图书馆在哪儿？图书馆就在那儿。", audioUrl: "", question: "Người hỏi muốn tìm nơi nào?", options: ["Nhà ăn", "Thư viện", "Bưu điện", "Ngân hàng"], correct: 1 },
           { audioText: "我去商店买笔。", audioUrl: "", question: "Người nói đi cửa hàng để làm gì?", options: ["Mua sách", "Mua bút", "Đổi tiền", "Ăn cơm"], correct: 1 },
-          { audioText: "留学生食堂在七号楼。", audioUrl: "", question: "Nhà ăn du học sinh ở đâu?", options: ["Tòa nhà số 1", "Tòa nhà số 7", "Ký túc xá", "Thư viện"], correct: 1 }
+          { audioText: "留学生食堂在七号楼。", audioUrl: "", question: "Nhà ăn du học sinh ở đâu?", options: ["Tòa nhà số 1", "Tòa nhà số 7", "Ký túc xá", "Thư viện"], correct: 1 },
+          /*+*/{ audioText: "请问，邮局在哪儿？——邮局就在这儿。", audioUrl: "", question: "Bưu điện ở đâu?", options: ["Ở ngay đây", "Ở đằng kia", "Ở tòa nhà số 7", "Không biết"], correct: 0 },
+          /*+*/{ audioText: "我去银行换钱。", audioUrl: "", question: "Người nói đến ngân hàng làm gì?", options: ["Mua bút", "Đổi tiền", "Gửi thư", "Ăn cơm"], correct: 1 },
+          /*+*/{ audioText: "对不起，我不知道食堂在哪儿。", audioUrl: "", question: "Người nói có biết nhà ăn ở đâu không?", options: ["Biết", "Không biết"], correct: 1 }
         ],
         speaking: [
           { text: "请问，图书馆在哪儿？", phonetic: "Qǐngwèn, túshūguǎn zài nǎr?", meaning: "Xin hỏi, thư viện ở đâu?", audioUrl: "", minScore: 80 },
           { text: "食堂就在那儿。", phonetic: "Shítáng jiù zài nàr.", meaning: "Nhà ăn ở ngay đằng kia.", audioUrl: "", minScore: 80 },
-          { text: "我去银行换钱。", phonetic: "Wǒ qù yínháng huàn qián.", meaning: "Tôi đi ngân hàng đổi tiền.", audioUrl: "", minScore: 80 }
+          { text: "我去银行换钱。", phonetic: "Wǒ qù yínháng huàn qián.", meaning: "Tôi đi ngân hàng đổi tiền.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "邮局在哪儿？", phonetic: "Yóujú zài nǎr?", meaning: "Bưu điện ở đâu?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我不知道。", phonetic: "Wǒ bù zhīdào.", meaning: "Tôi không biết.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我去商店买笔。", phonetic: "Wǒ qù shāngdiàn mǎi bǐ.", meaning: "Tôi đến cửa hàng mua bút.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 请问，邮局在哪儿？\nB: 邮局就在那儿。\nA: 你知道银行在哪儿吗？\nB: 对不起，我不知道。\nA: 没关系，谢谢！",
@@ -670,13 +700,19 @@ const APP_CONFIG = {
           questions: [
             { question: "A muốn tìm những nơi nào?", options: ["Bưu điện và ngân hàng", "Thư viện và nhà ăn", "Bệnh viện và cửa hàng"], correct: 0 },
             { question: "B có biết ngân hàng ở đâu không?", options: ["Có", "Không"], correct: 1 },
-            { question: "Bưu điện ở ngay đằng kia.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "Bưu điện ở ngay đằng kia.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "A hỏi B mấy câu?", options: ["Một câu", "Hai câu", "Ba câu"], correct: 1 },
+            /*+*/{ question: "Câu cuối A nói gì?", options: ["Không sao, cảm ơn!", "Xin lỗi", "Tạm biệt"], correct: 0 },
+            /*+*/{ question: "B nói “对不起” vì không biết ngân hàng ở đâu.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Chị gái bạn ở đâu?", words: ["在", "姐姐", "你", "哪儿"], answer: "你姐姐在哪儿", acceptedAnswers: [] },
           { type: "order", prompt: "Tôi đi hiệu sách mua từ điển.", words: ["词典", "去", "我", "买", "书店"], answer: "我去书店买词典", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “thư viện” bằng chữ Hán hoặc pinyin.", answer: "图书馆", acceptedAnswers: ["túshūguǎn", "tushuguan"], hint: "t… sh… g…" }
+          { type: "input", prompt: "Viết “thư viện” bằng chữ Hán hoặc pinyin.", answer: "图书馆", acceptedAnswers: ["túshūguǎn", "tushuguan"], hint: "t… sh… g…" },
+          /*+*/{ type: "order", prompt: "Xin hỏi, ngân hàng ở đâu?", words: ["银行", "请问", "哪儿", "在"], answer: "请问银行在哪儿", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Tôi đến bưu điện.", words: ["去", "邮局", "我"], answer: "我去邮局", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “biết” bằng chữ Hán hoặc pinyin.", answer: "知道", acceptedAnswers: ["zhīdào", "zhidao"], hint: "zh… d…" }
         ]
       },
       reviewOld: {
@@ -730,12 +766,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "我来介绍一下，这是我的朋友。", audioUrl: "", question: "Người nói đang làm gì?", options: ["Giới thiệu bạn mình", "Hỏi đường", "Mua sách", "Xin lỗi"], correct: 0 },
           { audioText: "我们班的教室很大，也很新。", audioUrl: "", question: "Phòng học của lớp họ thế nào?", options: ["Nhỏ và cũ", "To và mới", "To nhưng cũ", "Nhỏ nhưng mới"], correct: 1 },
-          { audioText: "他的女儿聪明极了。", audioUrl: "", question: "Con gái của anh ấy thế nào?", options: ["Rất xinh", "Cực kỳ thông minh", "Rất vui", "Rất cao"], correct: 1 }
+          { audioText: "他的女儿聪明极了。", audioUrl: "", question: "Con gái của anh ấy thế nào?", options: ["Rất xinh", "Cực kỳ thông minh", "Rất vui", "Rất cao"], correct: 1 },
+          /*+*/{ audioText: "这是我的同学，他是留学生。", audioUrl: "", question: "Người được giới thiệu là ai?", options: ["Thầy giáo", "Bạn cùng lớp", "Bố", "Em gái"], correct: 1 },
+          /*+*/{ audioText: "认识你，我很高兴。", audioUrl: "", question: "Người nói cảm thấy thế nào?", options: ["Rất vui", "Rất mệt", "Rất buồn", "Rất bận"], correct: 0 },
+          /*+*/{ audioText: "我们的汉语老师很漂亮。", audioUrl: "", question: "Cô giáo tiếng Trung thế nào?", options: ["Rất xinh", "Rất cao", "Rất bận", "Rất già"], correct: 0 }
         ],
         speaking: [
           { text: "认识你，我很高兴。", phonetic: "Rènshi nǐ, wǒ hěn gāoxìng.", meaning: "Quen bạn, tôi rất vui.", audioUrl: "", minScore: 80 },
           { text: "我来介绍一下。", phonetic: "Wǒ lái jièshào yíxiàr.", meaning: "Tôi xin giới thiệu một chút.", audioUrl: "", minScore: 80 },
-          { text: "这是我的汉语老师。", phonetic: "Zhè shì wǒ de Hànyǔ lǎoshī.", meaning: "Đây là giáo viên tiếng Trung của tôi.", audioUrl: "", minScore: 80 }
+          { text: "这是我的汉语老师。", phonetic: "Zhè shì wǒ de Hànyǔ lǎoshī.", meaning: "Đây là giáo viên tiếng Trung của tôi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "这是我的朋友。", phonetic: "Zhè shì wǒ de péngyou.", meaning: "Đây là bạn của tôi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我们的教室很大。", phonetic: "Wǒmen de jiàoshì hěn dà.", meaning: "Phòng học của chúng tôi rất rộng.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "他的女儿聪明极了。", phonetic: "Tā de nǚ'ér cōngming jí le.", meaning: "Con gái anh ấy thông minh cực kỳ.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "我来介绍一下。我是留学生，我学习汉语。这是我的朋友，他也是留学生。我们的教室很大，我们的老师很漂亮。",
@@ -743,13 +785,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Người viết học gì?", options: ["Tiếng Trung", "Tiếng Hàn", "Tiếng Anh"], correct: 0 },
             { question: "Bạn của người viết cũng là du học sinh.", options: ["Đúng", "Sai"], correct: 0 },
-            { question: "Phòng học của họ thế nào?", options: ["Rất nhỏ", "Rất to", "Rất mới"], correct: 1 }
+            { question: "Phòng học của họ thế nào?", options: ["Rất nhỏ", "Rất to", "Rất mới"], correct: 1 },
+            /*+*/{ question: "Thầy cô giáo của họ thế nào?", options: ["Rất xinh", "Rất nghiêm", "Rất già"], correct: 0 },
+            /*+*/{ question: "Người viết là du học sinh.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "Đoạn văn chủ yếu làm gì?", options: ["Giới thiệu bản thân và bạn", "Hỏi đường", "Mua đồ"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Đây là mẹ tôi.", words: ["是", "妈妈", "这", "我"], answer: "这是我妈妈", acceptedAnswers: [] },
           { type: "order", prompt: "Bạn học lớp tiếng Trung của tôi rất thông minh.", words: ["很", "同学", "我", "聪明", "汉语班", "的"], answer: "我汉语班的同学很聪明", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “giới thiệu” bằng chữ Hán hoặc pinyin.", answer: "介绍", acceptedAnswers: ["jièshào", "jieshao"], hint: "j… sh…" }
+          { type: "input", prompt: "Viết “giới thiệu” bằng chữ Hán hoặc pinyin.", answer: "介绍", acceptedAnswers: ["jièshào", "jieshao"], hint: "j… sh…" },
+          /*+*/{ type: "order", prompt: "Đây là bạn của tôi.", words: ["朋友", "是", "我的", "这"], answer: "这是我的朋友", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Quen bạn, tôi rất vui.", words: ["高兴", "我", "认识你", "很"], answer: "认识你我很高兴", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “bạn bè” bằng chữ Hán hoặc pinyin.", answer: "朋友", acceptedAnswers: ["péngyou", "pengyou"], hint: "p… y…" }
         ]
       },
       reviewOld: {
@@ -803,12 +851,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "你最近身体怎么样？我身体很好。", audioUrl: "", question: "Dạo này sức khỏe người thứ hai thế nào?", options: ["Rất tốt", "Không tốt lắm", "Tàm tạm", "Rất mệt"], correct: 0 },
           { audioText: "我们的教室有两个空调。", audioUrl: "", question: "Phòng học có mấy cái máy lạnh?", options: ["Một", "Hai", "Ba", "Không có"], correct: 1 },
-          { audioText: "食堂离教室太近了！", audioUrl: "", question: "Nhà ăn so với phòng học thì sao?", options: ["Rất xa", "Quá gần", "Ở bên trong", "Không rõ"], correct: 1 }
+          { audioText: "食堂离教室太近了！", audioUrl: "", question: "Nhà ăn so với phòng học thì sao?", options: ["Rất xa", "Quá gần", "Ở bên trong", "Không rõ"], correct: 1 },
+          /*+*/{ audioText: "我最近很累。", audioUrl: "", question: "Dạo này người nói thế nào?", options: ["Rất mệt", "Rất khỏe", "Rất vui", "Rất bận"], correct: 0 },
+          /*+*/{ audioText: "他学习非常努力。", audioUrl: "", question: "Anh ấy học thế nào?", options: ["Rất chăm chỉ", "Tàm tạm", "Không chăm", "Rất kém"], correct: 0 },
+          /*+*/{ audioText: "医院离学校比较远。", audioUrl: "", question: "Bệnh viện cách trường thế nào?", options: ["Khá xa", "Rất gần", "Ngay cạnh", "Không biết"], correct: 0 }
         ],
         speaking: [
           { text: "你最近身体怎么样？", phonetic: "Nǐ zuìjìn shēntǐ zěnmeyàng?", meaning: "Dạo này sức khỏe bạn thế nào?", audioUrl: "", minScore: 80 },
           { text: "我学习很努力。", phonetic: "Wǒ xuéxí hěn nǔlì.", meaning: "Tôi học rất chăm.", audioUrl: "", minScore: 80 },
-          { text: "学校离医院不太远。", phonetic: "Xuéxiào lí yīyuàn bú tài yuǎn.", meaning: "Trường cách bệnh viện không xa lắm.", audioUrl: "", minScore: 80 }
+          { text: "学校离医院不太远。", phonetic: "Xuéxiào lí yīyuàn bú tài yuǎn.", meaning: "Trường cách bệnh viện không xa lắm.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我挺好的。", phonetic: "Wǒ tǐng hǎo de.", meaning: "Tôi khá khỏe.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我的成绩马马虎虎。", phonetic: "Wǒ de chéngjì mǎmǎhūhū.", meaning: "Thành tích của tôi tàm tạm.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "食堂离教室太近了！", phonetic: "Shítáng lí jiàoshì tài jìn le!", meaning: "Nhà ăn gần phòng học quá!", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 最近你身体怎么样？\nB: 不太好，我很累。你呢？\nA: 我挺好的。你学习成绩怎么样？\nB: 马马虎虎。",
@@ -816,13 +870,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Sức khỏe của B dạo này thế nào?", options: ["Rất tốt", "Không tốt lắm"], correct: 1 },
             { question: "Thành tích học tập của B ra sao?", options: ["Rất tốt", "Tàm tạm", "Rất kém"], correct: 1 },
-            { question: "A khỏe.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "A khỏe.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "A thấy trong người thế nào?", options: ["Khá khỏe", "Rất mệt", "Bị ốm"], correct: 0 },
+            /*+*/{ question: "Ai hỏi về thành tích học tập?", options: ["A", "B"], correct: 0 },
+            /*+*/{ question: "Dạo này B rất mệt.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Phòng học của chúng tôi có hai cái máy lạnh.", words: ["两个", "教室", "有", "我们的", "空调"], answer: "我们的教室有两个空调", acceptedAnswers: [] },
           { type: "order", prompt: "Trường học cách bưu điện rất gần.", words: ["很", "邮局", "学校", "近", "离"], answer: "学校离邮局很近", acceptedAnswers: ["邮局离学校很近"] },
-          { type: "input", prompt: "Viết “như thế nào” bằng chữ Hán hoặc pinyin.", answer: "怎么样", acceptedAnswers: ["zěnmeyàng", "zenmeyang"], hint: "z… m… y…" }
+          { type: "input", prompt: "Viết “như thế nào” bằng chữ Hán hoặc pinyin.", answer: "怎么样", acceptedAnswers: ["zěnmeyàng", "zenmeyang"], hint: "z… m… y…" },
+          /*+*/{ type: "order", prompt: "Dạo này bạn khỏe không?", words: ["你", "怎么样", "最近", "身体"], answer: "你最近身体怎么样", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Anh ấy học rất chăm chỉ.", words: ["他", "努力", "很", "学习"], answer: "他学习很努力", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “mệt” bằng chữ Hán hoặc pinyin.", answer: "累", acceptedAnswers: ["lèi", "lei"], hint: "l…" }
         ]
       },
       reviewOld: {
@@ -877,12 +937,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "你叫什么名字？我叫保罗。", audioUrl: "", question: "Người thứ hai tên là gì?", options: ["Bǎoluó (保罗)", "Xiǎobǎo (小宝)", "Lǎoshī (老师)"], correct: 0 },
           { audioText: "我住留学生宿舍，一零八房间。", audioUrl: "", question: "Người nói ở phòng số mấy?", options: ["108", "118", "180", "801"], correct: 0 },
-          { audioText: "每天下午我常常跟朋友一起学习汉语。", audioUrl: "", question: "Buổi chiều người nói thường làm gì?", options: ["Nghỉ ngơi ở ký túc xá", "Học tiếng Trung cùng bạn", "Đi cửa hàng", "Dạy tiếng Trung"], correct: 1 }
+          { audioText: "每天下午我常常跟朋友一起学习汉语。", audioUrl: "", question: "Buổi chiều người nói thường làm gì?", options: ["Nghỉ ngơi ở ký túc xá", "Học tiếng Trung cùng bạn", "Đi cửa hàng", "Dạy tiếng Trung"], correct: 1 },
+          /*+*/{ audioText: "您贵姓？——我姓王。", audioUrl: "", question: "Người trả lời họ gì?", options: ["Lý", "Vương", "Trương", "Trần"], correct: 1 },
+          /*+*/{ audioText: "我是美国人，我叫保罗。", audioUrl: "", question: "Paul là người nước nào?", options: ["Việt Nam", "Mỹ", "Anh", "Pháp"], correct: 1 },
+          /*+*/{ audioText: "我住三零五房间。", audioUrl: "", question: "Người nói ở phòng số mấy?", options: ["305", "350", "503", "530"], correct: 0 }
         ],
         speaking: [
           { text: "你是哪国人？", phonetic: "Nǐ shì nǎ guó rén?", meaning: "Bạn là người nước nào?", audioUrl: "", minScore: 80 },
           { text: "你叫什么名字？", phonetic: "Nǐ jiào shénme míngzi?", meaning: "Bạn tên là gì?", audioUrl: "", minScore: 80 },
-          { text: "我是越南人，我住在宿舍。", phonetic: "Wǒ shì Yuènán rén, wǒ zhù zài sùshè.", meaning: "Tôi là người Việt Nam, tôi ở ký túc xá.", audioUrl: "", minScore: 80 }
+          { text: "我是越南人，我住在宿舍。", phonetic: "Wǒ shì Yuènán rén, wǒ zhù zài sùshè.", meaning: "Tôi là người Việt Nam, tôi ở ký túc xá.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "您贵姓？", phonetic: "Nín guìxìng?", meaning: "Ông/bà họ gì ạ?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我常常跟朋友一起学习。", phonetic: "Wǒ chángcháng gēn péngyou yìqǐ xuéxí.", meaning: "Tôi thường học cùng bạn bè.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我住在留学生宿舍。", phonetic: "Wǒ zhù zài liúxuéshēng sùshè.", meaning: "Tôi ở ký túc xá du học sinh.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 你好！你叫什么名字？\nB: 我叫保罗。\nA: 你是哪国人？\nB: 我是美国人。你呢？\nA: 我是越南人。你住在哪儿？\nB: 我住在留学生宿舍。",
@@ -890,13 +956,19 @@ const APP_CONFIG = {
           questions: [
             { question: "B là người nước nào?", options: ["Việt Nam", "Mỹ", "Hàn Quốc", "Trung Quốc"], correct: 1 },
             { question: "A là người nước nào?", options: ["Việt Nam", "Mỹ"], correct: 0 },
-            { question: "B ở ký túc xá du học sinh.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "B ở ký túc xá du học sinh.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "Tên của B là gì?", options: ["Paul", "Lili", "Vương"], correct: 0 },
+            /*+*/{ question: "Ai hỏi “你住在哪儿？”?", options: ["A", "B"], correct: 0 },
+            /*+*/{ question: "A là người Mỹ.", options: ["Đúng", "Sai"], correct: 1 }
           ]
         },
         writing: [
           { type: "order", prompt: "Mấy vị giáo viên dạy các bạn?", words: ["你们", "老师", "几位", "教"], answer: "几位老师教你们", acceptedAnswers: [] },
           { type: "order", prompt: "Tôi học tiếng Trung ở trường này.", words: ["学习", "在", "我", "汉语", "这个学校"], answer: "我在这个学校学习汉语", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “tên” (danh từ) bằng chữ Hán hoặc pinyin.", answer: "名字", acceptedAnswers: ["míngzi", "mingzi"], hint: "m… z…" }
+          { type: "input", prompt: "Viết “tên” (danh từ) bằng chữ Hán hoặc pinyin.", answer: "名字", acceptedAnswers: ["míngzi", "mingzi"], hint: "m… z…" },
+          /*+*/{ type: "order", prompt: "Bạn là người nước nào?", words: ["是", "人", "你", "哪国"], answer: "你是哪国人", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Tôi ở phòng 108.", words: ["房间", "我", "一零八", "住"], answer: "我住一零八房间", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “tên” bằng chữ Hán hoặc pinyin.", answer: "名字", acceptedAnswers: ["míngzi", "mingzi"], hint: "m… z…" }
         ]
       },
       reviewOld: {
@@ -952,12 +1024,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "我家有四口人：爸爸、妈妈、哥哥和我。", audioUrl: "", question: "Nhà người nói có mấy người?", options: ["Ba", "Bốn", "Năm", "Sáu"], correct: 1 },
           { audioText: "我父亲是医生，他在医院工作。", audioUrl: "", question: "Bố người nói làm nghề gì?", options: ["Nhà báo", "Bác sĩ", "Giáo viên", "Nhân viên công ty"], correct: 1 },
-          { audioText: "我今年二十岁。", audioUrl: "", question: "Người nói năm nay bao nhiêu tuổi?", options: ["12", "20", "22", "30"], correct: 1 }
+          { audioText: "我今年二十岁。", audioUrl: "", question: "Người nói năm nay bao nhiêu tuổi?", options: ["12", "20", "22", "30"], correct: 1 },
+          /*+*/{ audioText: "我有一个哥哥，没有姐姐。", audioUrl: "", question: "Người nói có anh chị em nào?", options: ["Một anh trai", "Một chị gái", "Hai anh trai", "Không có ai"], correct: 0 },
+          /*+*/{ audioText: "我妈妈在公司工作。", audioUrl: "", question: "Mẹ người nói làm ở đâu?", options: ["Bệnh viện", "Trường học", "Công ty", "Ngân hàng"], correct: 2 },
+          /*+*/{ audioText: "你妹妹几岁了？——她五岁。", audioUrl: "", question: "Em gái mấy tuổi?", options: ["3 tuổi", "5 tuổi", "15 tuổi", "20 tuổi"], correct: 1 }
         ],
         speaking: [
           { text: "你家有几口人？", phonetic: "Nǐ jiā yǒu jǐ kǒu rén?", meaning: "Nhà bạn có mấy người?", audioUrl: "", minScore: 80 },
           { text: "我爸爸是医生，妈妈是老师。", phonetic: "Wǒ bàba shì yīshēng, māma shì lǎoshī.", meaning: "Ba tôi là bác sĩ, mẹ là giáo viên.", audioUrl: "", minScore: 80 },
-          { text: "你今年多大？", phonetic: "Nǐ jīnnián duō dà?", meaning: "Năm nay bạn bao nhiêu tuổi?", audioUrl: "", minScore: 80 }
+          { text: "你今年多大？", phonetic: "Nǐ jīnnián duō dà?", meaning: "Năm nay bạn bao nhiêu tuổi?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我家有四口人。", phonetic: "Wǒ jiā yǒu sì kǒu rén.", meaning: "Nhà tôi có bốn người.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我妈妈在医院工作。", phonetic: "Wǒ māma zài yīyuàn gōngzuò.", meaning: "Mẹ tôi làm ở bệnh viện.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我今年二十岁。", phonetic: "Wǒ jīnnián èrshí suì.", meaning: "Năm nay tôi hai mươi tuổi.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "我家有五口人：爸爸、妈妈、两个姐姐和我。我爸爸是公司职员，我妈妈是医生。我今年十八岁，我是学生。我很想家。",
@@ -965,13 +1043,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Nhà người viết có mấy người?", options: ["Bốn", "Năm", "Sáu"], correct: 1 },
             { question: "Mẹ người viết làm nghề gì?", options: ["Nhân viên công ty", "Bác sĩ", "Nhà báo"], correct: 1 },
-            { question: "Người viết có hai anh trai.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Người viết có hai anh trai.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Bố người viết làm nghề gì?", options: ["Nhân viên công ty", "Bác sĩ", "Giáo viên"], correct: 0 },
+            /*+*/{ question: "Năm nay người viết bao nhiêu tuổi?", options: ["16", "18", "20"], correct: 1 },
+            /*+*/{ question: "Người viết rất nhớ nhà.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Bạn làm công việc gì?", words: ["工作", "你", "什么", "做"], answer: "你做什么工作", acceptedAnswers: [] },
           { type: "order", prompt: "Nhà tôi có một cô em gái rất dễ thương.", words: ["妹妹", "我家", "一个", "有", "很可爱的"], answer: "我家有一个很可爱的妹妹", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “bác sĩ” bằng chữ Hán hoặc pinyin.", answer: "医生", acceptedAnswers: ["yīshēng", "yisheng"], hint: "y… sh…" }
+          { type: "input", prompt: "Viết “bác sĩ” bằng chữ Hán hoặc pinyin.", answer: "医生", acceptedAnswers: ["yīshēng", "yisheng"], hint: "y… sh…" },
+          /*+*/{ type: "order", prompt: "Nhà bạn có mấy người?", words: ["人", "几口", "有", "你家"], answer: "你家有几口人", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Bố tôi làm ở công ty.", words: ["工作", "在", "我爸爸", "公司"], answer: "我爸爸在公司工作", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “làm việc, công việc” bằng chữ Hán hoặc pinyin.", answer: "工作", acceptedAnswers: ["gōngzuò", "gongzuo"], hint: "g… z…" }
         ]
       },
       reviewOld: {
@@ -1027,12 +1111,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "现在几点？现在七点半。", audioUrl: "", question: "Bây giờ là mấy giờ?", options: ["7:00", "7:15", "7:30", "7:45"], correct: 2 },
           { audioText: "我每天六点起床，七点吃早饭。", audioUrl: "", question: "Người nói ăn sáng lúc mấy giờ?", options: ["6:00", "7:00", "8:00", "9:00"], correct: 1 },
-          { audioText: "明天咱们八点在学校门口见面，好吗？", audioUrl: "", question: "Họ hẹn gặp ở đâu?", options: ["Cổng trường", "Thư viện", "Nhà ăn", "Ký túc xá"], correct: 0 }
+          { audioText: "明天咱们八点在学校门口见面，好吗？", audioUrl: "", question: "Họ hẹn gặp ở đâu?", options: ["Cổng trường", "Thư viện", "Nhà ăn", "Ký túc xá"], correct: 0 },
+          /*+*/{ audioText: "现在差五分八点。", audioUrl: "", question: "Bây giờ là mấy giờ?", options: ["8 giờ 5", "7 giờ 55", "8 giờ kém 15", "7 giờ 5"], correct: 1 },
+          /*+*/{ audioText: "我们八点上课，十二点下课。", audioUrl: "", question: "Mấy giờ tan học?", options: ["8 giờ", "10 giờ", "12 giờ", "2 giờ"], correct: 2 },
+          /*+*/{ audioText: "明天星期天，我们去长城。", audioUrl: "", question: "Ngày mai họ đi đâu?", options: ["Trường học", "Vạn Lý Trường Thành", "Cửa hàng", "Bệnh viện"], correct: 1 }
         ],
         speaking: [
           { text: "现在几点？", phonetic: "Xiànzài jǐ diǎn?", meaning: "Bây giờ mấy giờ?", audioUrl: "", minScore: 80 },
           { text: "我每天七点起床。", phonetic: "Wǒ měi tiān qī diǎn qǐchuáng.", meaning: "Mỗi ngày tôi dậy lúc 7 giờ.", audioUrl: "", minScore: 80 },
-          { text: "我们从八点到十点上课。", phonetic: "Wǒmen cóng bā diǎn dào shí diǎn shàngkè.", meaning: "Chúng tôi học từ 8 giờ đến 10 giờ.", audioUrl: "", minScore: 80 }
+          { text: "我们从八点到十点上课。", phonetic: "Wǒmen cóng bā diǎn dào shí diǎn shàngkè.", meaning: "Chúng tôi học từ 8 giờ đến 10 giờ.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "现在七点一刻。", phonetic: "Xiànzài qī diǎn yí kè.", meaning: "Bây giờ là 7 giờ 15.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "咱们几点出发？", phonetic: "Zánmen jǐ diǎn chūfā?", meaning: "Mấy giờ chúng ta xuất phát?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我在学校门口等你。", phonetic: "Wǒ zài xuéxiào ménkǒu děng nǐ.", meaning: "Tôi đợi bạn ở cổng trường.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 明天是星期天，咱们去长城，怎么样？\nB: 好啊！咱们几点出发？\nA: 七点半出发，行吗？\nB: 行。我在学校门口等你。",
@@ -1040,13 +1130,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Ngày mai là thứ mấy?", options: ["Thứ bảy", "Chủ nhật", "Thứ hai"], correct: 1 },
             { question: "Họ xuất phát lúc mấy giờ?", options: ["7:00", "7:30", "8:00"], correct: 1 },
-            { question: "B đợi A ở cổng trường.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "B đợi A ở cổng trường.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "Họ định đi đâu?", options: ["Vạn Lý Trường Thành", "Thư viện", "Bưu điện"], correct: 0 },
+            /*+*/{ question: "Ai rủ đi chơi?", options: ["A", "B"], correct: 0 },
+            /*+*/{ question: "B không đồng ý giờ xuất phát.", options: ["Đúng", "Sai"], correct: 1 }
           ]
         },
         writing: [
           { type: "order", prompt: "Bạn vào học lúc nào?", words: ["上课", "你", "什么时候"], answer: "你什么时候上课", acceptedAnswers: [] },
           { type: "order", prompt: "Tôi đợi bạn ở cổng trường.", words: ["等", "学校门口", "我", "你", "在"], answer: "我在学校门口等你", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “bây giờ” bằng chữ Hán hoặc pinyin.", answer: "现在", acceptedAnswers: ["xiànzài", "xianzai"], hint: "x… z…" }
+          { type: "input", prompt: "Viết “bây giờ” bằng chữ Hán hoặc pinyin.", answer: "现在", acceptedAnswers: ["xiànzài", "xianzai"], hint: "x… z…" },
+          /*+*/{ type: "order", prompt: "Bây giờ là mấy giờ?", words: ["点", "现在", "几"], answer: "现在几点", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Chúng tôi học từ 8 giờ đến 10 giờ.", words: ["到十点", "从八点", "上课", "我们"], answer: "我们从八点到十点上课", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “ngủ dậy” bằng chữ Hán hoặc pinyin.", answer: "起床", acceptedAnswers: ["qǐ chuáng", "qǐchuáng", "qi chuang", "qichuang"], hint: "q… ch…" }
         ]
       },
       reviewOld: {
@@ -1101,12 +1197,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "图书馆在教学楼南边。", audioUrl: "", question: "Thư viện ở phía nào của tòa nhà dạy học?", options: ["Phía bắc", "Phía nam", "Phía đông", "Phía tây"], correct: 1 },
           { audioText: "食堂就在宿舍旁边。", audioUrl: "", question: "Nhà ăn ở đâu?", options: ["Ngay cạnh ký túc xá", "Phía sau thư viện", "Trong tòa nhà văn phòng", "Rất xa ký túc xá"], correct: 0 },
-          { audioText: "邮局在银行和商店中间。", audioUrl: "", question: "Bưu điện nằm ở đâu?", options: ["Trước ngân hàng", "Sau cửa hàng", "Giữa ngân hàng và cửa hàng", "Cạnh trường học"], correct: 2 }
+          { audioText: "邮局在银行和商店中间。", audioUrl: "", question: "Bưu điện nằm ở đâu?", options: ["Trước ngân hàng", "Sau cửa hàng", "Giữa ngân hàng và cửa hàng", "Cạnh trường học"], correct: 2 },
+          /*+*/{ audioText: "银行在邮局北边。", audioUrl: "", question: "Ngân hàng ở phía nào của bưu điện?", options: ["Bắc", "Nam", "Đông", "Tây"], correct: 0 },
+          /*+*/{ audioText: "教学楼前边有一个商店。", audioUrl: "", question: "Phía trước tòa nhà dạy học có gì?", options: ["Một cửa hàng", "Một ngân hàng", "Một bệnh viện", "Một bưu điện"], correct: 0 },
+          /*+*/{ audioText: "我的宿舍在食堂和图书馆中间。", audioUrl: "", question: "Ký túc xá ở đâu?", options: ["Giữa nhà ăn và thư viện", "Sau thư viện", "Cạnh ngân hàng", "Phía bắc nhà ăn"], correct: 0 }
         ],
         speaking: [
           { text: "办公楼在教学楼北边。", phonetic: "Bàngōnglóu zài jiàoxuélóu běibian.", meaning: "Tòa nhà văn phòng ở phía bắc tòa nhà dạy học.", audioUrl: "", minScore: 80 },
           { text: "食堂在宿舍旁边。", phonetic: "Shítáng zài sùshè pángbiān.", meaning: "Nhà ăn ở cạnh ký túc xá.", audioUrl: "", minScore: 80 },
-          { text: "图书馆前边有一个商店。", phonetic: "Túshūguǎn qiánbian yǒu yí ge shāngdiàn.", meaning: "Phía trước thư viện có một cửa hàng.", audioUrl: "", minScore: 80 }
+          { text: "图书馆前边有一个商店。", phonetic: "Túshūguǎn qiánbian yǒu yí ge shāngdiàn.", meaning: "Phía trước thư viện có một cửa hàng.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "邮局在银行旁边。", phonetic: "Yóujú zài yínháng pángbiān.", meaning: "Bưu điện ở cạnh ngân hàng.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "宿舍后边是图书馆。", phonetic: "Sùshè hòubian shì túshūguǎn.", meaning: "Phía sau ký túc xá là thư viện.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "教学楼在学校中间。", phonetic: "Jiàoxuélóu zài xuéxiào zhōngjiān.", meaning: "Tòa nhà dạy học ở giữa trường.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "我们学校很大。教学楼在学校中间，办公楼在教学楼北边。图书馆在教学楼南边，食堂在图书馆旁边。留学生宿舍离教学楼不远。",
@@ -1114,13 +1216,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Tòa nhà văn phòng ở phía nào của tòa nhà dạy học?", options: ["Phía bắc", "Phía nam", "Bên cạnh"], correct: 0 },
             { question: "Nhà ăn ở đâu?", options: ["Cạnh thư viện", "Giữa trường", "Phía bắc ký túc xá"], correct: 0 },
-            { question: "Ký túc xá du học sinh rất xa tòa nhà dạy học.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Ký túc xá du học sinh rất xa tòa nhà dạy học.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Tòa nhà dạy học ở đâu?", options: ["Giữa trường", "Phía bắc trường", "Cạnh thư viện"], correct: 0 },
+            /*+*/{ question: "Thư viện ở phía nào của tòa nhà dạy học?", options: ["Bắc", "Nam", "Đông"], correct: 1 },
+            /*+*/{ question: "Trường của người viết rất rộng.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Ngân hàng ở phía nam bưu điện.", words: ["南边", "银行", "邮局", "在"], answer: "银行在邮局南边", acceptedAnswers: [] },
           { type: "order", prompt: "Phía sau ký túc xá có một bệnh viện.", words: ["一个", "宿舍", "有", "医院", "后边"], answer: "宿舍后边有一个医院", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “bên cạnh” bằng chữ Hán hoặc pinyin.", answer: "旁边", acceptedAnswers: ["pángbiān", "pangbian"], hint: "p… b…" }
+          { type: "input", prompt: "Viết “bên cạnh” bằng chữ Hán hoặc pinyin.", answer: "旁边", acceptedAnswers: ["pángbiān", "pangbian"], hint: "p… b…" },
+          /*+*/{ type: "order", prompt: "Nhà ăn ở cạnh ký túc xá.", words: ["旁边", "在", "食堂", "宿舍"], answer: "食堂在宿舍旁边", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Phía trước thư viện có một cửa hàng.", words: ["前边", "有", "图书馆", "一个商店"], answer: "图书馆前边有一个商店", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “ở giữa” bằng chữ Hán hoặc pinyin.", answer: "中间", acceptedAnswers: ["zhōngjiān", "zhongjian"], hint: "zh… j…" }
         ]
       },
       reviewOld: {
@@ -1175,12 +1283,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "你要红的还是蓝的？我要蓝的。", audioUrl: "", question: "Người thứ hai chọn màu gì?", options: ["Đỏ", "Xanh lam", "Trắng", "Đen"], correct: 1 },
           { audioText: "这种圆珠笔两块五一支。", audioUrl: "", question: "Một cây bút bi giá bao nhiêu?", options: ["2 đồng", "2 đồng rưỡi", "5 đồng", "25 đồng"], correct: 1 },
-          { audioText: "我再买两斤橘子。", audioUrl: "", question: "Người nói mua thêm gì?", options: ["Hai cân quýt", "Hai cây bút", "Hai cái bánh bao", "Hai chai bia"], correct: 0 }
+          { audioText: "我再买两斤橘子。", audioUrl: "", question: "Người nói mua thêm gì?", options: ["Hai cân quýt", "Hai cây bút", "Hai cái bánh bao", "Hai chai bia"], correct: 0 },
+          /*+*/{ audioText: "橘子三块钱一斤。", audioUrl: "", question: "Quýt bao nhiêu tiền một cân?", options: ["2 tệ", "3 tệ", "5 tệ", "10 tệ"], correct: 1 },
+          /*+*/{ audioText: "你喝茶还是喝咖啡？——我喝咖啡。", audioUrl: "", question: "Người trả lời uống gì?", options: ["Trà", "Cà phê", "Bia", "Cả hai"], correct: 1 },
+          /*+*/{ audioText: "给你二十块。——找你五块。", audioUrl: "", question: "Thối lại bao nhiêu?", options: ["5 tệ", "15 tệ", "20 tệ", "25 tệ"], correct: 0 }
         ],
         speaking: [
           { text: "你要红的还是蓝的？", phonetic: "Nǐ yào hóng de háishi lán de?", meaning: "Bạn muốn cái màu đỏ hay màu xanh?", audioUrl: "", minScore: 80 },
           { text: "我买两支圆珠笔。", phonetic: "Wǒ mǎi liǎng zhī yuánzhūbǐ.", meaning: "Tôi mua hai cây bút bi.", audioUrl: "", minScore: 80 },
-          { text: "橘子多少钱一斤？", phonetic: "Júzi duōshao qián yì jīn?", meaning: "Quýt bao nhiêu tiền một cân?", audioUrl: "", minScore: 80 }
+          { text: "橘子多少钱一斤？", phonetic: "Júzi duōshao qián yì jīn?", meaning: "Quýt bao nhiêu tiền một cân?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "你喝茶还是喝咖啡？", phonetic: "Nǐ hē chá háishi hē kāfēi?", meaning: "Bạn uống trà hay cà phê?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我再买一斤橘子。", phonetic: "Wǒ zài mǎi yì jīn júzi.", meaning: "Tôi mua thêm một cân quýt.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "找你三块。", phonetic: "Zhǎo nǐ sān kuài.", meaning: "Thối lại bạn ba tệ.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 你要买什么？\nB: 我要买圆珠笔。\nA: 要红的还是要蓝的？\nB: 要蓝的。多少钱一支？\nA: 两块钱一支。\nB: 我买三支。给你十块。\nA: 找你四块。",
@@ -1188,13 +1302,19 @@ const APP_CONFIG = {
           questions: [
             { question: "B mua bút màu gì?", options: ["Đỏ", "Xanh lam"], correct: 1 },
             { question: "B mua mấy cây?", options: ["Hai", "Ba", "Bốn"], correct: 1 },
-            { question: "A thối lại bao nhiêu?", options: ["4 đồng", "6 đồng", "10 đồng"], correct: 0 }
+            { question: "A thối lại bao nhiêu?", options: ["4 đồng", "6 đồng", "10 đồng"], correct: 0 },
+            /*+*/{ question: "Một cây bút giá bao nhiêu?", options: ["2 tệ", "4 tệ", "10 tệ"], correct: 0 },
+            /*+*/{ question: "B đưa A bao nhiêu tiền?", options: ["4 tệ", "6 tệ", "10 tệ"], correct: 2 },
+            /*+*/{ question: "B muốn bút màu đỏ.", options: ["Đúng", "Sai"], correct: 1 }
           ]
         },
         writing: [
           { type: "order", prompt: "Bạn uống trà hay cà phê?", words: ["还是", "你", "咖啡", "喝", "茶"], answer: "你喝茶还是咖啡", acceptedAnswers: ["你喝咖啡还是茶"] },
           { type: "order", prompt: "Mẹ đưa cho tôi tiền lẻ.", words: ["零钱", "妈妈", "我", "给"], answer: "妈妈给我零钱", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “hay là” (trong câu hỏi) bằng chữ Hán hoặc pinyin.", answer: "还是", acceptedAnswers: ["háishi", "háishì", "haishi"], hint: "h… sh…" }
+          { type: "input", prompt: "Viết “hay là” (trong câu hỏi) bằng chữ Hán hoặc pinyin.", answer: "还是", acceptedAnswers: ["háishi", "háishì", "haishi"], hint: "h… sh…" },
+          /*+*/{ type: "order", prompt: "Bạn muốn cái màu đỏ hay màu xanh?", words: ["还是", "你要", "蓝的", "红的"], answer: "你要红的还是蓝的", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Tôi mua ba cây bút bi.", words: ["三支", "圆珠笔", "我买"], answer: "我买三支圆珠笔", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “quả quýt” bằng chữ Hán hoặc pinyin.", answer: "橘子", acceptedAnswers: ["júzi", "juzi"], hint: "j… z…" }
         ]
       },
       reviewOld: {
@@ -1248,12 +1368,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "我想买一个手机，您给我介绍介绍。", audioUrl: "", question: "Người nói muốn mua gì?", options: ["Áo sơ mi", "Điện thoại di động", "Giày", "Quần"], correct: 1 },
           { audioText: "这双鞋有点儿小，有大一点儿的吗？", audioUrl: "", question: "Người nói muốn đôi giày thế nào?", options: ["Nhỏ hơn một chút", "To hơn một chút", "Rẻ hơn một chút", "Màu khác"], correct: 1 },
-          { audioText: "这件衬衣又便宜又好看。", audioUrl: "", question: "Chiếc áo sơ mi này thế nào?", options: ["Vừa rẻ vừa đẹp", "Vừa đắt vừa xấu", "Rẻ nhưng không đẹp", "Đẹp nhưng đắt"], correct: 0 }
+          { audioText: "这件衬衣又便宜又好看。", audioUrl: "", question: "Chiếc áo sơ mi này thế nào?", options: ["Vừa rẻ vừa đẹp", "Vừa đắt vừa xấu", "Rẻ nhưng không đẹp", "Đẹp nhưng đắt"], correct: 0 },
+          /*+*/{ audioText: "这件衬衣有点儿贵，有便宜一点儿的吗？", audioUrl: "", question: "Người nói muốn áo thế nào?", options: ["Rẻ hơn một chút", "To hơn", "Màu khác", "Đẹp hơn"], correct: 0 },
+          /*+*/{ audioText: "这双鞋质量很好，价钱也不贵。", audioUrl: "", question: "Đôi giày này thế nào?", options: ["Chất lượng tốt, giá không đắt", "Rất đắt", "Hơi nhỏ", "Chất lượng kém"], correct: 0 },
+          /*+*/{ audioText: "这件衬衣很合适，我买这件。", audioUrl: "", question: "Người nói có mua không?", options: ["Có mua", "Không mua", "Chưa quyết", "Muốn thử thêm"], correct: 0 }
         ],
         speaking: [
           { text: "我可以试试吗？", phonetic: "Wǒ kěyǐ shìshi ma?", meaning: "Tôi thử được không?", audioUrl: "", minScore: 80 },
           { text: "这件衬衣有点儿贵。", phonetic: "Zhè jiàn chènyī yǒudiǎnr guì.", meaning: "Chiếc áo sơ mi này hơi đắt.", audioUrl: "", minScore: 80 },
-          { text: "这个手机又便宜又好看。", phonetic: "Zhège shǒujī yòu piányi yòu hǎokàn.", meaning: "Chiếc điện thoại này vừa rẻ vừa đẹp.", audioUrl: "", minScore: 80 }
+          { text: "这个手机又便宜又好看。", phonetic: "Zhège shǒujī yòu piányi yòu hǎokàn.", meaning: "Chiếc điện thoại này vừa rẻ vừa đẹp.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "您给我介绍介绍。", phonetic: "Nín gěi wǒ jièshao jièshao.", meaning: "Ông/bà giới thiệu cho tôi xem.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "有大一点儿的吗？", phonetic: "Yǒu dà yìdiǎnr de ma?", meaning: "Có cái to hơn một chút không?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "这双鞋很合适。", phonetic: "Zhè shuāng xié hěn héshì.", meaning: "Đôi giày này rất vừa.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 我想买一双鞋，您给我介绍介绍。\nB: 这双怎么样？质量很好，价钱也便宜。\nA: 我可以试试吗？\nB: 可以。\nA: 有点儿小。有大一点儿的吗？\nB: 有，您试试这双。\nA: 这双很合适，我买这双。",
@@ -1261,13 +1387,19 @@ const APP_CONFIG = {
           questions: [
             { question: "A muốn mua gì?", options: ["Một đôi giày", "Một chiếc áo", "Một cái điện thoại"], correct: 0 },
             { question: "Đôi đầu tiên A thử thế nào?", options: ["Hơi to", "Hơi nhỏ", "Vừa vặn"], correct: 1 },
-            { question: "Cuối cùng A mua đôi thứ hai.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "Cuối cùng A mua đôi thứ hai.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "Người bán khen đôi giày đầu tiên thế nào?", options: ["Chất lượng tốt, giá rẻ", "Rất đẹp", "Rất to"], correct: 0 },
+            /*+*/{ question: "A có được thử giày không?", options: ["Có", "Không"], correct: 0 },
+            /*+*/{ question: "Đôi thứ hai vừa với A.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tôi muốn mua một chiếc áo sơ mi trắng.", words: ["白衬衣", "我", "一件", "买", "想"], answer: "我想买一件白衬衣", acceptedAnswers: [] },
           { type: "order", prompt: "Đôi giày này hơi nhỏ.", words: ["小", "这双", "有点儿", "鞋"], answer: "这双鞋有点儿小", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “rẻ” bằng chữ Hán hoặc pinyin.", answer: "便宜", acceptedAnswers: ["piányi", "pianyi"], hint: "p… y…" }
+          { type: "input", prompt: "Viết “rẻ” bằng chữ Hán hoặc pinyin.", answer: "便宜", acceptedAnswers: ["piányi", "pianyi"], hint: "p… y…" },
+          /*+*/{ type: "order", prompt: "Tôi có thể thử một chút không?", words: ["我", "试试", "吗", "可以"], answer: "我可以试试吗", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Cái áo sơ mi này vừa rẻ vừa đẹp.", words: ["又便宜", "又好看", "这件衬衣"], answer: "这件衬衣又便宜又好看", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “đắt” bằng chữ Hán hoặc pinyin.", answer: "贵", acceptedAnswers: ["guì", "gui"], hint: "g…" }
         ]
       },
       reviewOld: {
@@ -1323,12 +1455,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "服务员，请给我菜单。", audioUrl: "", question: "Người nói cần gì?", options: ["Thực đơn", "Khăn giấy", "Hóa đơn", "Một bình trà"], correct: 0 },
           { audioText: "我要一个麻婆豆腐，两碗米饭。", audioUrl: "", question: "Người nói gọi mấy chén cơm?", options: ["Một", "Hai", "Ba", "Bốn"], correct: 1 },
-          { audioText: "这个菜好吃是好吃，不过有点儿咸。", audioUrl: "", question: "Món này thế nào?", options: ["Ngon nhưng hơi mặn", "Không ngon và rất mặn", "Ngon và không mặn", "Hơi đắng"], correct: 0 }
+          { audioText: "这个菜好吃是好吃，不过有点儿咸。", audioUrl: "", question: "Món này thế nào?", options: ["Ngon nhưng hơi mặn", "Không ngon và rất mặn", "Ngon và không mặn", "Hơi đắng"], correct: 0 },
+          /*+*/{ audioText: "听说这家饭馆的鱼香肉丝最好吃。", audioUrl: "", question: "Món nào ở quán này ngon nhất?", options: ["Đậu phụ Ma Bà", "Thịt xào vị cá", "Sủi cảo", "Mì"], correct: 1 },
+          /*+*/{ audioText: "今天我请客。", audioUrl: "", question: "Hôm nay ai trả tiền?", options: ["Người nói", "Bạn của người nói", "Mỗi người tự trả", "Phục vụ"], correct: 0 },
+          /*+*/{ audioText: "服务员，结账！", audioUrl: "", question: "Người nói muốn làm gì?", options: ["Gọi món", "Tính tiền", "Xem thực đơn", "Đổi món"], correct: 1 }
         ],
         speaking: [
           { text: "咱们去尝尝，好吗？", phonetic: "Zánmen qù chángchang, hǎo ma?", meaning: "Chúng ta đi ăn thử nhé, được không?", audioUrl: "", minScore: 80 },
           { text: "服务员，我们要点菜。", phonetic: "Fúwùyuán, wǒmen yào diǎn cài.", meaning: "Phục vụ ơi, chúng tôi muốn gọi món.", audioUrl: "", minScore: 80 },
-          { text: "我觉得这个菜很好吃。", phonetic: "Wǒ juéde zhège cài hěn hǎochī.", meaning: "Tôi thấy món này rất ngon.", audioUrl: "", minScore: 80 }
+          { text: "我觉得这个菜很好吃。", phonetic: "Wǒ juéde zhège cài hěn hǎochī.", meaning: "Tôi thấy món này rất ngon.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "服务员，结账！", phonetic: "Fúwùyuán, jié zhàng!", meaning: "Phục vụ ơi, tính tiền!", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "这个菜有点儿油。", phonetic: "Zhège cài yǒudiǎnr yóu.", meaning: "Món này hơi nhiều dầu mỡ.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "今天我请客。", phonetic: "Jīntiān wǒ qǐng kè.", meaning: "Hôm nay tôi mời.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 听说这家饭馆的菜很好吃，咱们去尝尝，好吗？\nB: 好啊！\nA: 服务员，我们要一个鱼香肉丝，一个麻婆豆腐，两碗米饭。\nB: 你觉得怎么样？\nA: 好吃是好吃，不过有点儿油。\nB: 今天我请客。服务员，结账！",
@@ -1336,13 +1474,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Họ gọi mấy món ăn, không kể cơm?", options: ["Một", "Hai", "Ba"], correct: 1 },
             { question: "A nhận xét món ăn thế nào?", options: ["Ngon nhưng hơi nhiều dầu", "Không ngon", "Hơi mặn"], correct: 0 },
-            { question: "Hôm nay A mời.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Hôm nay A mời.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Hôm nay ai trả tiền?", options: ["A", "B"], correct: 1 },
+            /*+*/{ question: "Họ gọi mấy bát cơm?", options: ["Một", "Hai", "Ba"], correct: 1 },
+            /*+*/{ question: "A nghe nói món ăn ở quán này ngon.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tôi thích uống trà nhất.", words: ["茶", "我", "喝", "最", "喜欢"], answer: "我最喜欢喝茶", acceptedAnswers: [] },
           { type: "order", prompt: "Phục vụ ơi, cho tôi thực đơn.", words: ["我", "菜单", "服务员", "给"], answer: "服务员给我菜单", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “thanh toán” bằng chữ Hán hoặc pinyin.", answer: "结账", acceptedAnswers: ["jiézhàng", "jiezhang"], hint: "j… zh…" }
+          { type: "input", prompt: "Viết “thanh toán” bằng chữ Hán hoặc pinyin.", answer: "结账", acceptedAnswers: ["jiézhàng", "jiezhang"], hint: "j… zh…" },
+          /*+*/{ type: "order", prompt: "Chúng ta đi ăn thử nhé?", words: ["尝尝", "去", "咱们", "好吗"], answer: "咱们去尝尝好吗", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Món này ngon thì ngon nhưng hơi mặn.", words: ["这个菜", "有点儿咸", "不过", "好吃是好吃"], answer: "这个菜好吃是好吃不过有点儿咸", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “thực đơn” bằng chữ Hán hoặc pinyin.", answer: "菜单", acceptedAnswers: ["càidān", "caidan"], hint: "c… d…" }
         ]
       },
       reviewOld: {
@@ -1397,12 +1541,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "请问，去邮局怎么走？一直往前走。", audioUrl: "", question: "Muốn đến bưu điện phải đi thế nào?", options: ["Đi thẳng về phía trước", "Rẽ trái", "Rẽ phải", "Qua đường"], correct: 0 },
           { audioText: "到十字路口往右拐。", audioUrl: "", question: "Đến ngã tư thì làm gì?", options: ["Rẽ trái", "Rẽ phải", "Đi thẳng", "Dừng lại"], correct: 1 },
-          { audioText: "我每天骑自行车去学校。", audioUrl: "", question: "Người nói đến trường bằng gì?", options: ["Xe buýt", "Xe đạp", "Đi bộ", "Ô tô"], correct: 1 }
+          { audioText: "我每天骑自行车去学校。", audioUrl: "", question: "Người nói đến trường bằng gì?", options: ["Xe buýt", "Xe đạp", "Đi bộ", "Ô tô"], correct: 1 },
+          /*+*/{ audioText: "一直往前走，到路口往左拐。", audioUrl: "", question: "Đến giao lộ thì rẽ hướng nào?", options: ["Rẽ trái", "Rẽ phải", "Đi thẳng", "Quay lại"], correct: 0 },
+          /*+*/{ audioText: "我先去银行，然后去邮局。", audioUrl: "", question: "Người nói đi đâu trước?", options: ["Ngân hàng", "Bưu điện", "Trường học", "Thư viện"], correct: 0 },
+          /*+*/{ audioText: "走路十分钟就到。", audioUrl: "", question: "Đi bộ mất bao lâu?", options: ["5 phút", "10 phút", "15 phút", "1 tiếng"], correct: 1 }
         ],
         speaking: [
           { text: "请问，去邮局怎么走？", phonetic: "Qǐngwèn, qù yóujú zěnme zǒu?", meaning: "Xin hỏi, đến bưu điện đi thế nào?", audioUrl: "", minScore: 80 },
           { text: "一直往前走，到路口往左拐。", phonetic: "Yìzhí wǎng qián zǒu, dào lùkǒu wǎng zuǒ guǎi.", meaning: "Đi thẳng về phía trước, đến giao lộ thì rẽ trái.", audioUrl: "", minScore: 80 },
-          { text: "我坐公共汽车去学校。", phonetic: "Wǒ zuò gōnggòng qìchē qù xuéxiào.", meaning: "Tôi đi xe buýt đến trường.", audioUrl: "", minScore: 80 }
+          { text: "我坐公共汽车去学校。", phonetic: "Wǒ zuò gōnggòng qìchē qù xuéxiào.", meaning: "Tôi đi xe buýt đến trường.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "过马路就到。", phonetic: "Guò mǎlù jiù dào.", meaning: "Qua đường là tới.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "离这儿远吗？", phonetic: "Lí zhèr yuǎn ma?", meaning: "Có xa chỗ này không?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我先吃饭，然后去学校。", phonetic: "Wǒ xiān chī fàn, ránhòu qù xuéxiào.", meaning: "Tôi ăn cơm trước, sau đó đến trường.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A: 请问，去邮局怎么走？\nB: 一直往前走，到十字路口往右拐，过马路就到。\nA: 离这儿远吗？\nB: 不太远，走路五六分钟。你也可以骑自行车去。\nA: 谢谢您！\nB: 不客气。",
@@ -1410,13 +1560,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Đến ngã tư thì rẽ hướng nào?", options: ["Trái", "Phải"], correct: 1 },
             { question: "Đi bộ mất khoảng bao lâu?", options: ["5–6 phút", "15 phút", "Nửa tiếng"], correct: 0 },
-            { question: "Bưu điện rất xa chỗ này.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Bưu điện rất xa chỗ này.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "A hỏi đường đi đâu?", options: ["Bưu điện", "Ngân hàng", "Trường học"], correct: 0 },
+            /*+*/{ question: "Ngoài đi bộ, B gợi ý đi bằng gì?", options: ["Xe đạp", "Xe buýt", "Taxi"], correct: 0 },
+            /*+*/{ question: "Qua đường là tới bưu điện.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Đi đến ngân hàng thế nào?", words: ["走", "银行", "怎么", "去"], answer: "去银行怎么走", acceptedAnswers: [] },
           { type: "order", prompt: "Tôi ăn cơm trước, sau đó xem sách.", words: ["看书", "我", "然后", "吃饭", "先"], answer: "我先吃饭然后看书", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “rẽ trái” bằng chữ Hán hoặc pinyin.", answer: "往左拐", acceptedAnswers: ["wǎng zuǒ guǎi", "wang zuo guai"], hint: "往 + 左 + …" }
+          { type: "input", prompt: "Viết “rẽ trái” bằng chữ Hán hoặc pinyin.", answer: "往左拐", acceptedAnswers: ["wǎng zuǒ guǎi", "wang zuo guai"], hint: "往 + 左 + …" },
+          /*+*/{ type: "order", prompt: "Đi thẳng về phía trước.", words: ["往前", "一直", "走"], answer: "一直往前走", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Tôi đi xe buýt đến trường.", words: ["坐", "去学校", "公共汽车", "我"], answer: "我坐公共汽车去学校", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “xe đạp” bằng chữ Hán hoặc pinyin.", answer: "自行车", acceptedAnswers: ["zìxíngchē", "zixingche"], hint: "z… x… ch…" }
         ]
       },
       reviewOld: {
@@ -1471,12 +1627,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "外边正下大雨呢。", audioUrl: "", question: "Bên ngoài đang thế nào?", options: ["Trời nắng", "Đang mưa to", "Đang có gió", "Trời lạnh"], correct: 1 },
           { audioText: "超市里人很多，有的在买水果，有的在挑衣服。", audioUrl: "", question: "Trong siêu thị, có người đang làm gì?", options: ["Ăn cơm", "Chọn quần áo", "Xem phim", "Ngủ"], correct: 1 },
-          { audioText: "刚才王先生给我打电话，说有一家公司正在招聘职员。", audioUrl: "", question: "Ông Vương gọi điện báo tin gì?", options: ["Siêu thị giảm giá", "Có công ty đang tuyển nhân viên", "Trời sắp mưa", "Ông ấy đi du lịch"], correct: 1 }
+          { audioText: "刚才王先生给我打电话，说有一家公司正在招聘职员。", audioUrl: "", question: "Ông Vương gọi điện báo tin gì?", options: ["Siêu thị giảm giá", "Có công ty đang tuyển nhân viên", "Trời sắp mưa", "Ông ấy đi du lịch"], correct: 1 },
+          /*+*/{ audioText: "我们一边喝咖啡，一边聊天儿。", audioUrl: "", question: "Họ đang làm gì?", options: ["Vừa uống cà phê vừa trò chuyện", "Vừa ăn vừa xem tivi", "Đang xếp hàng", "Đang đi mua sắm"], correct: 0 },
+          /*+*/{ audioText: "顾客们都在排队交钱。", audioUrl: "", question: "Khách hàng đang làm gì?", options: ["Chọn quần áo", "Xếp hàng trả tiền", "Ăn trưa", "Gọi điện thoại"], correct: 1 },
+          /*+*/{ audioText: "我打算明天去那家公司应聘。", audioUrl: "", question: "Ngày mai người nói định làm gì?", options: ["Đi du lịch", "Đi ứng tuyển", "Đi siêu thị", "Ở nhà nghỉ"], correct: 1 }
         ],
         speaking: [
           { text: "他正在等他爱人呢。", phonetic: "Tā zhèngzài děng tā àiren ne.", meaning: "Ông ấy đang đợi vợ.", audioUrl: "", minScore: 80 },
           { text: "顾客们都在排队交钱。", phonetic: "Gùkèmen dōu zài páiduì jiāo qián.", meaning: "Khách hàng đều đang xếp hàng trả tiền.", audioUrl: "", minScore: 80 },
-          { text: "我打算去那家公司应聘。", phonetic: "Wǒ dǎsuàn qù nà jiā gōngsī yìngpìn.", meaning: "Tôi định đến công ty đó ứng tuyển.", audioUrl: "", minScore: 80 }
+          { text: "我打算去那家公司应聘。", phonetic: "Wǒ dǎsuàn qù nà jiā gōngsī yìngpìn.", meaning: "Tôi định đến công ty đó ứng tuyển.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "外边正下大雨呢。", phonetic: "Wàibian zhèng xià dà yǔ ne.", meaning: "Bên ngoài đang mưa to.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "他们一边喝咖啡，一边聊天儿。", phonetic: "Tāmen yìbiān hē kāfēi, yìbiān liáo tiānr.", meaning: "Họ vừa uống cà phê vừa trò chuyện.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "刚才王先生给我打电话了。", phonetic: "Gāngcái Wáng xiānsheng gěi wǒ dǎ diànhuà le.", meaning: "Lúc nãy ông Vương gọi điện cho tôi.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "今天星期六，学校附近的一家超市正在打折，所以买东西的顾客特别多。\n有的人在买水果，有的人在挑衣服，大家都在排队交钱。\n刚才，王先生给我打电话，说有一家公司正在招聘职员。\n我打算明天去应聘。",
@@ -1484,13 +1646,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Vì sao siêu thị đông khách?", options: ["Đang giảm giá", "Mới khai trương", "Trời mưa"], correct: 0 },
             { question: "Ai gọi điện cho “tôi”?", options: ["Thầy giáo", "Ông Vương", "Mẹ"], correct: 1 },
-            { question: "“Tôi” định hôm nay đi ứng tuyển.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "“Tôi” định hôm nay đi ứng tuyển.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Hôm nay là thứ mấy?", options: ["Thứ bảy", "Chủ nhật", "Thứ hai"], correct: 0 },
+            /*+*/{ question: "Công ty đang tuyển gì?", options: ["Nhân viên", "Học sinh", "Giáo viên"], correct: 0 },
+            /*+*/{ question: "Mọi người đều đang xếp hàng trả tiền.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Cửa hàng đó đang giảm giá quần áo.", words: ["那家", "衣服", "商店的", "打折", "正在"], answer: "那家商店的衣服正在打折", acceptedAnswers: [] },
           { type: "order", prompt: "Lúc nãy tôi gọi điện cho ông Trương.", words: ["刚才", "我", "给", "张先生", "打电话"], answer: "我刚才给张先生打电话", acceptedAnswers: ["刚才我给张先生打电话"] },
-          { type: "input", prompt: "Viết “xếp hàng” bằng chữ Hán hoặc pinyin.", answer: "排队", acceptedAnswers: ["páiduì", "paidui"], hint: "p… d…" }
+          { type: "input", prompt: "Viết “xếp hàng” bằng chữ Hán hoặc pinyin.", answer: "排队", acceptedAnswers: ["páiduì", "paidui"], hint: "p… d…" },
+          /*+*/{ type: "order", prompt: "Ông ấy đang đợi vợ.", words: ["正在", "他", "他爱人", "呢", "等"], answer: "他正在等他爱人呢", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Vừa uống cà phê vừa trò chuyện.", words: ["喝咖啡", "一边", "一边", "聊天儿"], answer: "一边喝咖啡一边聊天儿", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “tuyển dụng” bằng chữ Hán hoặc pinyin.", answer: "招聘", acceptedAnswers: ["zhāopìn", "zhaopin"], hint: "zh… p…" }
         ]
       },
       reviewOld: {
@@ -1545,12 +1713,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "刚才我陪妈妈逛商店了。", audioUrl: "", question: "Lúc nãy người nói làm gì?", options: ["Đi dạo cửa hàng với mẹ", "Ở nhà ngủ", "Đi làm", "Đi bệnh viện"], correct: 0 },
           { audioText: "我买了一条裙子和两顶帽子。", audioUrl: "", question: "Người nói đã mua gì?", options: ["Hai cái váy", "Một cái váy và hai cái mũ", "Một cái mũ", "Ba đôi giày"], correct: 1 },
-          { audioText: "我们吃了烤鸭就回家。", audioUrl: "", question: "Ăn vịt quay xong họ làm gì?", options: ["Đi dạo", "Về nhà", "Đi xem phim", "Đi mua sắm"], correct: 1 }
+          { audioText: "我们吃了烤鸭就回家。", audioUrl: "", question: "Ăn vịt quay xong họ làm gì?", options: ["Đi dạo", "Về nhà", "Đi xem phim", "Đi mua sắm"], correct: 1 },
+          /*+*/{ audioText: "我还没吃饭。", audioUrl: "", question: "Người nói ăn cơm chưa?", options: ["Ăn rồi", "Chưa ăn", "Đang ăn", "Không muốn ăn"], correct: 1 },
+          /*+*/{ audioText: "他的病已经好了。", audioUrl: "", question: "Bệnh của anh ấy thế nào?", options: ["Đã khỏi", "Nặng hơn", "Chưa khỏi", "Mới bị"], correct: 0 },
+          /*+*/{ audioText: "颐和园的风景特别美。", audioUrl: "", question: "Phong cảnh Di Hòa Viên thế nào?", options: ["Rất đẹp", "Bình thường", "Không đẹp", "Đông người"], correct: 0 }
         ],
         speaking: [
           { text: "刚才你去哪儿了？", phonetic: "Gāngcái nǐ qù nǎr le?", meaning: "Lúc nãy bạn đi đâu?", audioUrl: "", minScore: 80 },
           { text: "我陪妈妈逛商店了。", phonetic: "Wǒ péi māma guàng shāngdiàn le.", meaning: "Tôi đi dạo cửa hàng cùng mẹ.", audioUrl: "", minScore: 80 },
-          { text: "这儿的风景特别美。", phonetic: "Zhèr de fēngjǐng tèbié měi.", meaning: "Phong cảnh ở đây đẹp lắm.", audioUrl: "", minScore: 80 }
+          { text: "这儿的风景特别美。", phonetic: "Zhèr de fēngjǐng tèbié měi.", meaning: "Phong cảnh ở đây đẹp lắm.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "你吃饭了没有？", phonetic: "Nǐ chī fàn le méiyǒu?", meaning: "Bạn ăn cơm chưa?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我还没吃饭。", phonetic: "Wǒ hái méi chī fàn.", meaning: "Tôi vẫn chưa ăn cơm.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我看了电影就去吃饭。", phonetic: "Wǒ kàn le diànyǐng jiù qù chī fàn.", meaning: "Xem phim xong tôi đi ăn cơm.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：喂，刚才你去哪儿了？\nB：我陪妈妈逛商店了。\nA：你买了什么？\nB：我买了一条裙子，妈妈买了一顶帽子。\nA：那儿的烤鸭特别好吃，你们吃了没有？\nB：还没吃。我们逛了商店就去吃。",
@@ -1558,13 +1732,19 @@ const APP_CONFIG = {
           questions: [
             { question: "B đi dạo cửa hàng với ai?", options: ["Bạn", "Mẹ", "Chị gái"], correct: 1 },
             { question: "Mẹ B mua gì?", options: ["Một cái váy", "Một cái mũ", "Vịt quay"], correct: 1 },
-            { question: "B đã ăn vịt quay rồi.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "B đã ăn vịt quay rồi.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "B đã ăn vịt quay chưa?", options: ["Rồi", "Chưa"], correct: 1 },
+            /*+*/{ question: "B đã mua gì?", options: ["Một cái váy", "Một cái mũ", "Vịt quay"], correct: 0 },
+            /*+*/{ question: "Dạo cửa hàng xong họ sẽ đi ăn vịt quay.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tôi đã mua rất nhiều đồ giảm giá.", words: ["我", "很多", "买了", "打折的", "东西"], answer: "我买了很多打折的东西", acceptedAnswers: [] },
           { type: "order", prompt: "Bạn ăn cơm chưa?", words: ["你", "饭", "吃", "了", "没有"], answer: "你吃饭了没有", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “phong cảnh” bằng chữ Hán hoặc pinyin.", answer: "风景", acceptedAnswers: ["fēngjǐng", "fengjing"], hint: "f… j…" }
+          { type: "input", prompt: "Viết “phong cảnh” bằng chữ Hán hoặc pinyin.", answer: "风景", acceptedAnswers: ["fēngjǐng", "fengjing"], hint: "f… j…" },
+          /*+*/{ type: "order", prompt: "Lúc nãy bạn đi đâu?", words: ["去哪儿", "刚才", "了", "你"], answer: "刚才你去哪儿了", acceptedAnswers: ["你刚才去哪儿了"] },
+          /*+*/{ type: "order", prompt: "Tôi đi cùng mẹ dạo cửa hàng.", words: ["陪", "我", "妈妈", "逛商店"], answer: "我陪妈妈逛商店", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “vịt quay” bằng chữ Hán hoặc pinyin.", answer: "烤鸭", acceptedAnswers: ["kǎoyā", "kaoya"], hint: "k… y…" }
         ]
       },
       reviewOld: {
@@ -1618,12 +1798,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "秋天了，山上的红叶特别美。", audioUrl: "", question: "Mùa thu, trên núi có gì đẹp?", options: ["Hoa mai", "Lá đỏ", "Tuyết", "Biển"], correct: 1 },
           { audioText: "今天阴天，可能要下雨了，我们不能去爬山。", audioUrl: "", question: "Vì sao họ không đi leo núi?", options: ["Trời âm u, sắp mưa", "Trời quá nóng", "Bị ốm", "Phải đi làm"], correct: 0 },
-          { audioText: "下星期，姐姐打算陪妈妈回国。", audioUrl: "", question: "Tuần sau chị gái định làm gì?", options: ["Đi leo núi", "Cùng mẹ về nước", "Đi mua sắm", "Ở nhà ngủ nướng"], correct: 1 }
+          { audioText: "下星期，姐姐打算陪妈妈回国。", audioUrl: "", question: "Tuần sau chị gái định làm gì?", options: ["Đi leo núi", "Cùng mẹ về nước", "Đi mua sắm", "Ở nhà ngủ nướng"], correct: 1 },
+          /*+*/{ audioText: "快要上课了，你快点儿吃吧。", audioUrl: "", question: "Sắp đến việc gì?", options: ["Sắp vào học", "Sắp tan học", "Sắp ăn cơm", "Sắp đi ngủ"], correct: 0 },
+          /*+*/{ audioText: "她最近工作很忙，瘦了。", audioUrl: "", question: "Cô ấy thay đổi thế nào?", options: ["Gầy đi", "Béo lên", "Cao lên", "Không đổi"], correct: 0 },
+          /*+*/{ audioText: "今年我二十岁了。", audioUrl: "", question: "Năm nay người nói bao nhiêu tuổi?", options: ["18", "19", "20", "21"], correct: 2 }
         ],
         speaking: [
           { text: "秋天了，天气很凉快。", phonetic: "Qiūtiān le, tiānqì hěn liángkuai.", meaning: "Mùa thu rồi, trời rất mát.", audioUrl: "", minScore: 80 },
           { text: "天要下雨了。", phonetic: "Tiān yào xià yǔ le.", meaning: "Trời sắp mưa rồi.", audioUrl: "", minScore: 80 },
-          { text: "她看上去瘦了。", phonetic: "Tā kàn shangqu shòu le.", meaning: "Cô ấy trông gầy đi.", audioUrl: "", minScore: 80 }
+          { text: "她看上去瘦了。", phonetic: "Tā kàn shangqu shòu le.", meaning: "Cô ấy trông gầy đi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "星期天我想在家睡懒觉。", phonetic: "Xīngqītiān wǒ xiǎng zài jiā shuì lǎnjiào.", meaning: "Chủ nhật tôi muốn ở nhà ngủ nướng.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "下星期我们去吃烤鸭吧。", phonetic: "Xià xīngqī wǒmen qù chī kǎoyā ba.", meaning: "Tuần sau chúng ta đi ăn vịt quay nhé.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我明天就要回国了。", phonetic: "Wǒ míngtiān jiù yào huí guó le.", meaning: "Ngày mai tôi về nước rồi.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "星期天，莉莉给保罗打电话：“秋天了，山上的红叶特别美，我们去看看吧。”\n保罗说：“今天阴天，要下雨了，我不能去。我最近身体不太好，想在家睡懒觉。”\n莉莉说：“好吧，那我们下星期去吃烤鸭。”",
@@ -1631,13 +1817,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Lili rủ Paul đi đâu?", options: ["Ngắm lá đỏ trên núi", "Đi mua sắm", "Đi bơi"], correct: 0 },
             { question: "Hôm nay thời tiết thế nào?", options: ["Nắng đẹp", "Âm u, sắp mưa", "Rất nóng"], correct: 1 },
-            { question: "Paul muốn ở nhà ngủ nướng.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "Paul muốn ở nhà ngủ nướng.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "Ai gọi điện cho ai?", options: ["Lili gọi cho Paul", "Paul gọi cho Lili", "Mẹ gọi cho Lili"], correct: 0 },
+            /*+*/{ question: "Dạo này sức khỏe Paul thế nào?", options: ["Không tốt lắm", "Rất tốt", "Bị thương"], correct: 0 },
+            /*+*/{ question: "Cuối cùng họ hẹn tuần sau đi ăn vịt quay.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tuần sau chúng tôi định đi ăn vịt quay.", words: ["下星期", "我们", "打算", "去", "吃烤鸭"], answer: "下星期我们打算去吃烤鸭", acceptedAnswers: ["我们下星期打算去吃烤鸭"] },
           { type: "order", prompt: "Lá đỏ trên núi càng đẹp hơn.", words: ["山上的", "红叶", "更", "美"], answer: "山上的红叶更美", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “ngủ nướng” bằng chữ Hán hoặc pinyin.", answer: "睡懒觉", acceptedAnswers: ["shuì lǎnjiào", "shui lanjiao", "shuìlǎnjiào"], hint: "睡 + 懒 + 觉" }
+          { type: "input", prompt: "Viết “ngủ nướng” bằng chữ Hán hoặc pinyin.", answer: "睡懒觉", acceptedAnswers: ["shuì lǎnjiào", "shui lanjiao", "shuìlǎnjiào"], hint: "睡 + 懒 + 觉" },
+          /*+*/{ type: "order", prompt: "Trời sắp mưa rồi.", words: ["要", "天", "了", "下雨"], answer: "天要下雨了", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Cô ấy trông gầy đi.", words: ["看上去", "瘦了", "她"], answer: "她看上去瘦了", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “họ hàng” bằng chữ Hán hoặc pinyin.", answer: "亲戚", acceptedAnswers: ["qīnqi", "qinqi"], hint: "q… q…" }
         ]
       },
       reviewOld: {
@@ -1691,12 +1883,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "保罗踢足球踢得真棒。", audioUrl: "", question: "Paul đá bóng thế nào?", options: ["Rất giỏi", "Không giỏi", "Tàm tạm", "Không biết đá"], correct: 0 },
           { audioText: "我不会游泳，我是旱鸭子。", audioUrl: "", question: "Người nói có biết bơi không?", options: ["Biết, bơi giỏi", "Không biết bơi", "Đang học bơi", "Bơi tàm tạm"], correct: 1 },
-          { audioText: "我估计明天的比赛我们队一定能赢。", audioUrl: "", question: "Người nói đoán đội mình thế nào?", options: ["Sẽ thua", "Chắc chắn thắng", "Hòa", "Không thi đấu"], correct: 1 }
+          { audioText: "我估计明天的比赛我们队一定能赢。", audioUrl: "", question: "Người nói đoán đội mình thế nào?", options: ["Sẽ thua", "Chắc chắn thắng", "Hòa", "Không thi đấu"], correct: 1 },
+          /*+*/{ audioText: "他游泳游得很快。", audioUrl: "", question: "Anh ấy bơi thế nào?", options: ["Rất nhanh", "Rất chậm", "Không biết bơi", "Tàm tạm"], correct: 0 },
+          /*+*/{ audioText: "外边下雨了，我得带雨伞。", audioUrl: "", question: "Người nói phải làm gì?", options: ["Mang ô", "Mặc áo ấm", "Ở nhà", "Đi taxi"], correct: 0 },
+          /*+*/{ audioText: "昨天的比赛我们队输了。", audioUrl: "", question: "Trận đấu hôm qua đội của người nói thế nào?", options: ["Thắng", "Thua", "Hòa", "Bị hủy"], correct: 1 }
         ],
         speaking: [
           { text: "你游泳游得怎么样？", phonetic: "Nǐ yóu yǒng yóu de zěnmeyàng?", meaning: "Bạn bơi thế nào?", audioUrl: "", minScore: 80 },
           { text: "他踢足球踢得真棒。", phonetic: "Tā tī zúqiú tī de zhēn bàng.", meaning: "Anh ấy đá bóng giỏi thật.", audioUrl: "", minScore: 80 },
-          { text: "要考试了，我得努力学习。", phonetic: "Yào kǎoshì le, wǒ děi nǔlì xuéxí.", meaning: "Sắp thi rồi, tôi phải cố gắng học.", audioUrl: "", minScore: 80 }
+          { text: "要考试了，我得努力学习。", phonetic: "Yào kǎoshì le, wǒ děi nǔlì xuéxí.", meaning: "Sắp thi rồi, tôi phải cố gắng học.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我不会游泳。", phonetic: "Wǒ bú huì yóu yǒng.", meaning: "Tôi không biết bơi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "真羡慕你！", phonetic: "Zhēn xiànmù nǐ!", meaning: "Ngưỡng mộ bạn thật!", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我们队一定能赢。", phonetic: "Wǒmen duì yídìng néng yíng.", meaning: "Đội chúng tôi chắc chắn thắng.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：你会游泳吗？\nB：不会，我是旱鸭子。你游泳游得怎么样？\nA：我游得还可以。我也喜欢踢足球。\nB：真羡慕你！听说你们队踢得特别棒。\nA：明天我们有比赛，我估计我们一定能赢。",
@@ -1704,13 +1902,19 @@ const APP_CONFIG = {
           questions: [
             { question: "B có biết bơi không?", options: ["Có", "Không"], correct: 1 },
             { question: "A bơi thế nào?", options: ["Rất kém", "Cũng được", "Giỏi nhất lớp"], correct: 1 },
-            { question: "Ngày mai đội của A có trận đấu.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "Ngày mai đội của A có trận đấu.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "A còn thích môn thể thao nào?", options: ["Đá bóng", "Bóng rổ", "Chạy bộ"], correct: 0 },
+            /*+*/{ question: "B nói gì khi nghe A bơi được?", options: ["Ngưỡng mộ bạn thật!", "Tiếc quá!", "Không sao"], correct: 0 },
+            /*+*/{ question: "A đoán đội mình sẽ thua.", options: ["Đúng", "Sai"], correct: 1 }
           ]
         },
         writing: [
           { type: "order", prompt: "Anh trai lái xe rất nhanh.", words: ["哥哥", "开车", "开得", "特别快"], answer: "哥哥开车开得特别快", acceptedAnswers: [] },
           { type: "order", prompt: "Chúng tôi chắc chắn có thể thắng.", words: ["我们", "一定", "能", "赢"], answer: "我们一定能赢", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “bơi” bằng chữ Hán hoặc pinyin.", answer: "游泳", acceptedAnswers: ["yóu yǒng", "you yong", "yóuyǒng", "youyong"], hint: "y… y…" }
+          { type: "input", prompt: "Viết “bơi” bằng chữ Hán hoặc pinyin.", answer: "游泳", acceptedAnswers: ["yóu yǒng", "you yong", "yóuyǒng", "youyong"], hint: "y… y…" },
+          /*+*/{ type: "order", prompt: "Cô ấy nói tiếng Trung rất giỏi.", words: ["说得", "很好", "她", "说汉语"], answer: "她说汉语说得很好", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Sắp thi rồi, tôi phải cố gắng.", words: ["努力", "我", "得", "要考试了"], answer: "要考试了我得努力", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “thi đấu” bằng chữ Hán hoặc pinyin.", answer: "比赛", acceptedAnswers: ["bǐsài", "bisai"], hint: "b… s…" }
         ]
       },
       reviewOld: {
@@ -1764,12 +1968,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "我在车站等车等了半个小时。", audioUrl: "", question: "Người nói đợi xe bao lâu?", options: ["5 phút", "Nửa tiếng", "Một tiếng", "Hai tiếng"], correct: 1 },
           { audioText: "小雨九点半才起床。", audioUrl: "", question: "Tiểu Vũ dậy lúc mấy giờ?", options: ["7 giờ", "8 giờ", "9 giờ rưỡi", "10 giờ"], correct: 2 },
-          { audioText: "因为路上堵车，所以我来晚了。", audioUrl: "", question: "Vì sao người nói đến muộn?", options: ["Ngủ dậy muộn", "Kẹt xe", "Bị ốm", "Quên giờ"], correct: 1 }
+          { audioText: "因为路上堵车，所以我来晚了。", audioUrl: "", question: "Vì sao người nói đến muộn?", options: ["Ngủ dậy muộn", "Kẹt xe", "Bị ốm", "Quên giờ"], correct: 1 },
+          /*+*/{ audioText: "他五岁就上小学了。", audioUrl: "", question: "Anh ấy vào tiểu học lúc mấy tuổi?", options: ["5 tuổi", "6 tuổi", "7 tuổi", "8 tuổi"], correct: 0 },
+          /*+*/{ audioText: "虽然学习很紧张，但是很愉快。", audioUrl: "", question: "Việc học thế nào?", options: ["Căng thẳng nhưng vui", "Nhẹ nhàng", "Rất buồn", "Rất chán"], correct: 0 },
+          /*+*/{ audioText: "我学汉语学了两年了。", audioUrl: "", question: "Người nói học tiếng Trung bao lâu rồi?", options: ["Hai tháng", "Một năm", "Hai năm", "Ba năm"], correct: 2 }
         ],
         speaking: [
           { text: "明天我就要回国了。", phonetic: "Míngtiān wǒ jiù yào huí guó le.", meaning: "Ngày mai mình về nước rồi.", audioUrl: "", minScore: 80 },
           { text: "我学习汉语学了两个小时。", phonetic: "Wǒ xuéxí Hànyǔ xué le liǎng ge xiǎoshí.", meaning: "Tôi học tiếng Trung hai tiếng.", audioUrl: "", minScore: 80 },
-          { text: "虽然很累，但是很愉快。", phonetic: "Suīrán hěn lèi, dànshì hěn yúkuài.", meaning: "Tuy mệt nhưng rất vui.", audioUrl: "", minScore: 80 }
+          { text: "虽然很累，但是很愉快。", phonetic: "Suīrán hěn lèi, dànshì hěn yúkuài.", meaning: "Tuy mệt nhưng rất vui.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我等你等了半个小时。", phonetic: "Wǒ děng nǐ děng le bàn ge xiǎoshí.", meaning: "Tôi đợi bạn nửa tiếng rồi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "因为堵车，所以我来晚了。", phonetic: "Yīnwèi dǔ chē, suǒyǐ wǒ lái wǎn le.", meaning: "Vì kẹt xe nên tôi đến muộn.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "他汉语说得很流利。", phonetic: "Tā Hànyǔ shuō de hěn liúlì.", meaning: "Anh ấy nói tiếng Trung rất lưu loát.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "保罗来北京学习汉语已经一年了。\n虽然学习很紧张，但是他过得很愉快。\n他每天学习四个小时，现在汉语说得很流利。\n因为明天他就要回国了，所以今天邻居们来送他。",
@@ -1777,13 +1987,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Paul học ở Bắc Kinh bao lâu rồi?", options: ["Một tháng", "Một năm", "Hai năm"], correct: 1 },
             { question: "Mỗi ngày Paul học mấy tiếng?", options: ["2 tiếng", "4 tiếng", "6 tiếng"], correct: 1 },
-            { question: "Paul về nước hôm nay.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Paul về nước hôm nay.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Hiện nay Paul nói tiếng Trung thế nào?", options: ["Rất lưu loát", "Tàm tạm", "Chưa tốt"], correct: 0 },
+            /*+*/{ question: "Ai đến tiễn Paul?", options: ["Hàng xóm", "Thầy giáo", "Bố mẹ"], correct: 0 },
+            /*+*/{ question: "Paul thấy cuộc sống ở Bắc Kinh rất vui.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tôi đợi bạn nửa tiếng rồi.", words: ["我", "等你", "等了", "半个小时"], answer: "我等你等了半个小时", acceptedAnswers: [] },
           { type: "order", prompt: "Vì kẹt xe nên tôi đến muộn.", words: ["因为", "堵车", "所以", "我", "来晚了"], answer: "因为堵车所以我来晚了", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “hàng xóm” bằng chữ Hán hoặc pinyin.", answer: "邻居", acceptedAnswers: ["línjū", "linju"], hint: "l… j…" }
+          { type: "input", prompt: "Viết “hàng xóm” bằng chữ Hán hoặc pinyin.", answer: "邻居", acceptedAnswers: ["línjū", "linju"], hint: "l… j…" },
+          /*+*/{ type: "order", prompt: "Tôi học tiếng Trung hai tiếng.", words: ["学习汉语", "我", "两个小时", "学了"], answer: "我学习汉语学了两个小时", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "9 giờ rưỡi anh ấy mới dậy.", words: ["才", "九点半", "起床", "他"], answer: "他九点半才起床", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “lưu loát” bằng chữ Hán hoặc pinyin.", answer: "流利", acceptedAnswers: ["liúlì", "liuli"], hint: "l… l…" }
         ]
       },
       reviewOld: {
@@ -1837,12 +2053,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "我去过两次香山，那儿的红叶特别有名。", audioUrl: "", question: "Người nói đến Hương Sơn mấy lần rồi?", options: ["Một lần", "Hai lần", "Ba lần", "Chưa lần nào"], correct: 1 },
           { audioText: "这本小说我看了三遍。", audioUrl: "", question: "Cuốn tiểu thuyết này người nói đọc mấy lượt?", options: ["Hai", "Ba", "Bốn", "Năm"], correct: 1 },
-          { audioText: "我是去年九月来中国的，是坐飞机来的。", audioUrl: "", question: "Người nói đến Trung Quốc bằng gì?", options: ["Tàu hỏa", "Máy bay", "Ô tô", "Tàu thủy"], correct: 1 }
+          { audioText: "我是去年九月来中国的，是坐飞机来的。", audioUrl: "", question: "Người nói đến Trung Quốc bằng gì?", options: ["Tàu hỏa", "Máy bay", "Ô tô", "Tàu thủy"], correct: 1 },
+          /*+*/{ audioText: "我从来没去过上海。", audioUrl: "", question: "Người nói đã đến Thượng Hải chưa?", options: ["Chưa bao giờ", "Một lần", "Hai lần", "Nhiều lần"], correct: 0 },
+          /*+*/{ audioText: "除了香山以外，我还去过长城。", audioUrl: "", question: "Ngoài Hương Sơn, người nói còn đến đâu?", options: ["Vạn Lý Trường Thành", "Thượng Hải", "Tây An", "Di Hòa Viên"], correct: 0 },
+          /*+*/{ audioText: "他是坐火车来的。", audioUrl: "", question: "Anh ấy đến bằng gì?", options: ["Máy bay", "Tàu hỏa", "Ô tô", "Xe đạp"], correct: 1 }
         ],
         speaking: [
           { text: "你去过香山吗？", phonetic: "Nǐ qù guo Xiāng Shān ma?", meaning: "Bạn đã từng đến Hương Sơn chưa?", audioUrl: "", minScore: 80 },
           { text: "我去过一次，那儿的风景真美。", phonetic: "Wǒ qù guo yí cì, nàr de fēngjǐng zhēn měi.", meaning: "Mình đến một lần rồi, phong cảnh ở đó đẹp thật.", audioUrl: "", minScore: 80 },
-          { text: "我是坐飞机来的。", phonetic: "Wǒ shì zuò fēijī lái de.", meaning: "Tôi đến bằng máy bay.", audioUrl: "", minScore: 80 }
+          { text: "我是坐飞机来的。", phonetic: "Wǒ shì zuò fēijī lái de.", meaning: "Tôi đến bằng máy bay.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我吃过北京烤鸭。", phonetic: "Wǒ chī guo Běijīng kǎoyā.", meaning: "Tôi đã từng ăn vịt quay Bắc Kinh.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "这本小说我看了三遍。", phonetic: "Zhè běn xiǎoshuō wǒ kàn le sān biàn.", meaning: "Cuốn tiểu thuyết này tôi đọc ba lượt.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "除了香山以外，我还去过长城。", phonetic: "Chúle Xiāng Shān yǐwài, wǒ hái qù guo Chángchéng.", meaning: "Ngoài Hương Sơn ra, tôi còn đến Vạn Lý Trường Thành.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：你去过香山吗？\nB：去过，我去过两次。\nA：你是跟谁一起去的？\nB：第一次是自己去的，第二次是跟朋友一起去的。\nA：除了香山以外，你还去过哪儿？\nB：还去过长城。北京有名的地方，我差不多都去过了。",
@@ -1850,13 +2072,19 @@ const APP_CONFIG = {
           questions: [
             { question: "B đến Hương Sơn mấy lần?", options: ["Một", "Hai", "Ba"], correct: 1 },
             { question: "Lần thứ hai B đi với ai?", options: ["Đi một mình", "Với bạn", "Với gia đình"], correct: 1 },
-            { question: "B chưa từng đến Vạn Lý Trường Thành.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "B chưa từng đến Vạn Lý Trường Thành.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Lần đầu B đến Hương Sơn với ai?", options: ["Đi một mình", "Với bạn", "Với bố mẹ"], correct: 0 },
+            /*+*/{ question: "B nói những nơi nổi tiếng ở Bắc Kinh mình đã đến thế nào?", options: ["Gần như đều đến rồi", "Chưa đến nơi nào", "Mới đến một nơi"], correct: 0 },
+            /*+*/{ question: "A hỏi B đi Hương Sơn cùng ai.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tôi chưa từng ăn món ăn vặt Bắc Kinh.", words: ["我", "没", "吃过", "北京", "小吃"], answer: "我没吃过北京小吃", acceptedAnswers: [] },
           { type: "order", prompt: "Anh ấy đến hôm qua.", words: ["他", "是", "昨天", "来的"], answer: "他是昨天来的", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “nổi tiếng” bằng chữ Hán hoặc pinyin.", answer: "有名", acceptedAnswers: ["yǒumíng", "youming"], hint: "y… m…" }
+          { type: "input", prompt: "Viết “nổi tiếng” bằng chữ Hán hoặc pinyin.", answer: "有名", acceptedAnswers: ["yǒumíng", "youming"], hint: "y… m…" },
+          /*+*/{ type: "order", prompt: "Tôi đến Hương Sơn hai lần rồi.", words: ["我", "两次", "香山", "去过"], answer: "我去过两次香山", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Từ trước đến nay tôi chưa từng đến Thượng Hải.", words: ["没去过", "我", "从来", "上海"], answer: "我从来没去过上海", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “món ăn vặt” bằng chữ Hán hoặc pinyin.", answer: "小吃", acceptedAnswers: ["xiǎochī", "xiaochi"], hint: "x… ch…" }
         ]
       },
       reviewOld: {
@@ -1911,12 +2139,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "书架上放着很多书。", audioUrl: "", question: "Trên giá sách có gì?", options: ["Rất nhiều sách", "Một con mèo", "Một bức tranh", "Lọ hoa"], correct: 0 },
           { audioText: "猫在窗台上趴着呢。", audioUrl: "", question: "Con mèo đang ở đâu?", options: ["Trên ghế sô pha", "Trên bệ cửa sổ", "Dưới gầm bàn", "Trong bếp"], correct: 1 },
-          { audioText: "超市的货架上摆着各种各样的东西，很整齐。", audioUrl: "", question: "Hàng hóa trên kệ siêu thị thế nào?", options: ["Bừa bộn", "Rất ngăn nắp", "Hết hàng", "Rất ít"], correct: 1 }
+          { audioText: "超市的货架上摆着各种各样的东西，很整齐。", audioUrl: "", question: "Hàng hóa trên kệ siêu thị thế nào?", options: ["Bừa bộn", "Rất ngăn nắp", "Hết hàng", "Rất ít"], correct: 1 },
+          /*+*/{ audioText: "门开着，窗户也开着。", audioUrl: "", question: "Cửa sổ thế nào?", options: ["Đang mở", "Đang đóng", "Bị hỏng", "Không có"], correct: 0 },
+          /*+*/{ audioText: "爸爸在沙发上躺着看报。", audioUrl: "", question: "Bố đang làm gì?", options: ["Nằm trên sô pha đọc báo", "Ngồi xem tivi", "Nấu cơm", "Ngủ trên giường"], correct: 0 },
+          /*+*/{ audioText: "他高高兴兴地回家了。", audioUrl: "", question: "Anh ấy về nhà thế nào?", options: ["Vui vẻ", "Buồn bã", "Vội vàng", "Mệt mỏi"], correct: 0 }
         ],
         speaking: [
           { text: "门开着，灯也亮着。", phonetic: "Mén kāi zhe, dēng yě liàng zhe.", meaning: "Cửa mở, đèn cũng đang sáng.", audioUrl: "", minScore: 80 },
           { text: "墙上挂着一张画儿。", phonetic: "Qiáng shang guà zhe yì zhāng huàr.", meaning: "Trên tường treo một bức tranh.", audioUrl: "", minScore: 80 },
-          { text: "他高高兴兴地回家了。", phonetic: "Tā gāogāoxìngxìng de huí jiā le.", meaning: "Anh ấy vui vẻ về nhà.", audioUrl: "", minScore: 80 }
+          { text: "他高高兴兴地回家了。", phonetic: "Tā gāogāoxìngxìng de huí jiā le.", meaning: "Anh ấy vui vẻ về nhà.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "书架上放着很多书。", phonetic: "Shūjià shang fàng zhe hěn duō shū.", meaning: "Trên giá sách để rất nhiều sách.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "猫在窗台上趴着呢。", phonetic: "Māo zài chuāngtái shang pā zhe ne.", meaning: "Con mèo đang nằm sấp trên bệ cửa sổ.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "请勿吸烟。", phonetic: "Qǐng wù xī yān.", meaning: "Xin đừng hút thuốc.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "这是我的书房。门开着，窗户也开着。\n书架上放着很多书，墙上挂着一张画儿。\n客厅里摆着一个沙发，爸爸在沙发上躺着看报。\n我的猫在窗台上趴着，安安静静地睡觉。",
@@ -1924,13 +2158,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Trên tường có gì?", options: ["Một bức tranh", "Đồng hồ", "Giá sách"], correct: 0 },
             { question: "Bố đang làm gì?", options: ["Nằm trên sô pha đọc báo", "Ngồi xem tivi", "Đứng nấu ăn"], correct: 0 },
-            { question: "Con mèo đang chạy chơi.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Con mèo đang chạy chơi.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Trong phòng khách bày gì?", options: ["Một cái sô pha", "Một giá sách", "Một bàn ăn"], correct: 0 },
+            /*+*/{ question: "Cửa sổ phòng đọc sách thế nào?", options: ["Đang mở", "Đang đóng", "Không có cửa sổ"], correct: 0 },
+            /*+*/{ question: "Trên tường treo một tấm bản đồ.", options: ["Đúng", "Sai"], correct: 1 }
           ]
         },
         writing: [
           { type: "order", prompt: "Trên bàn để một quyển sách.", words: ["桌子上", "放着", "一本", "书"], answer: "桌子上放着一本书", acceptedAnswers: [] },
           { type: "order", prompt: "Cô ấy nói một cách vui vẻ.", words: ["她", "高兴", "地", "说"], answer: "她高兴地说", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “giá sách” bằng chữ Hán hoặc pinyin.", answer: "书架", acceptedAnswers: ["shūjià", "shujia"], hint: "sh… j…" }
+          { type: "input", prompt: "Viết “giá sách” bằng chữ Hán hoặc pinyin.", answer: "书架", acceptedAnswers: ["shūjià", "shujia"], hint: "sh… j…" },
+          /*+*/{ type: "order", prompt: "Cửa đang mở.", words: ["开", "门", "着"], answer: "门开着", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Anh ấy cười nói.", words: ["说", "他", "笑着"], answer: "他笑着说", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “ghế sô pha” bằng chữ Hán hoặc pinyin.", answer: "沙发", acceptedAnswers: ["shāfā", "shafa"], hint: "sh… f…" }
         ]
       },
       reviewOld: {
@@ -1985,12 +2225,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "喂，是王老师家吗？——不是，你打错了。", audioUrl: "", question: "Cuộc gọi này thế nào?", options: ["Gọi đúng nhà thầy Vương", "Gọi nhầm số", "Không ai nghe", "Thầy Vương đi vắng"], correct: 1 },
           { audioText: "他一下课就去图书馆了。", audioUrl: "", question: "Tan học anh ấy đi đâu?", options: ["Về nhà", "Thư viện", "Căng tin", "Sân bóng"], correct: 1 },
-          { audioText: "老师讲得很清楚，我都听懂了。", audioUrl: "", question: "Người nói có hiểu bài không?", options: ["Hiểu hết", "Không hiểu", "Hiểu một nửa", "Không nghe thấy"], correct: 0 }
+          { audioText: "老师讲得很清楚，我都听懂了。", audioUrl: "", question: "Người nói có hiểu bài không?", options: ["Hiểu hết", "Không hiểu", "Hiểu một nửa", "Không nghe thấy"], correct: 0 },
+          /*+*/{ audioText: "我找到我的手表了。", audioUrl: "", question: "Người nói tìm thấy gì?", options: ["Đồng hồ", "Chìa khóa", "Điện thoại", "Vé"], correct: 0 },
+          /*+*/{ audioText: "外边太吵，我没听见。", audioUrl: "", question: "Vì sao người nói không nghe thấy?", options: ["Bên ngoài quá ồn", "Đang ngủ", "Không có ở nhà", "Tai bị đau"], correct: 0 },
+          /*+*/{ audioText: "这课的生词你记住了吗？", audioUrl: "", question: "Câu hỏi này hỏi về điều gì?", options: ["Đã nhớ từ mới chưa", "Đã làm bài tập chưa", "Đã mua sách chưa", "Đã đến lớp chưa"], correct: 0 }
         ],
         speaking: [
           { text: "喂，你打错了。", phonetic: "Wéi, nǐ dǎ cuò le.", meaning: "Alô, bạn gọi nhầm số rồi.", audioUrl: "", minScore: 80 },
           { text: "麻烦你转告他，给我回个电话。", phonetic: "Máfan nǐ zhuǎngào tā, gěi wǒ huí ge diànhuà.", meaning: "Phiền bạn chuyển lời giúp, bảo anh ấy gọi lại cho tôi.", audioUrl: "", minScore: 80 },
-          { text: "我一下课就回家。", phonetic: "Wǒ yí xià kè jiù huí jiā.", meaning: "Tôi vừa tan học là về nhà ngay.", audioUrl: "", minScore: 80 }
+          { text: "我一下课就回家。", phonetic: "Wǒ yí xià kè jiù huí jiā.", meaning: "Tôi vừa tan học là về nhà ngay.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "你听懂了吗？", phonetic: "Nǐ tīng dǒng le ma?", meaning: "Bạn nghe hiểu chưa?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我没看见他。", phonetic: "Wǒ méi kànjiàn tā.", meaning: "Tôi không nhìn thấy anh ấy.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我记住了。", phonetic: "Wǒ jì zhù le.", meaning: "Tôi nhớ rồi.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：喂，是小王吗？\nB：对不起，你打错了。\nA：喂，请问小王在吗？\nC：他不在，他取票去了，一会儿就回来。\nA：麻烦你转告他，作业我已经做完了，请他给我发个短信。\nC：好，我记住了。",
@@ -1998,13 +2244,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Lần gọi đầu tiên thế nào?", options: ["Gọi nhầm số", "Không ai nghe", "Tiểu Vương nghe máy"], correct: 0 },
             { question: "Tiểu Vương đi đâu?", options: ["Đi lấy vé", "Đi học", "Đi ăn"], correct: 0 },
-            { question: "A nhờ chuyển lời là bài tập đã làm xong.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "A nhờ chuyển lời là bài tập đã làm xong.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "Tiểu Vương sẽ về khi nào?", options: ["Một lát nữa", "Ngày mai", "Tối nay"], correct: 0 },
+            /*+*/{ question: "A nhờ Tiểu Vương làm gì?", options: ["Gửi tin nhắn cho A", "Mua vé", "Đến nhà A"], correct: 0 },
+            /*+*/{ question: "C hứa sẽ nhớ để chuyển lời.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tôi đã làm xong bài tập rồi.", words: ["我", "作业", "做完", "了"], answer: "我作业做完了", acceptedAnswers: ["作业我做完了"] },
           { type: "order", prompt: "Tôi vừa tan học là về nhà.", words: ["我", "一", "下课", "就", "回家"], answer: "我一下课就回家", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “chuyển lời” bằng chữ Hán hoặc pinyin.", answer: "转告", acceptedAnswers: ["zhuǎngào", "zhuangao"], hint: "zh… g…" }
+          { type: "input", prompt: "Viết “chuyển lời” bằng chữ Hán hoặc pinyin.", answer: "转告", acceptedAnswers: ["zhuǎngào", "zhuangao"], hint: "zh… g…" },
+          /*+*/{ type: "order", prompt: "Tôi không nghe hiểu.", words: ["我", "听懂", "没"], answer: "我没听懂", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Phiền bạn chuyển lời cho anh ấy.", words: ["转告", "麻烦你", "他"], answer: "麻烦你转告他", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “tin nhắn” bằng chữ Hán hoặc pinyin.", answer: "短信", acceptedAnswers: ["duǎnxìn", "duanxin"], hint: "d… x…" }
         ]
       },
       reviewOld: {
@@ -2059,12 +2311,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "她不在宿舍，她出去了。", audioUrl: "", question: "Cô ấy đang ở đâu?", options: ["Trong ký túc xá", "Đã ra ngoài", "Trong lớp", "Trên lầu"], correct: 1 },
           { audioText: "老师叫我们马上进教室去。", audioUrl: "", question: "Thầy giáo bảo làm gì?", options: ["Về nhà", "Vào lớp ngay", "Ra sân", "Đi thư viện"], correct: 1 },
-          { audioText: "要是你有空儿，就来帮帮忙吧。", audioUrl: "", question: "Người nói nhờ điều gì?", options: ["Mượn sách", "Đến giúp một tay", "Đi xem phim", "Gọi điện lại"], correct: 1 }
+          { audioText: "要是你有空儿，就来帮帮忙吧。", audioUrl: "", question: "Người nói nhờ điều gì?", options: ["Mượn sách", "Đến giúp một tay", "Đi xem phim", "Gọi điện lại"], correct: 1 },
+          /*+*/{ audioText: "你进来吧，外边太冷了。", audioUrl: "", question: "Người nói bảo bạn làm gì?", options: ["Đi vào trong", "Đi ra ngoài", "Đi lên lầu", "Đi xuống lầu"], correct: 0 },
+          /*+*/{ audioText: "妈妈不让我出去。", audioUrl: "", question: "Mẹ có cho người nói ra ngoài không?", options: ["Có", "Không"], correct: 1 },
+          /*+*/{ audioText: "真抱歉，让你久等了。", audioUrl: "", question: "Người nói xin lỗi vì điều gì?", options: ["Để bạn đợi lâu", "Làm vỡ đồ", "Quên mang sách", "Đến sớm"], correct: 0 }
         ],
         speaking: [
           { text: "她出去了，马上就回来。", phonetic: "Tā chūqu le, mǎshàng jiù huílai.", meaning: "Cô ấy ra ngoài rồi, sẽ về ngay.", audioUrl: "", minScore: 80 },
           { text: "不好意思，打扰你了。", phonetic: "Bù hǎoyìsi, dǎrǎo nǐ le.", meaning: "Ngại quá, làm phiền bạn rồi.", audioUrl: "", minScore: 80 },
-          { text: "我想借你的照相机，可以吗？", phonetic: "Wǒ xiǎng jiè nǐ de zhàoxiàngjī, kěyǐ ma?", meaning: "Mình muốn mượn máy ảnh của bạn, được không?", audioUrl: "", minScore: 80 }
+          { text: "我想借你的照相机，可以吗？", phonetic: "Wǒ xiǎng jiè nǐ de zhàoxiàngjī, kěyǐ ma?", meaning: "Mình muốn mượn máy ảnh của bạn, được không?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "你进来坐一会儿吧。", phonetic: "Nǐ jìnlai zuò yíhuìr ba.", meaning: "Bạn vào ngồi một lát đi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "妈妈让我去买水果。", phonetic: "Māma ràng wǒ qù mǎi shuǐguǒ.", meaning: "Mẹ bảo tôi đi mua hoa quả.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "要是你有空儿，就来帮帮忙吧。", phonetic: "Yàoshi nǐ yǒu kòngr, jiù lái bāngbang máng ba.", meaning: "Nếu bạn rảnh thì đến giúp một tay nhé.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：请问，莉莉在吗？\nB：她出去了。你进来坐一会儿吧，她马上就回来。\nA：不好意思，打扰你了。\nB：没关系。你找她有事吗？\nA：我想借她的照相机。要是她回来，请你让她给我打个电话。\nB：好的，别客气。",
@@ -2072,13 +2330,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Lili đang ở đâu?", options: ["Trong phòng", "Ra ngoài rồi", "Về nước"], correct: 1 },
             { question: "A muốn mượn gì?", options: ["Sách", "Máy ảnh", "Xe đạp"], correct: 1 },
-            { question: "A nhờ B bảo Lili gọi điện lại.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "A nhờ B bảo Lili gọi điện lại.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "B mời A làm gì?", options: ["Vào ngồi đợi", "Đi ra ngoài", "Gọi điện cho Lili"], correct: 0 },
+            /*+*/{ question: "A nói gì khi vào phòng?", options: ["Ngại quá, làm phiền bạn rồi", "Cảm ơn", "Tạm biệt"], correct: 0 },
+            /*+*/{ question: "Lili sẽ về ngay.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Thầy giáo bảo chúng tôi đọc bài khóa.", words: ["老师", "让", "我们", "读", "课文"], answer: "老师让我们读课文", acceptedAnswers: [] },
           { type: "order", prompt: "Bạn vào đi!", words: ["你", "进来", "吧"], answer: "你进来吧", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “làm phiền” bằng chữ Hán hoặc pinyin.", answer: "打扰", acceptedAnswers: ["dǎrǎo", "darao"], hint: "d… r…" }
+          { type: "input", prompt: "Viết “làm phiền” bằng chữ Hán hoặc pinyin.", answer: "打扰", acceptedAnswers: ["dǎrǎo", "darao"], hint: "d… r…" },
+          /*+*/{ type: "order", prompt: "Cô ấy ra ngoài rồi.", words: ["她", "了", "出去"], answer: "她出去了", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Xin lỗi, để bạn đợi lâu rồi.", words: ["让你", "真抱歉", "久等了"], answer: "真抱歉让你久等了", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “mượn” bằng chữ Hán hoặc pinyin.", answer: "借", acceptedAnswers: ["jiè", "jie"], hint: "j…" }
         ]
       },
       reviewOld: {
@@ -2133,12 +2397,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "他受伤了，恐怕明天的郊游去不了。", audioUrl: "", question: "Vì sao anh ấy không đi dã ngoại được?", options: ["Bận việc", "Bị thương", "Quên mất", "Trời mưa"], correct: 1 },
           { audioText: "这个电影没有字幕，我听不懂。", audioUrl: "", question: "Vì sao người nói không hiểu?", options: ["Phim không có phụ đề", "Âm thanh nhỏ", "Phim quá dài", "Ngồi quá xa"], correct: 0 },
-          { audioText: "这么多菜，我们俩吃得了吗？", audioUrl: "", question: "Người nói lo điều gì?", options: ["Món ăn quá đắt", "Hai người ăn không hết", "Món không ngon", "Chưa gọi món"], correct: 1 }
+          { audioText: "这么多菜，我们俩吃得了吗？", audioUrl: "", question: "Người nói lo điều gì?", options: ["Món ăn quá đắt", "Hai người ăn không hết", "Món không ngon", "Chưa gọi món"], correct: 1 },
+          /*+*/{ audioText: "作业太多了，今天做不完。", audioUrl: "", question: "Bài tập thế nào?", options: ["Nhiều quá, làm không xong", "Rất ít", "Làm xong rồi", "Rất dễ"], correct: 0 },
+          /*+*/{ audioText: "汤太烫了，我喝不了。", audioUrl: "", question: "Vì sao người nói không uống được canh?", options: ["Canh quá nóng", "Canh quá mặn", "Không thích canh", "Canh nguội"], correct: 0 },
+          /*+*/{ audioText: "放心吧，我肯定起得来。", audioUrl: "", question: "Người nói có dậy nổi không?", options: ["Chắc chắn dậy được", "Không dậy nổi", "Không biết", "Có lẽ không"], correct: 0 }
         ],
         speaking: [
           { text: "他恐怕去不了。", phonetic: "Tā kǒngpà qù bu liǎo.", meaning: "E là anh ấy không đi được.", audioUrl: "", minScore: 80 },
           { text: "你听得懂吗？", phonetic: "Nǐ tīng de dǒng ma?", meaning: "Bạn nghe có hiểu không?", audioUrl: "", minScore: 80 },
-          { text: "放心吧，我忘不了。", phonetic: "Fàng xīn ba, wǒ wàng bu liǎo.", meaning: "Yên tâm đi, mình không quên được đâu.", audioUrl: "", minScore: 80 }
+          { text: "放心吧，我忘不了。", phonetic: "Fàng xīn ba, wǒ wàng bu liǎo.", meaning: "Yên tâm đi, mình không quên được đâu.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "电影没有字幕，我听不懂。", phonetic: "Diànyǐng méiyǒu zìmù, wǒ tīng bu dǒng.", meaning: "Phim không có phụ đề, tôi nghe không hiểu.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "这么多菜，我们俩吃得了吗？", phonetic: "Zhème duō cài, wǒmen liǎ chī de liǎo ma?", meaning: "Nhiều món thế này, hai chúng ta ăn hết không?", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我有个约会，恐怕去不了。", phonetic: "Wǒ yǒu ge yuēhuì, kǒngpà qù bu liǎo.", meaning: "Tôi có hẹn, e là không đi được.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：明天我们去郊游，你约保罗了吗？\nB：约了。可是他昨天踢足球受伤了，恐怕去不了。\nA：真可惜！那莉莉呢？\nB：她说有空儿的话就去。\nA：路这么远，我们早上六点出发，你起得来吗？\nB：放心吧，我肯定起得来。",
@@ -2146,13 +2416,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Vì sao Paul không đi được?", options: ["Bị thương khi đá bóng", "Phải đi làm", "Không thích đi"], correct: 0 },
             { question: "Lili nói thế nào?", options: ["Chắc chắn không đi", "Có thời gian thì đi", "Đã đi rồi"], correct: 1 },
-            { question: "B lo là mình không dậy nổi.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "B lo là mình không dậy nổi.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Họ định đi dã ngoại khi nào?", options: ["Ngày mai", "Hôm nay", "Tuần sau"], correct: 0 },
+            /*+*/{ question: "Sáng mấy giờ họ xuất phát?", options: ["5 giờ", "6 giờ", "7 giờ"], correct: 1 },
+            /*+*/{ question: "Đường đến chỗ dã ngoại rất xa.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Chỗ bài tập này tôi làm không hết.", words: ["这些", "作业", "我", "做不完"], answer: "这些作业我做不完", acceptedAnswers: ["我这些作业做不完"] },
           { type: "order", prompt: "Bạn nghe có hiểu không?", words: ["你", "听得懂", "吗"], answer: "你听得懂吗", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “e rằng” bằng chữ Hán hoặc pinyin.", answer: "恐怕", acceptedAnswers: ["kǒngpà", "kongpa"], hint: "k… p…" }
+          { type: "input", prompt: "Viết “e rằng” bằng chữ Hán hoặc pinyin.", answer: "恐怕", acceptedAnswers: ["kǒngpà", "kongpa"], hint: "k… p…" },
+          /*+*/{ type: "order", prompt: "Anh ấy bị thương, không đi được.", words: ["受伤了", "去不了", "他"], answer: "他受伤了去不了", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Tôi không quên được.", words: ["忘", "不了", "我"], answer: "我忘不了", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “phụ đề” bằng chữ Hán hoặc pinyin.", answer: "字幕", acceptedAnswers: ["zìmù", "zimu"], hint: "z… m…" }
         ]
       },
       reviewOld: {
@@ -2207,12 +2483,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "天气预报说，明天西安比北京还热。", audioUrl: "", question: "Ngày mai thời tiết thế nào?", options: ["Tây An mát hơn Bắc Kinh", "Tây An còn nóng hơn Bắc Kinh", "Hai nơi như nhau", "Bắc Kinh có mưa"], correct: 1 },
           { audioText: "我比他大两岁。", audioUrl: "", question: "Người nói lớn hơn anh ấy mấy tuổi?", options: ["Một", "Hai", "Ba", "Bằng tuổi"], correct: 1 },
-          { audioText: "北京的夏天没有西安那么热。", audioUrl: "", question: "Mùa hè ở đâu nóng hơn?", options: ["Bắc Kinh", "Tây An", "Như nhau", "Không nói"], correct: 1 }
+          { audioText: "北京的夏天没有西安那么热。", audioUrl: "", question: "Mùa hè ở đâu nóng hơn?", options: ["Bắc Kinh", "Tây An", "Như nhau", "Không nói"], correct: 1 },
+          /*+*/{ audioText: "哥哥比我高十公分。", audioUrl: "", question: "Anh trai cao hơn người nói bao nhiêu?", options: ["5 cm", "10 cm", "15 cm", "Bằng nhau"], correct: 1 },
+          /*+*/{ audioText: "我的爱好跟你一样。", audioUrl: "", question: "Sở thích của hai người thế nào?", options: ["Giống nhau", "Khác nhau", "Không có sở thích", "Không biết"], correct: 0 },
+          /*+*/{ audioText: "九月比现在凉快多了。", audioUrl: "", question: "Tháng 9 thời tiết thế nào?", options: ["Mát hơn nhiều", "Nóng hơn", "Như bây giờ", "Lạnh lắm"], correct: 0 }
         ],
         speaking: [
           { text: "西安比北京还热。", phonetic: "Xī'ān bǐ Běijīng hái rè.", meaning: "Tây An còn nóng hơn Bắc Kinh.", audioUrl: "", minScore: 80 },
           { text: "我比他大两岁。", phonetic: "Wǒ bǐ tā dà liǎng suì.", meaning: "Tôi lớn hơn anh ấy hai tuổi.", audioUrl: "", minScore: 80 },
-          { text: "我的爱好跟你一样。", phonetic: "Wǒ de àihào gēn nǐ yíyàng.", meaning: "Sở thích của mình giống bạn.", audioUrl: "", minScore: 80 }
+          { text: "我的爱好跟你一样。", phonetic: "Wǒ de àihào gēn nǐ yíyàng.", meaning: "Sở thích của mình giống bạn.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "今天比昨天热。", phonetic: "Jīntiān bǐ zuótiān rè.", meaning: "Hôm nay nóng hơn hôm qua.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "北京没有西安那么热。", phonetic: "Běijīng méiyǒu Xī'ān nàme rè.", meaning: "Bắc Kinh không nóng bằng Tây An.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我们再商量商量吧。", phonetic: "Wǒmen zài shāngliang shāngliang ba.", meaning: "Chúng ta bàn thêm nhé.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：考试结束了，我们去西安旅行吧！\nB：好啊。听说西安有很多名胜古迹。\nA：不过天气预报说，西安比北京还热。\nB：北京没有西安那么热吗？\nA：没有。我建议我们九月去，九月比现在凉快多了。\nB：好，我们再商量商量吧。",
@@ -2220,13 +2502,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Họ định đi đâu?", options: ["Thượng Hải", "Tây An", "Hương Sơn"], correct: 1 },
             { question: "A đề nghị đi vào tháng mấy?", options: ["Tháng 7", "Tháng 9", "Tháng 12"], correct: 1 },
-            { question: "Bắc Kinh nóng hơn Tây An.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Bắc Kinh nóng hơn Tây An.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Thi xong họ định làm gì?", options: ["Đi du lịch Tây An", "Về nước", "Ở nhà ôn bài"], correct: 0 },
+            /*+*/{ question: "Tây An có gì nổi tiếng?", options: ["Nhiều danh lam thắng cảnh", "Nhiều trung tâm mua sắm", "Nhiều bãi biển"], correct: 0 },
+            /*+*/{ question: "Cuối cùng họ quyết định đi ngay.", options: ["Đúng", "Sai"], correct: 1 }
           ]
         },
         writing: [
           { type: "order", prompt: "Hôm nay mát hơn hôm qua.", words: ["今天", "比", "昨天", "凉快"], answer: "今天比昨天凉快", acceptedAnswers: [] },
           { type: "order", prompt: "Tôi cao bằng anh trai.", words: ["我", "跟", "哥哥", "一样", "高"], answer: "我跟哥哥一样高", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “mát mẻ” bằng chữ Hán hoặc pinyin.", answer: "凉快", acceptedAnswers: ["liángkuai", "liangkuai"], hint: "l… k…" }
+          { type: "input", prompt: "Viết “mát mẻ” bằng chữ Hán hoặc pinyin.", answer: "凉快", acceptedAnswers: ["liángkuai", "liangkuai"], hint: "l… k…" },
+          /*+*/{ type: "order", prompt: "Tây An còn nóng hơn Bắc Kinh.", words: ["比", "北京", "西安", "还热"], answer: "西安比北京还热", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Bắc Kinh không nóng bằng Tây An.", words: ["那么热", "西安", "没有", "北京"], answer: "北京没有西安那么热", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “bàn bạc” bằng chữ Hán hoặc pinyin.", answer: "商量", acceptedAnswers: ["shāngliang", "shangliang"], hint: "sh… l…" }
         ]
       },
       reviewOld: {
@@ -2281,12 +2569,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "我把钥匙放在桌子上了。", audioUrl: "", question: "Chìa khóa ở đâu?", options: ["Trong túi", "Trên bàn", "Trên xe đạp", "Trong ngăn kéo"], correct: 1 },
           { audioText: "老师让我们把作业交给他。", audioUrl: "", question: "Thầy bảo làm gì với bài tập?", options: ["Nộp cho thầy", "Làm lại", "Mang về nhà", "Dịch sang tiếng Anh"], correct: 0 },
-          { audioText: "别着急，你的表不是在这儿吗？", audioUrl: "", question: "Đồng hồ ở đâu?", options: ["Bị mất", "Ở ngay đây", "Ở nhà", "Đem đi sửa"], correct: 1 }
+          { audioText: "别着急，你的表不是在这儿吗？", audioUrl: "", question: "Đồng hồ ở đâu?", options: ["Bị mất", "Ở ngay đây", "Ở nhà", "Đem đi sửa"], correct: 1 },
+          /*+*/{ audioText: "请把这篇文章翻译成汉语。", audioUrl: "", question: "Phải làm gì với bài văn?", options: ["Dịch sang tiếng Trung", "Đọc to", "Chép lại", "Nộp cho thầy"], correct: 0 },
+          /*+*/{ audioText: "他把桌子搬到楼上了。", audioUrl: "", question: "Anh ấy chuyển cái bàn đi đâu?", options: ["Lên lầu", "Xuống lầu", "Ra ngoài", "Vào bếp"], correct: 0 },
+          /*+*/{ audioText: "我想把美元换成人民币。", audioUrl: "", question: "Người nói muốn đổi tiền gì?", options: ["Đô la sang nhân dân tệ", "Nhân dân tệ sang đô la", "Tiền Việt sang đô la", "Không đổi"], correct: 0 }
         ],
         speaking: [
           { text: "你把自行车放在哪儿了？", phonetic: "Nǐ bǎ zìxíngchē fàng zài nǎr le?", meaning: "Bạn để xe đạp ở đâu rồi?", audioUrl: "", minScore: 80 },
           { text: "我把它放在车棚里了。", phonetic: "Wǒ bǎ tā fàng zài chēpéng li le.", meaning: "Mình để nó trong lán xe rồi.", audioUrl: "", minScore: 80 },
-          { text: "请把这篇文章翻译成汉语。", phonetic: "Qǐng bǎ zhè piān wénzhāng fānyì chéng Hànyǔ.", meaning: "Hãy dịch bài văn này sang tiếng Trung.", audioUrl: "", minScore: 80 }
+          { text: "请把这篇文章翻译成汉语。", phonetic: "Qǐng bǎ zhè piān wénzhāng fānyì chéng Hànyǔ.", meaning: "Hãy dịch bài văn này sang tiếng Trung.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "别着急。", phonetic: "Bié zháojí.", meaning: "Đừng sốt ruột.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "请把作业交给老师。", phonetic: "Qǐng bǎ zuòyè jiāo gěi lǎoshī.", meaning: "Hãy nộp bài tập cho thầy.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "钥匙不是在桌子上吗？", phonetic: "Yàoshi bú shì zài zhuōzi shang ma?", meaning: "Chẳng phải chìa khóa ở trên bàn sao?", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：我想借你的自行车用用。\nB：好啊。钥匙在这儿，你用完就把钥匙还给我。\nA：你把自行车放在哪儿了？\nB：不是在车棚里吗？\nA：我找了半天，没找到。\nB：别着急，我想起来了，我把它放在楼下了。",
@@ -2294,13 +2588,19 @@ const APP_CONFIG = {
           questions: [
             { question: "A muốn mượn gì?", options: ["Xe đạp", "Máy ảnh", "Đồng hồ"], correct: 0 },
             { question: "Dùng xong A phải làm gì?", options: ["Trả chìa khóa", "Rửa xe", "Gọi điện"], correct: 0 },
-            { question: "Cuối cùng xe ở dưới lầu.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "Cuối cùng xe ở dưới lầu.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "A tìm xe bao lâu?", options: ["Rất lâu", "Một phút", "Chưa tìm"], correct: 0 },
+            /*+*/{ question: "B nhắc A dùng xong thì làm gì?", options: ["Trả chìa khóa", "Rửa xe", "Gọi điện"], correct: 0 },
+            /*+*/{ question: "Lúc đầu B nghĩ xe ở trong lán xe.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Tôi để chìa khóa trên bàn rồi.", words: ["我", "把", "钥匙", "放在", "桌子上了"], answer: "我把钥匙放在桌子上了", acceptedAnswers: [] },
           { type: "order", prompt: "Hãy nộp bài tập cho thầy.", words: ["请", "把", "作业", "交给", "老师"], answer: "请把作业交给老师", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “chìa khóa” bằng chữ Hán hoặc pinyin.", answer: "钥匙", acceptedAnswers: ["yàoshi", "yaoshi"], hint: "y… sh…" }
+          { type: "input", prompt: "Viết “chìa khóa” bằng chữ Hán hoặc pinyin.", answer: "钥匙", acceptedAnswers: ["yàoshi", "yaoshi"], hint: "y… sh…" },
+          /*+*/{ type: "order", prompt: "Bạn để xe đạp ở đâu rồi?", words: ["放在", "哪儿了", "你", "把自行车"], answer: "你把自行车放在哪儿了", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Hãy đưa muối cho tôi.", words: ["递给", "把盐", "请", "我"], answer: "请把盐递给我", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “dịch” bằng chữ Hán hoặc pinyin.", answer: "翻译", acceptedAnswers: ["fānyì", "fanyi"], hint: "f… y…" }
         ]
       },
       reviewOld: {
@@ -2355,12 +2655,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "你感冒了，快把空调关上。", audioUrl: "", question: "Vì sao phải tắt điều hòa?", options: ["Tiết kiệm điện", "Người nghe bị cảm", "Điều hòa hỏng", "Trời lạnh"], correct: 1 },
           { audioText: "大夫说要按时吃药，多喝水。", audioUrl: "", question: "Bác sĩ dặn gì?", options: ["Uống thuốc đúng giờ, uống nhiều nước", "Đi tiêm ngay", "Nghỉ học một tuần", "Không cần uống thuốc"], correct: 0 },
-          { audioText: "请把窗户打开，让空气好一点儿。", audioUrl: "", question: "Vì sao mở cửa sổ?", options: ["Cho không khí tốt hơn", "Vì trời nóng", "Để ngắm cảnh", "Để phơi đồ"], correct: 0 }
+          { audioText: "请把窗户打开，让空气好一点儿。", audioUrl: "", question: "Vì sao mở cửa sổ?", options: ["Cho không khí tốt hơn", "Vì trời nóng", "Để ngắm cảnh", "Để phơi đồ"], correct: 0 },
+          /*+*/{ audioText: "我头疼，嗓子也疼。", audioUrl: "", question: "Người nói bị làm sao?", options: ["Đau đầu, đau họng", "Đau bụng", "Đau chân", "Đau răng"], correct: 0 },
+          /*+*/{ audioText: "别把花瓶摔了。", audioUrl: "", question: "Người nói nhắc điều gì?", options: ["Đừng làm vỡ lọ hoa", "Đừng mở cửa", "Đừng ăn nữa", "Đừng hút thuốc"], correct: 0 },
+          /*+*/{ audioText: "运动对身体有好处。", audioUrl: "", question: "Tập thể thao thế nào với sức khỏe?", options: ["Có lợi", "Có hại", "Không ảnh hưởng", "Nguy hiểm"], correct: 0 }
         ],
         speaking: [
           { text: "快把空调关上。", phonetic: "Kuài bǎ kōngtiáo guān shang.", meaning: "Mau tắt điều hòa đi.", audioUrl: "", minScore: 80 },
           { text: "我头疼，嗓子也疼。", phonetic: "Wǒ tóu téng, sǎngzi yě téng.", meaning: "Tôi đau đầu, họng cũng đau.", audioUrl: "", minScore: 80 },
-          { text: "请把嘴张开。", phonetic: "Qǐng bǎ zuǐ zhāng kai.", meaning: "Hãy há miệng ra.", audioUrl: "", minScore: 80 }
+          { text: "请把嘴张开。", phonetic: "Qǐng bǎ zuǐ zhāng kai.", meaning: "Hãy há miệng ra.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "你发烧了，快去医院吧。", phonetic: "Nǐ fā shāo le, kuài qù yīyuàn ba.", meaning: "Bạn sốt rồi, mau đi bệnh viện đi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我最怕打针了。", phonetic: "Wǒ zuì pà dǎ zhēn le.", meaning: "Tôi sợ tiêm nhất.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "你要按时吃药。", phonetic: "Nǐ yào ànshí chī yào.", meaning: "Bạn phải uống thuốc đúng giờ.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "A：哟，你发烧了！快把空调关上。\nB：我头疼，嗓子也疼，还咳嗽。\nA：赶快去医院吧。\n大夫：请把嘴张开。你感冒了，先量量体温。\n大夫：三十八度五。我给你开点儿药，你要按时吃药。\nB：要打针吗？我最怕打针了。",
@@ -2368,13 +2674,19 @@ const APP_CONFIG = {
           questions: [
             { question: "B bị làm sao?", options: ["Bị cảm, sốt", "Bị thương ở chân", "Đau bụng"], correct: 0 },
             { question: "B sốt bao nhiêu độ?", options: ["37,5", "38,5", "39"], correct: 1 },
-            { question: "B rất sợ tiêm.", options: ["Đúng", "Sai"], correct: 0 }
+            { question: "B rất sợ tiêm.", options: ["Đúng", "Sai"], correct: 0 },
+            /*+*/{ question: "Bác sĩ bảo B làm gì trước?", options: ["Há miệng, đo nhiệt độ", "Tiêm ngay", "Về nhà"], correct: 0 },
+            /*+*/{ question: "B có ho không?", options: ["Có", "Không"], correct: 0 },
+            /*+*/{ question: "Bác sĩ kê thuốc cho B.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Hãy mở cửa sổ ra.", words: ["请", "把", "窗户", "打开"], answer: "请把窗户打开", acceptedAnswers: [] },
           { type: "order", prompt: "Tôi chưa tắt điều hòa.", words: ["我", "没", "把", "空调", "关上"], answer: "我没把空调关上", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “bị cảm” bằng chữ Hán hoặc pinyin.", answer: "感冒", acceptedAnswers: ["gǎnmào", "ganmao"], hint: "g… m…" }
+          { type: "input", prompt: "Viết “bị cảm” bằng chữ Hán hoặc pinyin.", answer: "感冒", acceptedAnswers: ["gǎnmào", "ganmao"], hint: "g… m…" },
+          /*+*/{ type: "order", prompt: "Mau tắt điều hòa đi.", words: ["把空调", "关上", "快"], answer: "快把空调关上", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Đừng làm vỡ lọ hoa.", words: ["别", "摔了", "把花瓶"], answer: "别把花瓶摔了", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “đúng giờ” bằng chữ Hán hoặc pinyin.", answer: "按时", acceptedAnswers: ["ànshí", "anshi"], hint: "à… sh…" }
         ]
       },
       reviewOld: {
@@ -2429,12 +2741,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "真倒霉！我的钱包被小偷偷走了。", audioUrl: "", question: "Chuyện gì xảy ra?", options: ["Ví bị trộm", "Bị lạc đường", "Bị ốm", "Bị thầy phê bình"], correct: 0 },
           { audioText: "他骑车的时候被三轮车撞倒了，腿受伤了。", audioUrl: "", question: "Anh ấy bị thương ở đâu?", options: ["Tay", "Chân", "Đầu", "Mắt"], correct: 1 },
-          { audioText: "我太累了，连饭也不想吃。", audioUrl: "", question: "Người nói mệt đến mức nào?", options: ["Ngay cả cơm cũng không muốn ăn", "Không muốn đi học", "Muốn đi ngủ ngay", "Không muốn nói chuyện"], correct: 0 }
+          { audioText: "我太累了，连饭也不想吃。", audioUrl: "", question: "Người nói mệt đến mức nào?", options: ["Ngay cả cơm cũng không muốn ăn", "Không muốn đi học", "Muốn đi ngủ ngay", "Không muốn nói chuyện"], correct: 0 },
+          /*+*/{ audioText: "我的自行车叫人骑走了。", audioUrl: "", question: "Xe đạp của người nói làm sao?", options: ["Bị người ta lấy đi", "Bị hỏng", "Bị mất chìa khóa", "Được sửa xong"], correct: 0 },
+          /*+*/{ audioText: "他连一个问题也没听懂。", audioUrl: "", question: "Anh ấy hiểu được bao nhiêu câu hỏi?", options: ["Không câu nào", "Một câu", "Hầu hết", "Tất cả"], correct: 0 },
+          /*+*/{ audioText: "以后要小心一点儿。", audioUrl: "", question: "Người nói khuyên điều gì?", options: ["Sau này cẩn thận hơn", "Đi nhanh hơn", "Học nhiều hơn", "Ngủ sớm hơn"], correct: 0 }
         ],
         speaking: [
           { text: "钱包被小偷偷走了。", phonetic: "Qiánbāo bèi xiǎotōu tōu zǒu le.", meaning: "Ví bị kẻ trộm lấy mất rồi.", audioUrl: "", minScore: 80 },
           { text: "真倒霉！", phonetic: "Zhēn dǎoméi!", meaning: "Xui thật!", audioUrl: "", minScore: 80 },
-          { text: "我连一句话也没听懂。", phonetic: "Wǒ lián yí jù huà yě méi tīng dǒng.", meaning: "Ngay cả một câu tôi cũng không nghe hiểu.", audioUrl: "", minScore: 80 }
+          { text: "我连一句话也没听懂。", phonetic: "Wǒ lián yí jù huà yě méi tīng dǒng.", meaning: "Ngay cả một câu tôi cũng không nghe hiểu.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我被三轮车撞倒了。", phonetic: "Wǒ bèi sānlúnchē zhuàng dǎo le.", meaning: "Tôi bị xe ba bánh đâm ngã.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我的自行车没被人骑走。", phonetic: "Wǒ de zìxíngchē méi bèi rén qí zǒu.", meaning: "Xe đạp của tôi không bị ai lấy đi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我太累了，连饭也不想吃。", phonetic: "Wǒ tài lèi le, lián fàn yě bù xiǎng chī.", meaning: "Tôi mệt quá, ngay cả cơm cũng không muốn ăn.", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "今天我真倒霉。\n早上骑车去学校的时候，我被一辆三轮车撞倒了，胳膊和腿都青了。\n下午在商店买东西，我的钱包又被小偷偷走了。\n晚上考听力，我连一个问题也没听懂。\n妈妈说：“以后要小心一点儿。”",
@@ -2442,13 +2760,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Buổi sáng “tôi” gặp chuyện gì?", options: ["Bị xe ba bánh đâm ngã", "Mất ví", "Thi trượt"], correct: 0 },
             { question: "Ví bị mất ở đâu?", options: ["Ở trường", "Ở cửa hàng", "Trên xe buýt"], correct: 1 },
-            { question: "Bài thi nghe “tôi” hiểu hết.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Bài thi nghe “tôi” hiểu hết.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Buổi sáng “tôi” bị thương ở đâu?", options: ["Cánh tay và chân", "Đầu", "Lưng"], correct: 0 },
+            /*+*/{ question: "Buổi tối “tôi” thi môn gì?", options: ["Nghe", "Đọc", "Viết"], correct: 0 },
+            /*+*/{ question: "Mẹ khuyên “tôi” sau này cẩn thận hơn.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Xe đạp của tôi bị người ta lấy đi rồi.", words: ["我的", "自行车", "被", "人", "骑走了"], answer: "我的自行车被人骑走了", acceptedAnswers: [] },
           { type: "order", prompt: "Ngay cả nước anh ấy cũng không uống.", words: ["他", "连", "水", "也", "没喝"], answer: "他连水也没喝", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “xui xẻo” bằng chữ Hán hoặc pinyin.", answer: "倒霉", acceptedAnswers: ["dǎoméi", "daomei"], hint: "d… m…" }
+          { type: "input", prompt: "Viết “xui xẻo” bằng chữ Hán hoặc pinyin.", answer: "倒霉", acceptedAnswers: ["dǎoméi", "daomei"], hint: "d… m…" },
+          /*+*/{ type: "order", prompt: "Ví bị kẻ trộm lấy mất rồi.", words: ["小偷", "钱包", "偷走了", "被"], answer: "钱包被小偷偷走了", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Tôi mệt quá, ngay cả cơm cũng không muốn ăn.", words: ["连饭", "也", "不想吃", "我太累了"], answer: "我太累了连饭也不想吃", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “kẻ trộm” bằng chữ Hán hoặc pinyin.", answer: "小偷", acceptedAnswers: ["xiǎotōu", "xiaotou"], hint: "x… t…" }
         ]
       },
       reviewOld: {
@@ -2503,12 +2827,18 @@ const APP_CONFIG = {
         listening: [
           { audioText: "行李都收拾好了，护照也带好了。", audioUrl: "", question: "Đã chuẩn bị xong những gì?", options: ["Hành lý và hộ chiếu", "Chỉ vé máy bay", "Chưa chuẩn bị gì", "Quà tặng"], correct: 0 },
           { audioText: "为我们的友谊干杯！", audioUrl: "", question: "Họ cạn ly vì điều gì?", options: ["Sức khỏe", "Tình hữu nghị", "Thành công", "Sinh nhật"], correct: 1 },
-          { audioText: "到了以后，代我向你父母问好。", audioUrl: "", question: "Người nói nhờ điều gì?", options: ["Gửi quà", "Gửi lời hỏi thăm bố mẹ", "Gọi điện ngay", "Viết thư"], correct: 1 }
+          { audioText: "到了以后，代我向你父母问好。", audioUrl: "", question: "Người nói nhờ điều gì?", options: ["Gửi quà", "Gửi lời hỏi thăm bố mẹ", "Gọi điện ngay", "Viết thư"], correct: 1 },
+          /*+*/{ audioText: "时间不早了，我该走了。", audioUrl: "", question: "Người nói định làm gì?", options: ["Phải đi rồi", "Ở lại ăn cơm", "Đi ngủ", "Gọi taxi"], correct: 0 },
+          /*+*/{ audioText: "祝你工作顺利！", audioUrl: "", question: "Đây là lời chúc gì?", options: ["Công việc thuận lợi", "Sinh nhật vui vẻ", "Thượng lộ bình an", "Hạnh phúc"], correct: 0 },
+          /*+*/{ audioText: "我真舍不得离开这儿。", audioUrl: "", question: "Người nói cảm thấy thế nào?", options: ["Không nỡ rời đi", "Rất muốn về", "Rất mệt", "Rất vui"], correct: 0 }
         ],
         speaking: [
           { text: "祝你一路平安！", phonetic: "Zhù nǐ yílù píng'ān!", meaning: "Chúc bạn thượng lộ bình an!", audioUrl: "", minScore: 80 },
           { text: "为我们的友谊干杯！", phonetic: "Wèi wǒmen de yǒuyì gān bēi!", meaning: "Cạn ly vì tình bạn của chúng ta!", audioUrl: "", minScore: 80 },
-          { text: "代我向你父母问好。", phonetic: "Dài wǒ xiàng nǐ fùmǔ wèn hǎo.", meaning: "Cho tôi gửi lời hỏi thăm bố mẹ bạn.", audioUrl: "", minScore: 80 }
+          { text: "代我向你父母问好。", phonetic: "Dài wǒ xiàng nǐ fùmǔ wèn hǎo.", meaning: "Cho tôi gửi lời hỏi thăm bố mẹ bạn.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "行李收拾好了。", phonetic: "Xíngli shōushi hǎo le.", meaning: "Hành lý thu dọn xong rồi.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "我真舍不得离开你们。", phonetic: "Wǒ zhēn shěbude líkāi nǐmen.", meaning: "Tôi thật không nỡ rời xa các bạn.", audioUrl: "", minScore: 80 },
+          /*+*/{ text: "一路顺风！", phonetic: "Yílù shùnfēng!", meaning: "Thuận buồm xuôi gió!", audioUrl: "", minScore: 80 }
         ],
         reading: {
           passage: "明天保罗就要回国了，今天朋友们来给他饯行。\n大家举起杯说：“为我们的友谊干杯！”\n保罗说：“感谢大家的帮助，我真舍不得离开这儿。”\n第二天，行李收拾好了，护照和机票也带好了。\n在机场，朋友们说：“祝你一路平安，代我们向你父母问好！”",
@@ -2516,13 +2846,19 @@ const APP_CONFIG = {
           questions: [
             { question: "Hôm nay bạn bè làm gì cho Paul?", options: ["Tiệc tiễn chân", "Mừng sinh nhật", "Đi du lịch"], correct: 0 },
             { question: "Paul cảm thấy thế nào?", options: ["Rất muốn về ngay", "Không nỡ rời đi", "Rất mệt"], correct: 1 },
-            { question: "Paul quên mang hộ chiếu.", options: ["Đúng", "Sai"], correct: 1 }
+            { question: "Paul quên mang hộ chiếu.", options: ["Đúng", "Sai"], correct: 1 },
+            /*+*/{ question: "Ai tổ chức tiệc tiễn Paul?", options: ["Bạn bè", "Thầy giáo", "Hàng xóm"], correct: 0 },
+            /*+*/{ question: "Ở sân bay, bạn bè nhờ Paul làm gì?", options: ["Gửi lời hỏi thăm bố mẹ", "Gọi điện ngay", "Mua quà"], correct: 0 },
+            /*+*/{ question: "Paul cảm ơn mọi người đã giúp đỡ.", options: ["Đúng", "Sai"], correct: 0 }
           ]
         },
         writing: [
           { type: "order", prompt: "Hành lý đã thu dọn xong rồi.", words: ["行李", "收拾", "好了"], answer: "行李收拾好了", acceptedAnswers: [] },
           { type: "order", prompt: "Chúc bạn thượng lộ bình an!", words: ["祝", "你", "一路", "平安"], answer: "祝你一路平安", acceptedAnswers: [] },
-          { type: "input", prompt: "Viết “hộ chiếu” bằng chữ Hán hoặc pinyin.", answer: "护照", acceptedAnswers: ["hùzhào", "huzhao"], hint: "h… zh…" }
+          { type: "input", prompt: "Viết “hộ chiếu” bằng chữ Hán hoặc pinyin.", answer: "护照", acceptedAnswers: ["hùzhào", "huzhao"], hint: "h… zh…" },
+          /*+*/{ type: "order", prompt: "Cạn ly vì tình bạn của chúng ta!", words: ["干杯", "为", "我们的", "友谊"], answer: "为我们的友谊干杯", acceptedAnswers: [] },
+          /*+*/{ type: "order", prompt: "Hộ chiếu và vé máy bay đều mang theo rồi.", words: ["护照和机票", "带好了", "都"], answer: "护照和机票都带好了", acceptedAnswers: [] },
+          /*+*/{ type: "input", prompt: "Viết “hành lý” bằng chữ Hán hoặc pinyin.", answer: "行李", acceptedAnswers: ["xíngli", "xingli"], hint: "x… l…" }
         ]
       },
       reviewOld: {
@@ -2825,8 +3161,23 @@ window.resetProgress = resetProgress;
 /* ========================================================================== */
 // Một câu Nói đạt khi máy chấm đủ điểm; câu tự thu âm (mode 'self') chỉ được tính khi cài đặt cho phép.
 // File audio đặt sẵn theo tên: audio/bai-16-nghe-1.mp3, audio/bai-16-noi-2.mp3 … Không có file thì trang tự đọc bằng giọng máy.
+// Ưu tiên file gộp cả bài (audio/bai-16-nghe.mp3 + mốc thời gian trong audio/map.json), rồi tới file từng câu.
+const AudioMap = {
+  data: null,
+  load() {
+    if (!SETTINGS.audioFolder || location.protocol === 'file:') return;
+    fetch(`${SETTINGS.audioFolder}map.json`, { cache: 'no-cache' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => { if (json && typeof json === 'object') this.data = json; })
+      .catch(() => {});
+  }
+};
 function autoAudio(lesson, kind, index) {
-  return SETTINGS.audioFolder ? `${SETTINGS.audioFolder}${lesson.id}-${kind}-${index + 1}.mp3` : '';
+  if (!SETTINGS.audioFolder) return '';
+  const group = AudioMap.data && AudioMap.data[`${lesson.id}-${kind}`];
+  const clip = group && Array.isArray(group.clips) && group.clips[index];
+  if (clip) return { url: SETTINGS.audioFolder + group.file, start: clip[0], end: clip[1] };
+  return `${SETTINGS.audioFolder}${lesson.id}-${kind}-${index + 1}.mp3`;
 }
 function speakingPassed(entry) {
   return !!(entry && entry.passed && (entry.mode !== 'self' || SETTINGS.speakingFallback === 'self'));
@@ -3411,11 +3762,25 @@ const Sound = {
       this.timer = setTimeout(finish, Math.max(3500, (Array.from(text).length * 650) / rate + 1500));
       return true;
     };
+    // audioUrl có thể là { url, start, end }: một đoạn trong file gộp cả bài.
+    const clip = audioUrl && typeof audioUrl === 'object' ? audioUrl : null;
+    if (clip) audioUrl = `${clip.url}#t=${clip.start},${clip.end}`;   // media fragment: phát từ start, dừng ở end
     if (audioUrl && !this.missing.has(audioUrl)) {
       const audio = new Audio(audioUrl);
       audio.playbackRate = rate;
       audio.preservesPitch = true;
       audio.onended = finish;
+      if (clip) {
+        audio.preload = 'auto';
+        const stopAt = () => { if (token === this.token && audio.currentTime >= clip.end) { audio.pause(); finish(); } };
+        audio.ontimeupdate = stopAt;
+        const tick = () => { if (token !== this.token || audio.paused) return; stopAt(); requestAnimationFrame(tick); };
+        audio.onplaying = () => requestAnimationFrame(tick);
+        // Phòng trình duyệt bỏ qua #t=: tự tua đến đầu câu.
+        const seek = () => { if (audio.currentTime < clip.start - 0.15 || audio.currentTime > clip.end) { try { audio.currentTime = clip.start; } catch (err) { /* bỏ qua */ } } };
+        audio.addEventListener('loadedmetadata', seek, { once: true });
+        audio.addEventListener('playing', seek, { once: true });
+      }
       // Không có file (chưa tải lên) → đọc bằng giọng máy.
       const fail = () => {
         if (token !== this.token || audio.dataset.failed) return;
@@ -6661,6 +7026,7 @@ async function boot() {
   normalizeConfig();
   loadStore();
   Sound.init();
+  AudioMap.load();
   Player.init();
   Builder.bind();
   bindGlobalEvents();
