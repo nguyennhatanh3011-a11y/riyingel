@@ -333,6 +333,7 @@ const APP_CONFIG = {
   ],
 
   settings: {
+    audioFolder: "audio/",  // thư mục file nghe trên GitHub: audio/bai-1-nghe-1.mp3 … (không có file thì dùng giọng máy)
     trialLessons: 1,        // số bài học thử cho tài khoản chưa kích hoạt (0 = phải kích hoạt mới học được)
     speakingMinScore: 80,
     minRecordSeconds: 2,
@@ -2575,7 +2576,7 @@ const fmtTime = (seconds) => {
   const s = Math.max(0, Math.floor(seconds || 0));
   return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
 };
-const SETTINGS = Object.assign({ trialLessons: 1, speakingMinScore: 80, minRecordSeconds: 2, speakingFallback: 'block', rewindSeconds: 10, homophones: [] }, APP_CONFIG.settings || {});
+const SETTINGS = Object.assign({ audioFolder: 'audio/', trialLessons: 1, speakingMinScore: 80, minRecordSeconds: 2, speakingFallback: 'block', rewindSeconds: 10, homophones: [] }, APP_CONFIG.settings || {});
 
 function shuffled(list) {
   const a = list.slice();
@@ -2823,6 +2824,10 @@ window.resetProgress = resetProgress;
 /* 5. TRẠNG THÁI HOÀN THÀNH VÀ ĐIỀU KIỆN MỞ KHÓA                               */
 /* ========================================================================== */
 // Một câu Nói đạt khi máy chấm đủ điểm; câu tự thu âm (mode 'self') chỉ được tính khi cài đặt cho phép.
+// File audio đặt sẵn theo tên: audio/bai-16-nghe-1.mp3, audio/bai-16-noi-2.mp3 … Không có file thì trang tự đọc bằng giọng máy.
+function autoAudio(lesson, kind, index) {
+  return SETTINGS.audioFolder ? `${SETTINGS.audioFolder}${lesson.id}-${kind}-${index + 1}.mp3` : '';
+}
 function speakingPassed(entry) {
   return !!(entry && entry.passed && (entry.mode !== 'self' || SETTINGS.speakingFallback === 'self'));
 }
@@ -3347,6 +3352,7 @@ const Sound = {
   audio: null,
   token: 0,
   timer: 0,
+  missing: new Set(),   // file audio đã thử mà không có
 
   init() {
     if (!('speechSynthesis' in window)) return;
@@ -3386,33 +3392,45 @@ const Sound = {
       if (cb) cb();
     };
     this.onEnd = onEnd || null;
-    if (audioUrl) {
+    const speak = () => {
+      if (token !== this.token) return false;
+      if (!('speechSynthesis' in window) || !text) {
+        finish();
+        toast('Thiết bị không có giọng đọc', 'err');
+        return false;
+      }
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = lang || APP_CONFIG.language || 'zh-CN';
+      utter.rate = rate;
+      const voice = this.pickVoice(utter.lang);
+      if (voice) utter.voice = voice;
+      utter.onend = finish;
+      utter.onerror = finish;
+      window.speechSynthesis.speak(utter);
+      // Một số trình duyệt không bắn sự kiện kết thúc: tự kết thúc theo độ dài câu.
+      this.timer = setTimeout(finish, Math.max(3500, (Array.from(text).length * 650) / rate + 1500));
+      return true;
+    };
+    if (audioUrl && !this.missing.has(audioUrl)) {
       const audio = new Audio(audioUrl);
       audio.playbackRate = rate;
       audio.preservesPitch = true;
       audio.onended = finish;
-      audio.onerror = () => { finish(); toast('Không phát được file âm thanh', 'err'); };
+      // Không có file (chưa tải lên) → đọc bằng giọng máy.
+      const fail = () => {
+        if (token !== this.token || audio.dataset.failed) return;
+        audio.dataset.failed = '1';
+        this.missing.add(audioUrl);
+        this.audio = null;
+        if (text) speak(); else { finish(); toast('Không phát được file âm thanh', 'err'); }
+      };
+      audio.onerror = fail;
       this.audio = audio;
       const started = audio.play();
-      if (started && started.catch) started.catch(finish);
+      if (started && started.catch) started.catch((err) => { if (err && err.name === 'NotAllowedError') finish(); else fail(); });
       return true;
     }
-    if (!('speechSynthesis' in window) || !text) {
-      finish();
-      toast('Thiết bị không có giọng đọc', 'err');
-      return false;
-    }
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = lang || APP_CONFIG.language || 'zh-CN';
-    utter.rate = rate;
-    const voice = this.pickVoice(utter.lang);
-    if (voice) utter.voice = voice;
-    utter.onend = finish;
-    utter.onerror = finish;
-    window.speechSynthesis.speak(utter);
-    // Một số trình duyệt không bắn sự kiện kết thúc: tự kết thúc theo độ dài câu.
-    this.timer = setTimeout(finish, Math.max(3500, (Array.from(text).length * 650) / rate + 1500));
-    return true;
+    return speak();
   }
 };
 
@@ -5739,7 +5757,7 @@ const Actions = {
     ui.played[`listening:${index}`] = true;
     ui.playing = token;
     Sound.play({
-      audioUrl: item.audioUrl,
+      audioUrl: item.audioUrl || autoAudio(lesson, 'nghe', index),
       text: item.audioText,
       lang: lesson.lang,
       rate,
@@ -5763,7 +5781,7 @@ const Actions = {
     const st = ui.sp[index] = ui.sp[index] || {};
     ui.playing = token;
     Sound.play({
-      audioUrl: item.audioUrl,
+      audioUrl: item.audioUrl || autoAudio(lesson, 'noi', index),
       text: item.text,
       lang: lesson.lang,
       rate,
