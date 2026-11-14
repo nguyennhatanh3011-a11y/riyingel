@@ -310,6 +310,12 @@ const APP_CONFIG = {
   // Không có file thì dùng nội dung trong APP_CONFIG. Để "" nếu không dùng.
   contentFile: "noi-dung.xlsx",
 
+  // Các sách trong khóa học: dùng cho cột "Số bài tối đa" (ghi "Sách 2" là chỉ mở Bài 16–30)
+  books: [
+    { name: "Sách 1", from: 1, to: 15 },
+    { name: "Sách 2", from: 16, to: 30 }
+  ],
+
   settings: {
     trialLessons: 1,        // số bài học thử cho tài khoản chưa kích hoạt (0 = phải kích hoạt mới học được)
     speakingMinScore: 80,
@@ -1429,6 +1435,1112 @@ const APP_CONFIG = {
         { id: "t1", text: "Viết đường đi từ nhà em đến trường bằng 4 câu tiếng Trung" },
         { id: "t2", text: "Chỉ đường cho một người bạn đến một nơi gần nhà, dùng 先 … 然后 …" }
       ]
+    },
+
+    {
+      id: "bai-16",
+      title: "Bài 16: 他正在等他爱人呢。",
+      subtitle: "Ông ấy đang đợi vợ.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "正在",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "Câu nào diễn tả hành động đang diễn ra?", options: ["他等了他爱人。", "他正在等他爱人呢。", "他要等他爱人了。", "他等过他爱人。"], correct: 1, hint: "正在 / 在 / 正 + động từ + (呢)" },
+        { id: "cp2", time: "auto", question: "“Có người mua hoa quả, có người chọn quần áo” dùng cấu trúc nào?", options: ["有的……有的……", "一边……一边……", "虽然……但是……", "因为……所以……"], correct: 0, hint: "有的人……，有的人……" },
+        { id: "cp3", time: "auto", question: "“Vừa uống cà phê vừa nói chuyện” nói thế nào?", options: ["一边喝咖啡，一边聊天儿", "有的喝咖啡，有的聊天儿", "正在喝咖啡聊天儿", "喝咖啡了就聊天儿"], correct: 0, hint: "一边 + động từ 1，一边 + động từ 2" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "外边正下大雨呢。", audioUrl: "", question: "Bên ngoài đang thế nào?", options: ["Trời nắng", "Đang mưa to", "Đang có gió", "Trời lạnh"], correct: 1 },
+          { audioText: "超市里人很多，有的在买水果，有的在挑衣服。", audioUrl: "", question: "Trong siêu thị, có người đang làm gì?", options: ["Ăn cơm", "Chọn quần áo", "Xem phim", "Ngủ"], correct: 1 },
+          { audioText: "刚才王先生给我打电话，说有一家公司正在招聘职员。", audioUrl: "", question: "Ông Vương gọi điện báo tin gì?", options: ["Siêu thị giảm giá", "Có công ty đang tuyển nhân viên", "Trời sắp mưa", "Ông ấy đi du lịch"], correct: 1 }
+        ],
+        speaking: [
+          { text: "他正在等他爱人呢。", phonetic: "Tā zhèngzài děng tā àiren ne.", meaning: "Ông ấy đang đợi vợ.", audioUrl: "", minScore: 80 },
+          { text: "顾客们都在排队交钱。", phonetic: "Gùkèmen dōu zài páiduì jiāo qián.", meaning: "Khách hàng đều đang xếp hàng trả tiền.", audioUrl: "", minScore: 80 },
+          { text: "我打算去那家公司应聘。", phonetic: "Wǒ dǎsuàn qù nà jiā gōngsī yìngpìn.", meaning: "Tôi định đến công ty đó ứng tuyển.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "今天星期六，学校附近的一家超市正在打折，所以买东西的顾客特别多。\n有的人在买水果，有的人在挑衣服，大家都在排队交钱。\n刚才，王先生给我打电话，说有一家公司正在招聘职员。\n我打算明天去应聘。",
+          phonetic: "Jīntiān xīngqīliù, xuéxiào fùjìn de yì jiā chāoshì zhèngzài dǎzhé, suǒyǐ mǎi dōngxi de gùkè tèbié duō.\nYǒude rén zài mǎi shuǐguǒ, yǒude rén zài tiāo yīfu, dàjiā dōu zài páiduì jiāo qián.\nGāngcái, Wáng xiānsheng gěi wǒ dǎ diànhuà, shuō yǒu yì jiā gōngsī zhèngzài zhāopìn zhíyuán.\nWǒ dǎsuàn míngtiān qù yìngpìn.",
+          questions: [
+            { question: "Vì sao siêu thị đông khách?", options: ["Đang giảm giá", "Mới khai trương", "Trời mưa"], correct: 0 },
+            { question: "Ai gọi điện cho “tôi”?", options: ["Thầy giáo", "Ông Vương", "Mẹ"], correct: 1 },
+            { question: "“Tôi” định hôm nay đi ứng tuyển.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Cửa hàng đó đang giảm giá quần áo.", words: ["那家", "衣服", "商店的", "打折", "正在"], answer: "那家商店的衣服正在打折", acceptedAnswers: [] },
+          { type: "order", prompt: "Lúc nãy tôi gọi điện cho ông Trương.", words: ["刚才", "我", "给", "张先生", "打电话"], answer: "我刚才给张先生打电话", acceptedAnswers: ["刚才我给张先生打电话"] },
+          { type: "input", prompt: "Viết “xếp hàng” bằng chữ Hán hoặc pinyin.", answer: "排队", acceptedAnswers: ["páiduì", "paidui"], hint: "p… d…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Hỏi đường: 请问，去邮局怎么走？",
+          "往 + hướng + 拐 — 往左拐, 往右拐",
+          "一直往前走 — đi thẳng về phía trước",
+          "先 … 然后 … — trước … sau đó …"
+        ],
+        exercises: [
+          { type: "quiz", question: "“Rẽ phải” nói thế nào?", options: ["拐右", "往右拐", "右往拐"], correct: 1 },
+          { type: "fill", text: "一直往前___，到十字路口往左___。", answers: [["走"], ["拐"]], bank: ["拐", "走", "到", "过"] },
+          { type: "flashcards", cards: [
+            { word: "怎么走", phonetic: "zěnme zǒu", meaning: "đi thế nào" },
+            { word: "一直", phonetic: "yìzhí", meaning: "thẳng, liên tục" },
+            { word: "路口", phonetic: "lùkǒu", meaning: "giao lộ" },
+            { word: "然后", phonetic: "ránhòu", meaning: "sau đó" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 17: 刚才你去哪儿了？",
+        vocabulary: [
+          { word: "逛", phonetic: "guàng", meaning: "dạo, đi dạo" },
+          { word: "裙子", phonetic: "qúnzi", meaning: "váy" },
+          { word: "帽子", phonetic: "màozi", meaning: "mũ" },
+          { word: "陪", phonetic: "péi", meaning: "đi cùng" },
+          { word: "风景", phonetic: "fēngjǐng", meaning: "phong cảnh" },
+          { word: "烤鸭", phonetic: "kǎoyā", meaning: "vịt quay" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 3 câu tả việc người trong nhà em đang làm, dùng 正在……呢" },
+        { id: "t2", text: "Kể việc em làm khi xếp hàng chờ, dùng 一边……一边……" }
+      ]
+    },
+
+    {
+      id: "bai-17",
+      title: "Bài 17: 刚才你去哪儿了？",
+      subtitle: "Lúc nãy bạn đi đâu?",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "了",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "“Tôi đã mua một cái váy rất đẹp” — 了 đặt ở đâu?", options: ["我了买一条很漂亮的裙子。", "我买了一条很漂亮的裙子。", "我买一条了很漂亮的裙子。", "我买一条很漂亮的了裙子。"], correct: 1, hint: "Động từ + 了 + tân ngữ có định ngữ" },
+        { id: "cp2", time: "auto", question: "Phủ định của 我吃饭了 là gì?", options: ["我不吃饭了。", "我没吃饭。", "我没吃饭了。", "我吃饭没了。"], correct: 1, hint: "没 + động từ, bỏ 了" },
+        { id: "cp3", time: "auto", question: "“Xem phim xong thì đi ăn” nói thế nào?", options: ["我看了电影就去吃饭。", "我看电影就了去吃饭。", "我就看了电影去吃饭。", "我看电影了就吃饭去了。"], correct: 0, hint: "Động từ 1 + 了 + … + 就 + động từ 2" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "刚才我陪妈妈逛商店了。", audioUrl: "", question: "Lúc nãy người nói làm gì?", options: ["Đi dạo cửa hàng với mẹ", "Ở nhà ngủ", "Đi làm", "Đi bệnh viện"], correct: 0 },
+          { audioText: "我买了一条裙子和两顶帽子。", audioUrl: "", question: "Người nói đã mua gì?", options: ["Hai cái váy", "Một cái váy và hai cái mũ", "Một cái mũ", "Ba đôi giày"], correct: 1 },
+          { audioText: "我们吃了烤鸭就回家。", audioUrl: "", question: "Ăn vịt quay xong họ làm gì?", options: ["Đi dạo", "Về nhà", "Đi xem phim", "Đi mua sắm"], correct: 1 }
+        ],
+        speaking: [
+          { text: "刚才你去哪儿了？", phonetic: "Gāngcái nǐ qù nǎr le?", meaning: "Lúc nãy bạn đi đâu?", audioUrl: "", minScore: 80 },
+          { text: "我陪妈妈逛商店了。", phonetic: "Wǒ péi māma guàng shāngdiàn le.", meaning: "Tôi đi dạo cửa hàng cùng mẹ.", audioUrl: "", minScore: 80 },
+          { text: "这儿的风景特别美。", phonetic: "Zhèr de fēngjǐng tèbié měi.", meaning: "Phong cảnh ở đây đẹp lắm.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：喂，刚才你去哪儿了？\nB：我陪妈妈逛商店了。\nA：你买了什么？\nB：我买了一条裙子，妈妈买了一顶帽子。\nA：那儿的烤鸭特别好吃，你们吃了没有？\nB：还没吃。我们逛了商店就去吃。",
+          phonetic: "A: Wéi, gāngcái nǐ qù nǎr le?\nB: Wǒ péi māma guàng shāngdiàn le.\nA: Nǐ mǎi le shénme?\nB: Wǒ mǎi le yì tiáo qúnzi, māma mǎi le yì dǐng màozi.\nA: Nàr de kǎoyā tèbié hǎochī, nǐmen chī le méiyǒu?\nB: Hái méi chī. Wǒmen guàng le shāngdiàn jiù qù chī.",
+          questions: [
+            { question: "B đi dạo cửa hàng với ai?", options: ["Bạn", "Mẹ", "Chị gái"], correct: 1 },
+            { question: "Mẹ B mua gì?", options: ["Một cái váy", "Một cái mũ", "Vịt quay"], correct: 1 },
+            { question: "B đã ăn vịt quay rồi.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Tôi đã mua rất nhiều đồ giảm giá.", words: ["我", "很多", "买了", "打折的", "东西"], answer: "我买了很多打折的东西", acceptedAnswers: [] },
+          { type: "order", prompt: "Bạn ăn cơm chưa?", words: ["你", "饭", "吃", "了", "没有"], answer: "你吃饭了没有", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “phong cảnh” bằng chữ Hán hoặc pinyin.", answer: "风景", acceptedAnswers: ["fēngjǐng", "fengjing"], hint: "f… j…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "正在 / 在 / 正 + động từ + 呢 — 他正在等他爱人呢",
+          "Phủ định: 没（在）+ động từ — 我没在看电视",
+          "有的……有的…… ; 一边……一边……"
+        ],
+        exercises: [
+          { type: "quiz", question: "Phủ định của 他正在看电视 là gì?", options: ["他不在看电视。", "他没在看电视。", "他没看电视了。"], correct: 1 },
+          { type: "fill", text: "顾客很多，___在买水果，___在挑衣服。", answers: [["有的"], ["有的"]], bank: ["有的", "一边", "正在", "都"] },
+          { type: "flashcards", cards: [
+            { word: "正在", phonetic: "zhèngzài", meaning: "đang" },
+            { word: "顾客", phonetic: "gùkè", meaning: "khách hàng" },
+            { word: "排队", phonetic: "páiduì", meaning: "xếp hàng" },
+            { word: "打算", phonetic: "dǎsuàn", meaning: "định, dự định" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 18: 秋天了",
+        vocabulary: [
+          { word: "秋天", phonetic: "qiūtiān", meaning: "mùa thu" },
+          { word: "天气", phonetic: "tiānqì", meaning: "thời tiết" },
+          { word: "山", phonetic: "shān", meaning: "núi" },
+          { word: "红叶", phonetic: "hóngyè", meaning: "lá đỏ" },
+          { word: "瘦", phonetic: "shòu", meaning: "gầy" },
+          { word: "更", phonetic: "gèng", meaning: "càng, hơn" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 3 câu về những việc em đã làm hôm qua, dùng động từ + 了" },
+        { id: "t2", text: "Viết 2 câu với ……了……就……" }
+      ]
+    },
+
+    {
+      id: "bai-18",
+      title: "Bài 18: 秋天了。",
+      subtitle: "Mùa thu rồi.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "秋天",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "Câu 秋天了 có nghĩa gì?", options: ["Mùa thu đã qua", "Đã sang mùa thu rồi", "Mùa thu sắp đến", "Không phải mùa thu"], correct: 1, hint: "Câu + 了: xuất hiện tình huống mới" },
+        { id: "cp2", time: "auto", question: "“Trời sắp mưa rồi” nói thế nào?", options: ["天下雨了。", "天要下雨了。", "天下了雨。", "天在下雨。"], correct: 1, hint: "要 / 快要 / 就要 + động từ + 了 = sắp" },
+        { id: "cp3", time: "auto", question: "Có thời gian cụ thể (明天) thì dùng cấu trúc nào?", options: ["明天快要考试了", "明天就要考试了", "明天考试快了", "明天要快考试了"], correct: 1, hint: "Có từ chỉ thời gian thì dùng 就要……了, không dùng 快要" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "秋天了，山上的红叶特别美。", audioUrl: "", question: "Mùa thu, trên núi có gì đẹp?", options: ["Hoa mai", "Lá đỏ", "Tuyết", "Biển"], correct: 1 },
+          { audioText: "今天阴天，可能要下雨了，我们不能去爬山。", audioUrl: "", question: "Vì sao họ không đi leo núi?", options: ["Trời âm u, sắp mưa", "Trời quá nóng", "Bị ốm", "Phải đi làm"], correct: 0 },
+          { audioText: "下星期，姐姐打算陪妈妈回国。", audioUrl: "", question: "Tuần sau chị gái định làm gì?", options: ["Đi leo núi", "Cùng mẹ về nước", "Đi mua sắm", "Ở nhà ngủ nướng"], correct: 1 }
+        ],
+        speaking: [
+          { text: "秋天了，天气很凉快。", phonetic: "Qiūtiān le, tiānqì hěn liángkuai.", meaning: "Mùa thu rồi, trời rất mát.", audioUrl: "", minScore: 80 },
+          { text: "天要下雨了。", phonetic: "Tiān yào xià yǔ le.", meaning: "Trời sắp mưa rồi.", audioUrl: "", minScore: 80 },
+          { text: "她看上去瘦了。", phonetic: "Tā kàn shangqu shòu le.", meaning: "Cô ấy trông gầy đi.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "星期天，莉莉给保罗打电话：“秋天了，山上的红叶特别美，我们去看看吧。”\n保罗说：“今天阴天，要下雨了，我不能去。我最近身体不太好，想在家睡懒觉。”\n莉莉说：“好吧，那我们下星期去吃烤鸭。”",
+          phonetic: "Xīngqītiān, Lìli gěi Bǎoluó dǎ diànhuà: “Qiūtiān le, shān shang de hóngyè tèbié měi, wǒmen qù kànkan ba.”\nBǎoluó shuō: “Jīntiān yīn tiān, yào xià yǔ le, wǒ bù néng qù. Wǒ zuìjìn shēntǐ bú tài hǎo, xiǎng zài jiā shuì lǎnjiào.”\nLìli shuō: “Hǎo ba, nà wǒmen xià xīngqī qù chī kǎoyā.”",
+          questions: [
+            { question: "Lili rủ Paul đi đâu?", options: ["Ngắm lá đỏ trên núi", "Đi mua sắm", "Đi bơi"], correct: 0 },
+            { question: "Hôm nay thời tiết thế nào?", options: ["Nắng đẹp", "Âm u, sắp mưa", "Rất nóng"], correct: 1 },
+            { question: "Paul muốn ở nhà ngủ nướng.", options: ["Đúng", "Sai"], correct: 0 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Tuần sau chúng tôi định đi ăn vịt quay.", words: ["下星期", "我们", "打算", "去", "吃烤鸭"], answer: "下星期我们打算去吃烤鸭", acceptedAnswers: ["我们下星期打算去吃烤鸭"] },
+          { type: "order", prompt: "Lá đỏ trên núi càng đẹp hơn.", words: ["山上的", "红叶", "更", "美"], answer: "山上的红叶更美", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “ngủ nướng” bằng chữ Hán hoặc pinyin.", answer: "睡懒觉", acceptedAnswers: ["shuì lǎnjiào", "shui lanjiao", "shuìlǎnjiào"], hint: "睡 + 懒 + 觉" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Động từ + 了 — 我买了一条裙子",
+          "没 + động từ (bỏ 了) — 我没吃饭 ; hỏi: ……了没有？",
+          "Động từ 1 + 了 + … + 就 + động từ 2 — 我看了电影就去吃饭"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["我没吃饭了。", "我没吃饭。", "我不吃了饭。"], correct: 1 },
+          { type: "fill", text: "我睡___觉就吃早饭。", answers: [["了"]], bank: ["了", "过", "着", "的"] },
+          { type: "flashcards", cards: [
+            { word: "逛", phonetic: "guàng", meaning: "dạo, đi dạo" },
+            { word: "陪", phonetic: "péi", meaning: "đi cùng" },
+            { word: "特别", phonetic: "tèbié", meaning: "đặc biệt, rất" },
+            { word: "已经", phonetic: "yǐjīng", meaning: "đã" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 19: 你游泳游得怎么样？",
+        vocabulary: [
+          { word: "游泳", phonetic: "yóu yǒng", meaning: "bơi" },
+          { word: "会", phonetic: "huì", meaning: "biết (làm gì)" },
+          { word: "踢足球", phonetic: "tī zúqiú", meaning: "đá bóng" },
+          { word: "比赛", phonetic: "bǐsài", meaning: "thi đấu" },
+          { word: "赢", phonetic: "yíng", meaning: "thắng" },
+          { word: "输", phonetic: "shū", meaning: "thua" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 4 câu tả thời tiết bốn mùa nơi em ở" },
+        { id: "t2", text: "Đặt 3 câu với 要……了 / 快要……了 / 就要……了" }
+      ]
+    },
+
+    {
+      id: "bai-19",
+      title: "Bài 19: 你游泳游得怎么样？",
+      subtitle: "Bạn bơi thế nào?",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "得",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "“Cô ấy nói tiếng Trung rất tốt” — câu nào đúng?", options: ["她说汉语很好。", "她说汉语说得很好。", "她说得汉语很好。", "她汉语说很好得。"], correct: 1, hint: "Động từ + tân ngữ + động từ lặp lại + 得 + tính từ" },
+        { id: "cp2", time: "auto", question: "会 trong 我会游泳 có nghĩa gì?", options: ["Sẽ", "Biết (do học mà có)", "Phải", "Muốn"], correct: 1, hint: "会 + động từ: biết làm việc gì đó nhờ học" },
+        { id: "cp3", time: "auto", question: "“Sắp thi rồi, tôi phải cố gắng” dùng từ nào?", options: ["要考试了，我得努力。", "要考试了，我会努力得。", "要考试了，我努力得很。", "要考试了，我能得努力。"], correct: 0, hint: "得 (děi) + động từ = phải" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "保罗踢足球踢得真棒。", audioUrl: "", question: "Paul đá bóng thế nào?", options: ["Rất giỏi", "Không giỏi", "Tàm tạm", "Không biết đá"], correct: 0 },
+          { audioText: "我不会游泳，我是旱鸭子。", audioUrl: "", question: "Người nói có biết bơi không?", options: ["Biết, bơi giỏi", "Không biết bơi", "Đang học bơi", "Bơi tàm tạm"], correct: 1 },
+          { audioText: "我估计明天的比赛我们队一定能赢。", audioUrl: "", question: "Người nói đoán đội mình thế nào?", options: ["Sẽ thua", "Chắc chắn thắng", "Hòa", "Không thi đấu"], correct: 1 }
+        ],
+        speaking: [
+          { text: "你游泳游得怎么样？", phonetic: "Nǐ yóu yǒng yóu de zěnmeyàng?", meaning: "Bạn bơi thế nào?", audioUrl: "", minScore: 80 },
+          { text: "他踢足球踢得真棒。", phonetic: "Tā tī zúqiú tī de zhēn bàng.", meaning: "Anh ấy đá bóng giỏi thật.", audioUrl: "", minScore: 80 },
+          { text: "要考试了，我得努力学习。", phonetic: "Yào kǎoshì le, wǒ děi nǔlì xuéxí.", meaning: "Sắp thi rồi, tôi phải cố gắng học.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：你会游泳吗？\nB：不会，我是旱鸭子。你游泳游得怎么样？\nA：我游得还可以。我也喜欢踢足球。\nB：真羡慕你！听说你们队踢得特别棒。\nA：明天我们有比赛，我估计我们一定能赢。",
+          phonetic: "A: Nǐ huì yóu yǒng ma?\nB: Bú huì, wǒ shì hànyāzi. Nǐ yóu yǒng yóu de zěnmeyàng?\nA: Wǒ yóu de hái kěyǐ. Wǒ yě xǐhuan tī zúqiú.\nB: Zhēn xiànmù nǐ! Tīngshuō nǐmen duì tī de tèbié bàng.\nA: Míngtiān wǒmen yǒu bǐsài, wǒ gūjì wǒmen yídìng néng yíng.",
+          questions: [
+            { question: "B có biết bơi không?", options: ["Có", "Không"], correct: 1 },
+            { question: "A bơi thế nào?", options: ["Rất kém", "Cũng được", "Giỏi nhất lớp"], correct: 1 },
+            { question: "Ngày mai đội của A có trận đấu.", options: ["Đúng", "Sai"], correct: 0 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Anh trai lái xe rất nhanh.", words: ["哥哥", "开车", "开得", "特别快"], answer: "哥哥开车开得特别快", acceptedAnswers: [] },
+          { type: "order", prompt: "Chúng tôi chắc chắn có thể thắng.", words: ["我们", "一定", "能", "赢"], answer: "我们一定能赢", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “bơi” bằng chữ Hán hoặc pinyin.", answer: "游泳", acceptedAnswers: ["yóu yǒng", "you yong", "yóuyǒng", "youyong"], hint: "y… y…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Câu + 了: tình huống mới — 秋天了 ; 我二十岁了",
+          "要 / 快要 / 就要 + động từ + 了 = sắp — 天要下雨了",
+          "能 / 可以: khả năng, cho phép ; phủ định 不能, 不可以"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào dùng đúng 就要……了?", options: ["快要明天考试了。", "明天就要考试了。", "明天考试就要。"], correct: 1 },
+          { type: "fill", text: "天阴了，外边___下雨___。", answers: [["要", "快要"], ["了"]], bank: ["要", "了", "能", "过"] },
+          { type: "flashcards", cards: [
+            { word: "秋天", phonetic: "qiūtiān", meaning: "mùa thu" },
+            { word: "天气", phonetic: "tiānqì", meaning: "thời tiết" },
+            { word: "睡懒觉", phonetic: "shuì lǎnjiào", meaning: "ngủ nướng" },
+            { word: "亲戚", phonetic: "qīnqi", meaning: "họ hàng" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 20: 明天我就要回国了。",
+        vocabulary: [
+          { word: "虽然", phonetic: "suīrán", meaning: "tuy, mặc dù" },
+          { word: "但是", phonetic: "dànshì", meaning: "nhưng" },
+          { word: "因为", phonetic: "yīnwèi", meaning: "vì" },
+          { word: "所以", phonetic: "suǒyǐ", meaning: "cho nên" },
+          { word: "小时", phonetic: "xiǎoshí", meaning: "giờ, tiếng" },
+          { word: "堵车", phonetic: "dǔ chē", meaning: "kẹt xe" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 3 câu nhận xét bạn bè làm việc gì đó thế nào, dùng 得" },
+        { id: "t2", text: "Kể một môn thể thao em biết chơi, dùng 会" }
+      ]
+    },
+
+    {
+      id: "bai-20",
+      title: "Bài 20: 明天我就要回国了。",
+      subtitle: "Mình sẽ về nước vào ngày mai.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "就要",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "“Tôi học tiếng Trung hai tiếng” — câu nào đúng?", options: ["我两个小时学习汉语。", "我学习汉语学了两个小时。", "我学习两个小时了汉语。", "我学了汉语两个小时了的。"], correct: 1, hint: "Động từ + tân ngữ + động từ lặp lại + 了 + thời lượng" },
+        { id: "cp2", time: "auto", question: "“5 tuổi đã đi học tiểu học” — điền từ gì: 他五岁___上小学了。", options: ["才", "就", "都", "还"], correct: 1, hint: "就: sớm, nhanh ; 才: muộn, chậm" },
+        { id: "cp3", time: "auto", question: "Câu nào dùng 虽然……但是…… đúng?", options: ["虽然下雨，但是他还是来了。", "虽然下雨，所以他没来。", "因为下雨，但是他来了。", "虽然下雨，因为他来了。"], correct: 0, hint: "虽然 … 但是 … : tuy … nhưng …" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "我在车站等车等了半个小时。", audioUrl: "", question: "Người nói đợi xe bao lâu?", options: ["5 phút", "Nửa tiếng", "Một tiếng", "Hai tiếng"], correct: 1 },
+          { audioText: "小雨九点半才起床。", audioUrl: "", question: "Tiểu Vũ dậy lúc mấy giờ?", options: ["7 giờ", "8 giờ", "9 giờ rưỡi", "10 giờ"], correct: 2 },
+          { audioText: "因为路上堵车，所以我来晚了。", audioUrl: "", question: "Vì sao người nói đến muộn?", options: ["Ngủ dậy muộn", "Kẹt xe", "Bị ốm", "Quên giờ"], correct: 1 }
+        ],
+        speaking: [
+          { text: "明天我就要回国了。", phonetic: "Míngtiān wǒ jiù yào huí guó le.", meaning: "Ngày mai mình về nước rồi.", audioUrl: "", minScore: 80 },
+          { text: "我学习汉语学了两个小时。", phonetic: "Wǒ xuéxí Hànyǔ xué le liǎng ge xiǎoshí.", meaning: "Tôi học tiếng Trung hai tiếng.", audioUrl: "", minScore: 80 },
+          { text: "虽然很累，但是很愉快。", phonetic: "Suīrán hěn lèi, dànshì hěn yúkuài.", meaning: "Tuy mệt nhưng rất vui.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "保罗来北京学习汉语已经一年了。\n虽然学习很紧张，但是他过得很愉快。\n他每天学习四个小时，现在汉语说得很流利。\n因为明天他就要回国了，所以今天邻居们来送他。",
+          phonetic: "Bǎoluó lái Běijīng xuéxí Hànyǔ yǐjīng yì nián le.\nSuīrán xuéxí hěn jǐnzhāng, dànshì tā guò de hěn yúkuài.\nTā měi tiān xuéxí sì ge xiǎoshí, xiànzài Hànyǔ shuō de hěn liúlì.\nYīnwèi míngtiān tā jiù yào huí guó le, suǒyǐ jīntiān línjūmen lái sòng tā.",
+          questions: [
+            { question: "Paul học ở Bắc Kinh bao lâu rồi?", options: ["Một tháng", "Một năm", "Hai năm"], correct: 1 },
+            { question: "Mỗi ngày Paul học mấy tiếng?", options: ["2 tiếng", "4 tiếng", "6 tiếng"], correct: 1 },
+            { question: "Paul về nước hôm nay.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Tôi đợi bạn nửa tiếng rồi.", words: ["我", "等你", "等了", "半个小时"], answer: "我等你等了半个小时", acceptedAnswers: [] },
+          { type: "order", prompt: "Vì kẹt xe nên tôi đến muộn.", words: ["因为", "堵车", "所以", "我", "来晚了"], answer: "因为堵车所以我来晚了", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “hàng xóm” bằng chữ Hán hoặc pinyin.", answer: "邻居", acceptedAnswers: ["línjū", "linju"], hint: "l… j…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Bổ ngữ trạng thái: động từ + 得 + tính từ — 他游得很好",
+          "Có tân ngữ: lặp động từ — 她说汉语说得很流利",
+          "会 = biết (do học) ; 得 (děi) = phải"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["他踢足球得很好。", "他踢足球踢得很好。", "他踢得足球很好。"], correct: 1 },
+          { type: "fill", text: "要考试了，我___努力学习。他游泳游___很快。", answers: [["得"], ["得"]], bank: ["得", "的", "地", "了"] },
+          { type: "flashcards", cards: [
+            { word: "游泳", phonetic: "yóu yǒng", meaning: "bơi" },
+            { word: "比赛", phonetic: "bǐsài", meaning: "thi đấu" },
+            { word: "羡慕", phonetic: "xiànmù", meaning: "ngưỡng mộ" },
+            { word: "估计", phonetic: "gūjì", meaning: "ước đoán" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 21: 你去过香山吗？",
+        vocabulary: [
+          { word: "过", phonetic: "guo", meaning: "đã từng" },
+          { word: "次", phonetic: "cì", meaning: "lần" },
+          { word: "遍", phonetic: "biàn", meaning: "lượt, lần (từ đầu đến cuối)" },
+          { word: "有名", phonetic: "yǒumíng", meaning: "nổi tiếng" },
+          { word: "小吃", phonetic: "xiǎochī", meaning: "món ăn vặt" },
+          { word: "除了……以外", phonetic: "chúle… yǐwài", meaning: "ngoài … ra" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết mỗi ngày em làm 3 việc gì, mỗi việc bao lâu" },
+        { id: "t2", text: "Đặt 2 câu với 虽然……但是…… và 2 câu với 因为……所以……" }
+      ]
+    },
+
+    {
+      id: "bai-21",
+      title: "Bài 21: 你去过香山吗？",
+      subtitle: "Bạn đã từng đến Hương Sơn chưa?",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "过",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "“Tôi đã từng ăn vịt quay Bắc Kinh” — câu nào đúng?", options: ["我吃过北京烤鸭。", "我过吃北京烤鸭。", "我吃北京烤鸭过。", "我吃了过北京烤鸭。"], correct: 0, hint: "Động từ + 过: đã từng trải qua" },
+        { id: "cp2", time: "auto", question: "Phủ định của 我去过香山 là gì?", options: ["我不去过香山。", "我没去过香山。", "我没去香山过。", "我去没过香山。"], correct: 1, hint: "没（有）+ động từ + 过" },
+        { id: "cp3", time: "auto", question: "“Ngoài tiếng Anh ra, anh ấy còn biết tiếng Trung” nói thế nào?", options: ["除了英语以外，他还会汉语。", "除了英语以外，他都会汉语。", "他除了会汉语英语以外。", "除了以外英语，他还会汉语。"], correct: 0, hint: "除了……以外，还…… = ngoài … ra còn …" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "我去过两次香山，那儿的红叶特别有名。", audioUrl: "", question: "Người nói đến Hương Sơn mấy lần rồi?", options: ["Một lần", "Hai lần", "Ba lần", "Chưa lần nào"], correct: 1 },
+          { audioText: "这本小说我看了三遍。", audioUrl: "", question: "Cuốn tiểu thuyết này người nói đọc mấy lượt?", options: ["Hai", "Ba", "Bốn", "Năm"], correct: 1 },
+          { audioText: "我是去年九月来中国的，是坐飞机来的。", audioUrl: "", question: "Người nói đến Trung Quốc bằng gì?", options: ["Tàu hỏa", "Máy bay", "Ô tô", "Tàu thủy"], correct: 1 }
+        ],
+        speaking: [
+          { text: "你去过香山吗？", phonetic: "Nǐ qù guo Xiāng Shān ma?", meaning: "Bạn đã từng đến Hương Sơn chưa?", audioUrl: "", minScore: 80 },
+          { text: "我去过一次，那儿的风景真美。", phonetic: "Wǒ qù guo yí cì, nàr de fēngjǐng zhēn měi.", meaning: "Mình đến một lần rồi, phong cảnh ở đó đẹp thật.", audioUrl: "", minScore: 80 },
+          { text: "我是坐飞机来的。", phonetic: "Wǒ shì zuò fēijī lái de.", meaning: "Tôi đến bằng máy bay.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：你去过香山吗？\nB：去过，我去过两次。\nA：你是跟谁一起去的？\nB：第一次是自己去的，第二次是跟朋友一起去的。\nA：除了香山以外，你还去过哪儿？\nB：还去过长城。北京有名的地方，我差不多都去过了。",
+          phonetic: "A: Nǐ qù guo Xiāng Shān ma?\nB: Qù guo, wǒ qù guo liǎng cì.\nA: Nǐ shì gēn shéi yìqǐ qù de?\nB: Dì yī cì shì zìjǐ qù de, dì èr cì shì gēn péngyou yìqǐ qù de.\nA: Chúle Xiāng Shān yǐwài, nǐ hái qù guo nǎr?\nB: Hái qù guo Chángchéng. Běijīng yǒumíng de dìfang, wǒ chàbuduō dōu qù guo le.",
+          questions: [
+            { question: "B đến Hương Sơn mấy lần?", options: ["Một", "Hai", "Ba"], correct: 1 },
+            { question: "Lần thứ hai B đi với ai?", options: ["Đi một mình", "Với bạn", "Với gia đình"], correct: 1 },
+            { question: "B chưa từng đến Vạn Lý Trường Thành.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Tôi chưa từng ăn món ăn vặt Bắc Kinh.", words: ["我", "没", "吃过", "北京", "小吃"], answer: "我没吃过北京小吃", acceptedAnswers: [] },
+          { type: "order", prompt: "Anh ấy đến hôm qua.", words: ["他", "是", "昨天", "来的"], answer: "他是昨天来的", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “nổi tiếng” bằng chữ Hán hoặc pinyin.", answer: "有名", acceptedAnswers: ["yǒumíng", "youming"], hint: "y… m…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Bổ ngữ thời lượng: động từ + (了) + thời lượng — 我等了半个小时",
+          "Có tân ngữ: lặp động từ — 我学汉语学了两年",
+          "就: sớm, nhanh ; 才: muộn, chậm",
+          "虽然……但是…… ; 因为……所以……"
+        ],
+        exercises: [
+          { type: "quiz", question: "“Anh ấy 10 giờ mới đến” — điền từ: 他十点___来。", options: ["就", "才", "都"], correct: 1 },
+          { type: "fill", text: "___路上堵车，___我来晚了。", answers: [["因为"], ["所以"]], bank: ["因为", "所以", "虽然", "但是"] },
+          { type: "flashcards", cards: [
+            { word: "小时", phonetic: "xiǎoshí", meaning: "giờ, tiếng" },
+            { word: "紧张", phonetic: "jǐnzhāng", meaning: "căng thẳng" },
+            { word: "愉快", phonetic: "yúkuài", meaning: "vui vẻ" },
+            { word: "堵车", phonetic: "dǔ chē", meaning: "kẹt xe" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 22: 门开着",
+        vocabulary: [
+          { word: "着", phonetic: "zhe", meaning: "(đang ở trạng thái)" },
+          { word: "书架", phonetic: "shūjià", meaning: "giá sách" },
+          { word: "放", phonetic: "fàng", meaning: "đặt, để" },
+          { word: "椅子", phonetic: "yǐzi", meaning: "ghế" },
+          { word: "挂", phonetic: "guà", meaning: "treo" },
+          { word: "沙发", phonetic: "shāfā", meaning: "ghế sô pha" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 3 nơi em đã từng đi, dùng 过 và số lần 次" },
+        { id: "t2", text: "Kể em đến lớp học tiếng Trung khi nào, bằng gì, dùng 是……的" }
+      ]
+    },
+
+    {
+      id: "bai-22",
+      title: "Bài 22: 门开着。",
+      subtitle: "Cửa đang mở.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "着",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "门开着 diễn tả điều gì?", options: ["Ai đó đang mở cửa", "Cửa đang ở trạng thái mở", "Cửa sắp mở", "Cửa đã từng mở"], correct: 1, hint: "Động từ + 着: trạng thái kéo dài" },
+        { id: "cp2", time: "auto", question: "“Trên tường treo một bức tranh” nói thế nào?", options: ["墙上挂着一张画儿。", "一张画儿挂墙上着。", "墙上着挂一张画儿。", "墙上挂过一张画儿着。"], correct: 0, hint: "Nơi chốn + động từ + 着 + số lượng + danh từ" },
+        { id: "cp3", time: "auto", question: "“Cô ấy vui vẻ nói” — dùng trợ từ nào?", options: ["她高兴得说。", "她高兴地说。", "她高兴的说。", "她高兴着说。"], correct: 1, hint: "Tính từ + 地 + động từ" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "书架上放着很多书。", audioUrl: "", question: "Trên giá sách có gì?", options: ["Rất nhiều sách", "Một con mèo", "Một bức tranh", "Lọ hoa"], correct: 0 },
+          { audioText: "猫在窗台上趴着呢。", audioUrl: "", question: "Con mèo đang ở đâu?", options: ["Trên ghế sô pha", "Trên bệ cửa sổ", "Dưới gầm bàn", "Trong bếp"], correct: 1 },
+          { audioText: "超市的货架上摆着各种各样的东西，很整齐。", audioUrl: "", question: "Hàng hóa trên kệ siêu thị thế nào?", options: ["Bừa bộn", "Rất ngăn nắp", "Hết hàng", "Rất ít"], correct: 1 }
+        ],
+        speaking: [
+          { text: "门开着，灯也亮着。", phonetic: "Mén kāi zhe, dēng yě liàng zhe.", meaning: "Cửa mở, đèn cũng đang sáng.", audioUrl: "", minScore: 80 },
+          { text: "墙上挂着一张画儿。", phonetic: "Qiáng shang guà zhe yì zhāng huàr.", meaning: "Trên tường treo một bức tranh.", audioUrl: "", minScore: 80 },
+          { text: "他高高兴兴地回家了。", phonetic: "Tā gāogāoxìngxìng de huí jiā le.", meaning: "Anh ấy vui vẻ về nhà.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "这是我的书房。门开着，窗户也开着。\n书架上放着很多书，墙上挂着一张画儿。\n客厅里摆着一个沙发，爸爸在沙发上躺着看报。\n我的猫在窗台上趴着，安安静静地睡觉。",
+          phonetic: "Zhè shì wǒ de shūfáng. Mén kāi zhe, chuānghu yě kāi zhe.\nShūjià shang fàng zhe hěn duō shū, qiáng shang guà zhe yì zhāng huàr.\nKètīng li bǎi zhe yí ge shāfā, bàba zài shāfā shang tǎng zhe kàn bào.\nWǒ de māo zài chuāngtái shang pā zhe, ān'ānjìngjìng de shuì jiào.",
+          questions: [
+            { question: "Trên tường có gì?", options: ["Một bức tranh", "Đồng hồ", "Giá sách"], correct: 0 },
+            { question: "Bố đang làm gì?", options: ["Nằm trên sô pha đọc báo", "Ngồi xem tivi", "Đứng nấu ăn"], correct: 0 },
+            { question: "Con mèo đang chạy chơi.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Trên bàn để một quyển sách.", words: ["桌子上", "放着", "一本", "书"], answer: "桌子上放着一本书", acceptedAnswers: [] },
+          { type: "order", prompt: "Cô ấy nói một cách vui vẻ.", words: ["她", "高兴", "地", "说"], answer: "她高兴地说", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “giá sách” bằng chữ Hán hoặc pinyin.", answer: "书架", acceptedAnswers: ["shūjià", "shujia"], hint: "sh… j…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Động từ + 过: đã từng — 我去过香山 ; phủ định 没去过",
+          "是……的: nhấn mạnh thời gian, nơi chốn, cách thức — 我是坐飞机来的",
+          "Động lượng: 次 (lần), 遍 (lượt từ đầu đến cuối)",
+          "除了……以外，还/都……"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["我没去香山过。", "我没去过香山。", "我不去过香山。"], correct: 1 },
+          { type: "fill", text: "这个电影我看了两___。他是坐飞机来___。", answers: [["遍", "次"], ["的"]], bank: ["遍", "的", "过", "了"] },
+          { type: "flashcards", cards: [
+            { word: "有名", phonetic: "yǒumíng", meaning: "nổi tiếng" },
+            { word: "小吃", phonetic: "xiǎochī", meaning: "món ăn vặt" },
+            { word: "差不多", phonetic: "chàbuduō", meaning: "gần như" },
+            { word: "从来", phonetic: "cónglái", meaning: "từ trước đến nay" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 23: 你打错了",
+        vocabulary: [
+          { word: "喂", phonetic: "wéi", meaning: "alô" },
+          { word: "错", phonetic: "cuò", meaning: "sai" },
+          { word: "完", phonetic: "wán", meaning: "xong" },
+          { word: "麻烦", phonetic: "máfan", meaning: "phiền" },
+          { word: "转告", phonetic: "zhuǎngào", meaning: "chuyển lời" },
+          { word: "听见", phonetic: "tīngjiàn", meaning: "nghe thấy" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Tả phòng của em bằng 4 câu, dùng 着" },
+        { id: "t2", text: "Viết 3 câu dùng tính từ lặp lại + 地" }
+      ]
+    },
+
+    {
+      id: "bai-23",
+      title: "Bài 23: 你打错了。",
+      subtitle: "Bạn gọi nhầm số rồi.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "错",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "打错了 có nghĩa gì?", options: ["Gọi điện xong rồi", "Gọi nhầm số rồi", "Không gọi được", "Gọi lại sau"], correct: 1, hint: "Động từ + 错: bổ ngữ kết quả (sai)" },
+        { id: "cp2", time: "auto", question: "Phủ định của 我听懂了 là gì?", options: ["我不听懂。", "我没听懂。", "我没听懂了。", "我听没懂。"], correct: 1, hint: "没 + động từ + bổ ngữ kết quả, bỏ 了" },
+        { id: "cp3", time: "auto", question: "“Vừa về đến nhà là ngủ ngay” nói thế nào?", options: ["我一回家就睡觉。", "我就回家一睡觉。", "我回家一就睡觉。", "我一睡觉就回家了。"], correct: 0, hint: "一 + động từ 1 + 就 + động từ 2" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "喂，是王老师家吗？——不是，你打错了。", audioUrl: "", question: "Cuộc gọi này thế nào?", options: ["Gọi đúng nhà thầy Vương", "Gọi nhầm số", "Không ai nghe", "Thầy Vương đi vắng"], correct: 1 },
+          { audioText: "他一下课就去图书馆了。", audioUrl: "", question: "Tan học anh ấy đi đâu?", options: ["Về nhà", "Thư viện", "Căng tin", "Sân bóng"], correct: 1 },
+          { audioText: "老师讲得很清楚，我都听懂了。", audioUrl: "", question: "Người nói có hiểu bài không?", options: ["Hiểu hết", "Không hiểu", "Hiểu một nửa", "Không nghe thấy"], correct: 0 }
+        ],
+        speaking: [
+          { text: "喂，你打错了。", phonetic: "Wéi, nǐ dǎ cuò le.", meaning: "Alô, bạn gọi nhầm số rồi.", audioUrl: "", minScore: 80 },
+          { text: "麻烦你转告他，给我回个电话。", phonetic: "Máfan nǐ zhuǎngào tā, gěi wǒ huí ge diànhuà.", meaning: "Phiền bạn chuyển lời giúp, bảo anh ấy gọi lại cho tôi.", audioUrl: "", minScore: 80 },
+          { text: "我一下课就回家。", phonetic: "Wǒ yí xià kè jiù huí jiā.", meaning: "Tôi vừa tan học là về nhà ngay.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：喂，是小王吗？\nB：对不起，你打错了。\nA：喂，请问小王在吗？\nC：他不在，他取票去了，一会儿就回来。\nA：麻烦你转告他，作业我已经做完了，请他给我发个短信。\nC：好，我记住了。",
+          phonetic: "A: Wéi, shì Xiǎo Wáng ma?\nB: Duìbuqǐ, nǐ dǎ cuò le.\nA: Wéi, qǐngwèn Xiǎo Wáng zài ma?\nC: Tā bú zài, tā qǔ piào qù le, yíhuìr jiù huílai.\nA: Máfan nǐ zhuǎngào tā, zuòyè wǒ yǐjīng zuò wán le, qǐng tā gěi wǒ fā ge duǎnxìn.\nC: Hǎo, wǒ jì zhù le.",
+          questions: [
+            { question: "Lần gọi đầu tiên thế nào?", options: ["Gọi nhầm số", "Không ai nghe", "Tiểu Vương nghe máy"], correct: 0 },
+            { question: "Tiểu Vương đi đâu?", options: ["Đi lấy vé", "Đi học", "Đi ăn"], correct: 0 },
+            { question: "A nhờ chuyển lời là bài tập đã làm xong.", options: ["Đúng", "Sai"], correct: 0 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Tôi đã làm xong bài tập rồi.", words: ["我", "作业", "做完", "了"], answer: "我作业做完了", acceptedAnswers: ["作业我做完了"] },
+          { type: "order", prompt: "Tôi vừa tan học là về nhà.", words: ["我", "一", "下课", "就", "回家"], answer: "我一下课就回家", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “chuyển lời” bằng chữ Hán hoặc pinyin.", answer: "转告", acceptedAnswers: ["zhuǎngào", "zhuangao"], hint: "zh… g…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Động từ + 着: trạng thái kéo dài — 门开着 ; phủ định 没 + động từ + 着",
+          "Nơi chốn + động từ + 着 + vật — 墙上挂着一张画儿",
+          "Tính từ/động từ + 地 + động từ — 高兴地说",
+          "Lặp tính từ: AABB — 高高兴兴, 安安静静"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["墙上挂着一张画儿。", "墙上挂一张画儿着。", "一张画儿着挂墙上。"], correct: 0 },
+          { type: "fill", text: "门开___。她高兴___说：“谢谢！”", answers: [["着"], ["地"]], bank: ["着", "地", "得", "的"] },
+          { type: "flashcards", cards: [
+            { word: "书架", phonetic: "shūjià", meaning: "giá sách" },
+            { word: "挂", phonetic: "guà", meaning: "treo" },
+            { word: "整齐", phonetic: "zhěngqí", meaning: "ngăn nắp" },
+            { word: "客厅", phonetic: "kètīng", meaning: "phòng khách" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 24: 她出去了",
+        vocabulary: [
+          { word: "出去", phonetic: "chūqu", meaning: "đi ra ngoài" },
+          { word: "打扰", phonetic: "dǎrǎo", meaning: "làm phiền" },
+          { word: "抱歉", phonetic: "bàoqiàn", meaning: "xin lỗi, áy náy" },
+          { word: "让", phonetic: "ràng", meaning: "để, bảo" },
+          { word: "帮忙", phonetic: "bāng máng", meaning: "giúp đỡ" },
+          { word: "借", phonetic: "jiè", meaning: "mượn, cho mượn" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết đoạn hội thoại gọi điện thoại nhờ chuyển lời (4 câu)" },
+        { id: "t2", text: "Đặt 3 câu với bổ ngữ kết quả: 完, 懂, 见" }
+      ]
+    },
+
+    {
+      id: "bai-24",
+      title: "Bài 24: 她出去了。",
+      subtitle: "Cô ấy ra ngoài rồi.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "出去",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "Người nói ở trong nhà, bạn ở ngoài sân. Người nói gọi bạn vào — dùng câu nào?", options: ["你进去吧！", "你进来吧！", "你出来吧！", "你上去吧！"], correct: 1, hint: "来: hướng về phía người nói ; 去: rời xa người nói" },
+        { id: "cp2", time: "auto", question: "“Mẹ bảo tôi đi mua hoa quả” — câu nào đúng?", options: ["妈妈让我去买水果。", "妈妈去让我买水果。", "我让妈妈去买水果了。", "妈妈让去我买水果。"], correct: 0, hint: "Câu kiêm ngữ: A + 请/叫/让 + B + động từ" },
+        { id: "cp3", time: "auto", question: "“Nếu ngày mai mưa thì chúng ta không đi” nói thế nào?", options: ["要是明天下雨，我们就不去了。", "要是明天下雨，我们才不去了。", "明天要是下雨就，我们不去了。", "就明天下雨，要是我们不去了。"], correct: 0, hint: "要是……就……" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "她不在宿舍，她出去了。", audioUrl: "", question: "Cô ấy đang ở đâu?", options: ["Trong ký túc xá", "Đã ra ngoài", "Trong lớp", "Trên lầu"], correct: 1 },
+          { audioText: "老师叫我们马上进教室去。", audioUrl: "", question: "Thầy giáo bảo làm gì?", options: ["Về nhà", "Vào lớp ngay", "Ra sân", "Đi thư viện"], correct: 1 },
+          { audioText: "要是你有空儿，就来帮帮忙吧。", audioUrl: "", question: "Người nói nhờ điều gì?", options: ["Mượn sách", "Đến giúp một tay", "Đi xem phim", "Gọi điện lại"], correct: 1 }
+        ],
+        speaking: [
+          { text: "她出去了，马上就回来。", phonetic: "Tā chūqu le, mǎshàng jiù huílai.", meaning: "Cô ấy ra ngoài rồi, sẽ về ngay.", audioUrl: "", minScore: 80 },
+          { text: "不好意思，打扰你了。", phonetic: "Bù hǎoyìsi, dǎrǎo nǐ le.", meaning: "Ngại quá, làm phiền bạn rồi.", audioUrl: "", minScore: 80 },
+          { text: "我想借你的照相机，可以吗？", phonetic: "Wǒ xiǎng jiè nǐ de zhàoxiàngjī, kěyǐ ma?", meaning: "Mình muốn mượn máy ảnh của bạn, được không?", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：请问，莉莉在吗？\nB：她出去了。你进来坐一会儿吧，她马上就回来。\nA：不好意思，打扰你了。\nB：没关系。你找她有事吗？\nA：我想借她的照相机。要是她回来，请你让她给我打个电话。\nB：好的，别客气。",
+          phonetic: "A: Qǐngwèn, Lìli zài ma?\nB: Tā chūqu le. Nǐ jìnlai zuò yíhuìr ba, tā mǎshàng jiù huílai.\nA: Bù hǎoyìsi, dǎrǎo nǐ le.\nB: Méi guānxi. Nǐ zhǎo tā yǒu shì ma?\nA: Wǒ xiǎng jiè tā de zhàoxiàngjī. Yàoshi tā huílai, qǐng nǐ ràng tā gěi wǒ dǎ ge diànhuà.\nB: Hǎo de, bié kèqi.",
+          questions: [
+            { question: "Lili đang ở đâu?", options: ["Trong phòng", "Ra ngoài rồi", "Về nước"], correct: 1 },
+            { question: "A muốn mượn gì?", options: ["Sách", "Máy ảnh", "Xe đạp"], correct: 1 },
+            { question: "A nhờ B bảo Lili gọi điện lại.", options: ["Đúng", "Sai"], correct: 0 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Thầy giáo bảo chúng tôi đọc bài khóa.", words: ["老师", "让", "我们", "读", "课文"], answer: "老师让我们读课文", acceptedAnswers: [] },
+          { type: "order", prompt: "Bạn vào đi!", words: ["你", "进来", "吧"], answer: "你进来吧", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “làm phiền” bằng chữ Hán hoặc pinyin.", answer: "打扰", acceptedAnswers: ["dǎrǎo", "darao"], hint: "d… r…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Bổ ngữ kết quả: động từ + 完/错/懂/见/好 — 我做完了 ; phủ định 没做完",
+          "动词 + 到: đạt tới — 我找到了",
+          "一……就……: vừa … là … — 我一下课就回家",
+          "动词 + 住: chắc, giữ lại — 记住"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["我没听懂了。", "我没听懂。", "我不听懂。"], correct: 1 },
+          { type: "fill", text: "这本书我看___了。我一回家___睡觉。", answers: [["完"], ["就"]], bank: ["完", "就", "到", "才"] },
+          { type: "flashcards", cards: [
+            { word: "喂", phonetic: "wéi", meaning: "alô" },
+            { word: "麻烦", phonetic: "máfan", meaning: "phiền" },
+            { word: "转告", phonetic: "zhuǎngào", meaning: "chuyển lời" },
+            { word: "短信", phonetic: "duǎnxìn", meaning: "tin nhắn" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 25: 他恐怕去不了",
+        vocabulary: [
+          { word: "恐怕", phonetic: "kǒngpà", meaning: "e rằng" },
+          { word: "大概", phonetic: "dàgài", meaning: "khoảng, có lẽ" },
+          { word: "意思", phonetic: "yìsi", meaning: "ý nghĩa" },
+          { word: "放心", phonetic: "fàng xīn", meaning: "yên tâm" },
+          { word: "约会", phonetic: "yuēhuì", meaning: "hẹn hò, cuộc hẹn" },
+          { word: "忘", phonetic: "wàng", meaning: "quên" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 3 câu với 进来/出去/上去/下来" },
+        { id: "t2", text: "Viết 2 câu nhờ vả với 请/让 và 1 câu với 要是……就……" }
+      ]
+    },
+
+    {
+      id: "bai-25",
+      title: "Bài 25: 他恐怕去不了。",
+      subtitle: "E là anh ấy không đi được.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "不了",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "去不了 có nghĩa gì?", options: ["Không muốn đi", "Không đi được", "Đi rồi", "Chưa đi"], correct: 1, hint: "Động từ + 得了/不了 (liǎo): có thể / không thể thực hiện" },
+        { id: "cp2", time: "auto", question: "“Phim không có phụ đề, bạn nghe có hiểu không?” — hỏi thế nào?", options: ["你听得懂听不懂？", "你听懂得吗？", "你听不得懂吗？", "你懂得听吗？"], correct: 0, hint: "Động từ + 得/不 + bổ ngữ: bổ ngữ khả năng" },
+        { id: "cp3", time: "auto", question: "怎么能不去呢？ có nghĩa gì?", options: ["Làm sao đi được?", "Sao lại có thể không đi chứ? (phải đi)", "Đi bằng cách nào?", "Không đi cũng được"], correct: 1, hint: "怎么（能）……呢: câu hỏi tu từ, nhấn mạnh ý ngược lại" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "他受伤了，恐怕明天的郊游去不了。", audioUrl: "", question: "Vì sao anh ấy không đi dã ngoại được?", options: ["Bận việc", "Bị thương", "Quên mất", "Trời mưa"], correct: 1 },
+          { audioText: "这个电影没有字幕，我听不懂。", audioUrl: "", question: "Vì sao người nói không hiểu?", options: ["Phim không có phụ đề", "Âm thanh nhỏ", "Phim quá dài", "Ngồi quá xa"], correct: 0 },
+          { audioText: "这么多菜，我们俩吃得了吗？", audioUrl: "", question: "Người nói lo điều gì?", options: ["Món ăn quá đắt", "Hai người ăn không hết", "Món không ngon", "Chưa gọi món"], correct: 1 }
+        ],
+        speaking: [
+          { text: "他恐怕去不了。", phonetic: "Tā kǒngpà qù bu liǎo.", meaning: "E là anh ấy không đi được.", audioUrl: "", minScore: 80 },
+          { text: "你听得懂吗？", phonetic: "Nǐ tīng de dǒng ma?", meaning: "Bạn nghe có hiểu không?", audioUrl: "", minScore: 80 },
+          { text: "放心吧，我忘不了。", phonetic: "Fàng xīn ba, wǒ wàng bu liǎo.", meaning: "Yên tâm đi, mình không quên được đâu.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：明天我们去郊游，你约保罗了吗？\nB：约了。可是他昨天踢足球受伤了，恐怕去不了。\nA：真可惜！那莉莉呢？\nB：她说有空儿的话就去。\nA：路这么远，我们早上六点出发，你起得来吗？\nB：放心吧，我肯定起得来。",
+          phonetic: "A: Míngtiān wǒmen qù jiāoyóu, nǐ yuē Bǎoluó le ma?\nB: Yuē le. Kěshì tā zuótiān tī zúqiú shòu shāng le, kǒngpà qù bu liǎo.\nA: Zhēn kěxī! Nà Lìli ne?\nB: Tā shuō yǒu kòngr dehuà jiù qù.\nA: Lù zhème yuǎn, wǒmen zǎoshang liù diǎn chūfā, nǐ qǐ de lái ma?\nB: Fàng xīn ba, wǒ kěndìng qǐ de lái.",
+          questions: [
+            { question: "Vì sao Paul không đi được?", options: ["Bị thương khi đá bóng", "Phải đi làm", "Không thích đi"], correct: 0 },
+            { question: "Lili nói thế nào?", options: ["Chắc chắn không đi", "Có thời gian thì đi", "Đã đi rồi"], correct: 1 },
+            { question: "B lo là mình không dậy nổi.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Chỗ bài tập này tôi làm không hết.", words: ["这些", "作业", "我", "做不完"], answer: "这些作业我做不完", acceptedAnswers: ["我这些作业做不完"] },
+          { type: "order", prompt: "Bạn nghe có hiểu không?", words: ["你", "听得懂", "吗"], answer: "你听得懂吗", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “e rằng” bằng chữ Hán hoặc pinyin.", answer: "恐怕", acceptedAnswers: ["kǒngpà", "kongpa"], hint: "k… p…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Bổ ngữ xu hướng: động từ + 来/去 — 进来, 出去, 上去, 下来",
+          "Câu kiêm ngữ: A + 请/叫/让 + B + động từ — 妈妈让我买水果",
+          "要是……就……: nếu … thì …",
+          "打扰, 抱歉, 不好意思 — xin lỗi lịch sự"
+        ],
+        exercises: [
+          { type: "quiz", question: "Người nói ở trên lầu, bảo bạn đi lên — nói thế nào?", options: ["你上来吧！", "你上去吧！", "你下来吧！"], correct: 0 },
+          { type: "fill", text: "___你有空儿，___来帮帮忙吧。", answers: [["要是"], ["就"]], bank: ["要是", "就", "让", "才"] },
+          { type: "flashcards", cards: [
+            { word: "打扰", phonetic: "dǎrǎo", meaning: "làm phiền" },
+            { word: "抱歉", phonetic: "bàoqiàn", meaning: "xin lỗi, áy náy" },
+            { word: "帮忙", phonetic: "bāng máng", meaning: "giúp đỡ" },
+            { word: "马上", phonetic: "mǎshàng", meaning: "ngay lập tức" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 26: 西安比北京还热",
+        vocabulary: [
+          { word: "比", phonetic: "bǐ", meaning: "so với, hơn" },
+          { word: "凉快", phonetic: "liángkuai", meaning: "mát mẻ" },
+          { word: "一样", phonetic: "yíyàng", meaning: "giống nhau" },
+          { word: "方便", phonetic: "fāngbiàn", meaning: "tiện lợi" },
+          { word: "建议", phonetic: "jiànyì", meaning: "đề nghị" },
+          { word: "商量", phonetic: "shāngliang", meaning: "bàn bạc" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 3 câu với bổ ngữ khả năng: 听得懂/听不懂, 做得完/做不完, 去得了/去不了" },
+        { id: "t2", text: "Từ chối một lời mời bằng 恐怕……" }
+      ]
+    },
+
+    {
+      id: "bai-26",
+      title: "Bài 26: 西安比北京还热。",
+      subtitle: "Tây An còn nóng hơn Bắc Kinh.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "比",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "“Hôm nay nóng hơn hôm qua” — câu nào đúng?", options: ["今天比昨天热。", "今天比昨天很热。", "今天热比昨天。", "今天比昨天非常热。"], correct: 0, hint: "A + 比 + B + tính từ ; không dùng 很/非常, có thể dùng 还/更" },
+        { id: "cp2", time: "auto", question: "“Anh trai lớn hơn tôi 3 tuổi” nói thế nào?", options: ["哥哥比我三岁大。", "哥哥比我大三岁。", "哥哥大比我三岁。", "哥哥三岁比我大。"], correct: 1, hint: "A + 比 + B + tính từ + số lượng" },
+        { id: "cp3", time: "auto", question: "“Cuốn sách này giống cuốn kia” — câu nào đúng?", options: ["这本书跟那本一样。", "这本书比那本一样。", "这本书一样那本。", "这本书没有那本一样。"], correct: 0, hint: "A + 跟 + B + 一样 (+ tính từ)" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "天气预报说，明天西安比北京还热。", audioUrl: "", question: "Ngày mai thời tiết thế nào?", options: ["Tây An mát hơn Bắc Kinh", "Tây An còn nóng hơn Bắc Kinh", "Hai nơi như nhau", "Bắc Kinh có mưa"], correct: 1 },
+          { audioText: "我比他大两岁。", audioUrl: "", question: "Người nói lớn hơn anh ấy mấy tuổi?", options: ["Một", "Hai", "Ba", "Bằng tuổi"], correct: 1 },
+          { audioText: "北京的夏天没有西安那么热。", audioUrl: "", question: "Mùa hè ở đâu nóng hơn?", options: ["Bắc Kinh", "Tây An", "Như nhau", "Không nói"], correct: 1 }
+        ],
+        speaking: [
+          { text: "西安比北京还热。", phonetic: "Xī'ān bǐ Běijīng hái rè.", meaning: "Tây An còn nóng hơn Bắc Kinh.", audioUrl: "", minScore: 80 },
+          { text: "我比他大两岁。", phonetic: "Wǒ bǐ tā dà liǎng suì.", meaning: "Tôi lớn hơn anh ấy hai tuổi.", audioUrl: "", minScore: 80 },
+          { text: "我的爱好跟你一样。", phonetic: "Wǒ de àihào gēn nǐ yíyàng.", meaning: "Sở thích của mình giống bạn.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：考试结束了，我们去西安旅行吧！\nB：好啊。听说西安有很多名胜古迹。\nA：不过天气预报说，西安比北京还热。\nB：北京没有西安那么热吗？\nA：没有。我建议我们九月去，九月比现在凉快多了。\nB：好，我们再商量商量吧。",
+          phonetic: "A: Kǎoshì jiéshù le, wǒmen qù Xī'ān lǚxíng ba!\nB: Hǎo a. Tīngshuō Xī'ān yǒu hěn duō míngshèng gǔjì.\nA: Búguò tiānqì yùbào shuō, Xī'ān bǐ Běijīng hái rè.\nB: Běijīng méiyǒu Xī'ān nàme rè ma?\nA: Méiyǒu. Wǒ jiànyì wǒmen jiǔyuè qù, jiǔyuè bǐ xiànzài liángkuai duō le.\nB: Hǎo, wǒmen zài shāngliang shāngliang ba.",
+          questions: [
+            { question: "Họ định đi đâu?", options: ["Thượng Hải", "Tây An", "Hương Sơn"], correct: 1 },
+            { question: "A đề nghị đi vào tháng mấy?", options: ["Tháng 7", "Tháng 9", "Tháng 12"], correct: 1 },
+            { question: "Bắc Kinh nóng hơn Tây An.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Hôm nay mát hơn hôm qua.", words: ["今天", "比", "昨天", "凉快"], answer: "今天比昨天凉快", acceptedAnswers: [] },
+          { type: "order", prompt: "Tôi cao bằng anh trai.", words: ["我", "跟", "哥哥", "一样", "高"], answer: "我跟哥哥一样高", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “mát mẻ” bằng chữ Hán hoặc pinyin.", answer: "凉快", acceptedAnswers: ["liángkuai", "liangkuai"], hint: "l… k…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Bổ ngữ khả năng: động từ + 得/不 + bổ ngữ — 听得懂, 听不懂",
+          "动词 + 得了/不了 (liǎo): làm được / không làm được — 去不了",
+          "怎么（能）……呢？ câu hỏi tu từ",
+          "恐怕 = e rằng ; ……的话 = nếu …"
+        ],
+        exercises: [
+          { type: "quiz", question: "“Nhiều món thế này hai đứa mình ăn có hết không?”", options: ["我们俩吃得了吗？", "我们俩吃了得吗？", "我们俩得吃了吗？"], correct: 0 },
+          { type: "fill", text: "电影没有字幕，我听___懂。他受伤了，恐怕去不___。", answers: [["不"], ["了"]], bank: ["不", "了", "得", "过"] },
+          { type: "flashcards", cards: [
+            { word: "恐怕", phonetic: "kǒngpà", meaning: "e rằng" },
+            { word: "字幕", phonetic: "zìmù", meaning: "phụ đề" },
+            { word: "放心", phonetic: "fàng xīn", meaning: "yên tâm" },
+            { word: "约", phonetic: "yuē", meaning: "hẹn" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 27: 你把自行车放在哪儿了？",
+        vocabulary: [
+          { word: "把", phonetic: "bǎ", meaning: "(đưa tân ngữ lên trước động từ)" },
+          { word: "钥匙", phonetic: "yàoshi", meaning: "chìa khóa" },
+          { word: "着急", phonetic: "zháojí", meaning: "sốt ruột" },
+          { word: "翻译", phonetic: "fānyì", meaning: "dịch" },
+          { word: "搬", phonetic: "bān", meaning: "dọn, khiêng" },
+          { word: "熊猫", phonetic: "xióngmāo", meaning: "gấu trúc" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "So sánh thời tiết hai thành phố em biết bằng 3 câu dùng 比" },
+        { id: "t2", text: "Viết 2 câu với 跟……一样 và 1 câu với 没有……那么……" }
+      ]
+    },
+
+    {
+      id: "bai-27",
+      title: "Bài 27: 你把自行车放在哪儿了？",
+      subtitle: "Bạn để xe đạp ở đâu rồi?",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "把",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "Câu nào dùng 把 đúng?", options: ["我把自行车放在车棚里了。", "我把自行车放。", "我放把自行车在车棚里了。", "我把放自行车在车棚里了。"], correct: 0, hint: "A + 把 + vật + động từ + thành phần khác (在/到/给/成…)" },
+        { id: "cp2", time: "auto", question: "“Hãy dịch bài văn này sang tiếng Anh” nói thế nào?", options: ["请把这篇文章翻译成英语。", "请翻译把这篇文章成英语。", "请把英语翻译成这篇文章。", "请这篇文章把翻译英语。"], correct: 0, hint: "把 + vật + động từ + 成 + kết quả" },
+        { id: "cp3", time: "auto", question: "不是在桌子上吗？ có nghĩa gì?", options: ["Không ở trên bàn", "Chẳng phải ở trên bàn sao? (là ở trên bàn)", "Có ở trên bàn không?", "Ai để trên bàn?"], correct: 1, hint: "不是……吗？ câu hỏi tu từ, khẳng định" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "我把钥匙放在桌子上了。", audioUrl: "", question: "Chìa khóa ở đâu?", options: ["Trong túi", "Trên bàn", "Trên xe đạp", "Trong ngăn kéo"], correct: 1 },
+          { audioText: "老师让我们把作业交给他。", audioUrl: "", question: "Thầy bảo làm gì với bài tập?", options: ["Nộp cho thầy", "Làm lại", "Mang về nhà", "Dịch sang tiếng Anh"], correct: 0 },
+          { audioText: "别着急，你的表不是在这儿吗？", audioUrl: "", question: "Đồng hồ ở đâu?", options: ["Bị mất", "Ở ngay đây", "Ở nhà", "Đem đi sửa"], correct: 1 }
+        ],
+        speaking: [
+          { text: "你把自行车放在哪儿了？", phonetic: "Nǐ bǎ zìxíngchē fàng zài nǎr le?", meaning: "Bạn để xe đạp ở đâu rồi?", audioUrl: "", minScore: 80 },
+          { text: "我把它放在车棚里了。", phonetic: "Wǒ bǎ tā fàng zài chēpéng li le.", meaning: "Mình để nó trong lán xe rồi.", audioUrl: "", minScore: 80 },
+          { text: "请把这篇文章翻译成汉语。", phonetic: "Qǐng bǎ zhè piān wénzhāng fānyì chéng Hànyǔ.", meaning: "Hãy dịch bài văn này sang tiếng Trung.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：我想借你的自行车用用。\nB：好啊。钥匙在这儿，你用完就把钥匙还给我。\nA：你把自行车放在哪儿了？\nB：不是在车棚里吗？\nA：我找了半天，没找到。\nB：别着急，我想起来了，我把它放在楼下了。",
+          phonetic: "A: Wǒ xiǎng jiè nǐ de zìxíngchē yòngyong.\nB: Hǎo a. Yàoshi zài zhèr, nǐ yòng wán jiù bǎ yàoshi huán gěi wǒ.\nA: Nǐ bǎ zìxíngchē fàng zài nǎr le?\nB: Bú shì zài chēpéng li ma?\nA: Wǒ zhǎo le bàntiān, méi zhǎo dào.\nB: Bié zháojí, wǒ xiǎng qǐlai le, wǒ bǎ tā fàng zài lóu xià le.",
+          questions: [
+            { question: "A muốn mượn gì?", options: ["Xe đạp", "Máy ảnh", "Đồng hồ"], correct: 0 },
+            { question: "Dùng xong A phải làm gì?", options: ["Trả chìa khóa", "Rửa xe", "Gọi điện"], correct: 0 },
+            { question: "Cuối cùng xe ở dưới lầu.", options: ["Đúng", "Sai"], correct: 0 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Tôi để chìa khóa trên bàn rồi.", words: ["我", "把", "钥匙", "放在", "桌子上了"], answer: "我把钥匙放在桌子上了", acceptedAnswers: [] },
+          { type: "order", prompt: "Hãy nộp bài tập cho thầy.", words: ["请", "把", "作业", "交给", "老师"], answer: "请把作业交给老师", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “chìa khóa” bằng chữ Hán hoặc pinyin.", answer: "钥匙", acceptedAnswers: ["yàoshi", "yaoshi"], hint: "y… sh…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "A + 比 + B + tính từ — 今天比昨天热 ; thêm 还/更, không thêm 很",
+          "A + 比 + B + tính từ + số lượng — 我比他大两岁",
+          "A + 跟 + B + 一样 (+ tính từ)",
+          "A + 没有 + B + (那么) + tính từ — 北京没有西安那么热"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["今天比昨天很热。", "今天比昨天还热。", "今天比昨天非常热。"], correct: 1 },
+          { type: "fill", text: "我___他大两岁。我的爱好___你一样。", answers: [["比"], ["跟"]], bank: ["比", "跟", "没有", "还"] },
+          { type: "flashcards", cards: [
+            { word: "凉快", phonetic: "liángkuai", meaning: "mát mẻ" },
+            { word: "名胜古迹", phonetic: "míngshèng gǔjì", meaning: "danh lam thắng cảnh" },
+            { word: "建议", phonetic: "jiànyì", meaning: "đề nghị" },
+            { word: "商量", phonetic: "shāngliang", meaning: "bàn bạc" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 28: 快把空调关上",
+        vocabulary: [
+          { word: "关", phonetic: "guān", meaning: "đóng, tắt" },
+          { word: "感冒", phonetic: "gǎnmào", meaning: "cảm" },
+          { word: "发烧", phonetic: "fā shāo", meaning: "sốt" },
+          { word: "头疼", phonetic: "tóu téng", meaning: "đau đầu" },
+          { word: "打针", phonetic: "dǎ zhēn", meaning: "tiêm" },
+          { word: "按时", phonetic: "ànshí", meaning: "đúng giờ" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 3 câu 把 tả việc em sắp xếp đồ đạc trong phòng" },
+        { id: "t2", text: "Viết 1 câu với 把……翻译成…… và 1 câu với 不是……吗？" }
+      ]
+    },
+
+    {
+      id: "bai-28",
+      title: "Bài 28: 快把空调关上。",
+      subtitle: "Mau tắt điều hòa đi.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "关上",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "快把空调关上 có nghĩa gì?", options: ["Mau bật điều hòa lên", "Mau tắt điều hòa đi", "Điều hòa hỏng rồi", "Đừng tắt điều hòa"], correct: 1, hint: "把 + vật + động từ + bổ ngữ kết quả (上)" },
+        { id: "cp2", time: "auto", question: "“Tôi chưa đóng cửa sổ” — câu nào đúng?", options: ["我没把窗户关上。", "我把窗户没关上。", "我把没窗户关上。", "我不把窗户关上了。"], correct: 0, hint: "Phủ định: 没/别/不 đặt trước 把" },
+        { id: "cp3", time: "auto", question: "Câu nào SAI?", options: ["请把门打开。", "他把书拿出来了。", "我把这个电影看。", "别把花瓶摔了。"], correct: 2, hint: "Sau động từ trong câu 把 phải có thành phần khác, không đứng trơ trọi" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "你感冒了，快把空调关上。", audioUrl: "", question: "Vì sao phải tắt điều hòa?", options: ["Tiết kiệm điện", "Người nghe bị cảm", "Điều hòa hỏng", "Trời lạnh"], correct: 1 },
+          { audioText: "大夫说要按时吃药，多喝水。", audioUrl: "", question: "Bác sĩ dặn gì?", options: ["Uống thuốc đúng giờ, uống nhiều nước", "Đi tiêm ngay", "Nghỉ học một tuần", "Không cần uống thuốc"], correct: 0 },
+          { audioText: "请把窗户打开，让空气好一点儿。", audioUrl: "", question: "Vì sao mở cửa sổ?", options: ["Cho không khí tốt hơn", "Vì trời nóng", "Để ngắm cảnh", "Để phơi đồ"], correct: 0 }
+        ],
+        speaking: [
+          { text: "快把空调关上。", phonetic: "Kuài bǎ kōngtiáo guān shang.", meaning: "Mau tắt điều hòa đi.", audioUrl: "", minScore: 80 },
+          { text: "我头疼，嗓子也疼。", phonetic: "Wǒ tóu téng, sǎngzi yě téng.", meaning: "Tôi đau đầu, họng cũng đau.", audioUrl: "", minScore: 80 },
+          { text: "请把嘴张开。", phonetic: "Qǐng bǎ zuǐ zhāng kai.", meaning: "Hãy há miệng ra.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "A：哟，你发烧了！快把空调关上。\nB：我头疼，嗓子也疼，还咳嗽。\nA：赶快去医院吧。\n大夫：请把嘴张开。你感冒了，先量量体温。\n大夫：三十八度五。我给你开点儿药，你要按时吃药。\nB：要打针吗？我最怕打针了。",
+          phonetic: "A: Yō, nǐ fā shāo le! Kuài bǎ kōngtiáo guān shang.\nB: Wǒ tóu téng, sǎngzi yě téng, hái késou.\nA: Gǎnkuài qù yīyuàn ba.\nDàifu: Qǐng bǎ zuǐ zhāng kai. Nǐ gǎnmào le, xiān liángliang tǐwēn.\nDàifu: Sānshíbā dù wǔ. Wǒ gěi nǐ kāi diǎnr yào, nǐ yào ànshí chī yào.\nB: Yào dǎ zhēn ma? Wǒ zuì pà dǎ zhēn le.",
+          questions: [
+            { question: "B bị làm sao?", options: ["Bị cảm, sốt", "Bị thương ở chân", "Đau bụng"], correct: 0 },
+            { question: "B sốt bao nhiêu độ?", options: ["37,5", "38,5", "39"], correct: 1 },
+            { question: "B rất sợ tiêm.", options: ["Đúng", "Sai"], correct: 0 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Hãy mở cửa sổ ra.", words: ["请", "把", "窗户", "打开"], answer: "请把窗户打开", acceptedAnswers: [] },
+          { type: "order", prompt: "Tôi chưa tắt điều hòa.", words: ["我", "没", "把", "空调", "关上"], answer: "我没把空调关上", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “bị cảm” bằng chữ Hán hoặc pinyin.", answer: "感冒", acceptedAnswers: ["gǎnmào", "ganmao"], hint: "g… m…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "A + 把 + vật + động từ + 在/到/给/成 — 我把车放在车棚里了",
+          "把……翻译成…… ; 把……交给……",
+          "不是……吗？ — câu hỏi tu từ khẳng định",
+          "Câu 把: vật đã xác định, sau động từ phải có thành phần khác"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["我把钥匙放。", "我把钥匙放在桌子上了。", "我放把钥匙在桌子上了。"], correct: 1 },
+          { type: "fill", text: "请___这篇文章翻译___英语。", answers: [["把"], ["成"]], bank: ["把", "成", "给", "在"] },
+          { type: "flashcards", cards: [
+            { word: "钥匙", phonetic: "yàoshi", meaning: "chìa khóa" },
+            { word: "着急", phonetic: "zháojí", meaning: "sốt ruột" },
+            { word: "翻译", phonetic: "fānyì", meaning: "dịch" },
+            { word: "还", phonetic: "huán", meaning: "trả lại" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 29: 钱包被小偷偷走了",
+        vocabulary: [
+          { word: "被", phonetic: "bèi", meaning: "bị, được" },
+          { word: "小偷", phonetic: "xiǎotōu", meaning: "kẻ trộm" },
+          { word: "偷", phonetic: "tōu", meaning: "trộm" },
+          { word: "丢", phonetic: "diū", meaning: "mất, đánh rơi" },
+          { word: "倒霉", phonetic: "dǎoméi", meaning: "xui xẻo" },
+          { word: "小心", phonetic: "xiǎoxīn", meaning: "cẩn thận" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết 3 câu 把 với 上, 开, 出来" },
+        { id: "t2", text: "Đóng vai đi khám bệnh: kể triệu chứng bằng 4 câu" }
+      ]
+    },
+
+    {
+      id: "bai-29",
+      title: "Bài 29: 钱包被小偷偷走了。",
+      subtitle: "Ví bị kẻ trộm lấy mất rồi.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "被",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "Câu nào là câu bị động đúng?", options: ["钱包被小偷偷走了。", "小偷被钱包偷走了。", "钱包被偷走小偷了。", "被钱包小偷偷走了。"], correct: 0, hint: "Vật + 被/叫/让 + người làm + động từ + thành phần khác" },
+        { id: "cp2", time: "auto", question: "“Xe đạp của tôi chưa bị ai lấy đi” — phủ định đặt ở đâu?", options: ["我的自行车被人没骑走。", "我的自行车没被人骑走。", "我的自行车被没人骑走。", "我的自行车被人骑没走。"], correct: 1, hint: "没 đặt trước 被" },
+        { id: "cp3", time: "auto", question: "“Ngay cả cơm anh ấy cũng không ăn” nói thế nào?", options: ["他连饭也没吃。", "他也连饭没吃。", "连他饭也没吃。", "他饭连也没吃。"], correct: 0, hint: "连……也/都……: ngay cả … cũng …" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "真倒霉！我的钱包被小偷偷走了。", audioUrl: "", question: "Chuyện gì xảy ra?", options: ["Ví bị trộm", "Bị lạc đường", "Bị ốm", "Bị thầy phê bình"], correct: 0 },
+          { audioText: "他骑车的时候被三轮车撞倒了，腿受伤了。", audioUrl: "", question: "Anh ấy bị thương ở đâu?", options: ["Tay", "Chân", "Đầu", "Mắt"], correct: 1 },
+          { audioText: "我太累了，连饭也不想吃。", audioUrl: "", question: "Người nói mệt đến mức nào?", options: ["Ngay cả cơm cũng không muốn ăn", "Không muốn đi học", "Muốn đi ngủ ngay", "Không muốn nói chuyện"], correct: 0 }
+        ],
+        speaking: [
+          { text: "钱包被小偷偷走了。", phonetic: "Qiánbāo bèi xiǎotōu tōu zǒu le.", meaning: "Ví bị kẻ trộm lấy mất rồi.", audioUrl: "", minScore: 80 },
+          { text: "真倒霉！", phonetic: "Zhēn dǎoméi!", meaning: "Xui thật!", audioUrl: "", minScore: 80 },
+          { text: "我连一句话也没听懂。", phonetic: "Wǒ lián yí jù huà yě méi tīng dǒng.", meaning: "Ngay cả một câu tôi cũng không nghe hiểu.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "今天我真倒霉。\n早上骑车去学校的时候，我被一辆三轮车撞倒了，胳膊和腿都青了。\n下午在商店买东西，我的钱包又被小偷偷走了。\n晚上考听力，我连一个问题也没听懂。\n妈妈说：“以后要小心一点儿。”",
+          phonetic: "Jīntiān wǒ zhēn dǎoméi.\nZǎoshang qí chē qù xuéxiào de shíhou, wǒ bèi yí liàng sānlúnchē zhuàng dǎo le, gēbo hé tuǐ dōu qīng le.\nXiàwǔ zài shāngdiàn mǎi dōngxi, wǒ de qiánbāo yòu bèi xiǎotōu tōu zǒu le.\nWǎnshang kǎo tīnglì, wǒ lián yí ge wèntí yě méi tīng dǒng.\nMāma shuō: “Yǐhòu yào xiǎoxīn yìdiǎnr.”",
+          questions: [
+            { question: "Buổi sáng “tôi” gặp chuyện gì?", options: ["Bị xe ba bánh đâm ngã", "Mất ví", "Thi trượt"], correct: 0 },
+            { question: "Ví bị mất ở đâu?", options: ["Ở trường", "Ở cửa hàng", "Trên xe buýt"], correct: 1 },
+            { question: "Bài thi nghe “tôi” hiểu hết.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Xe đạp của tôi bị người ta lấy đi rồi.", words: ["我的", "自行车", "被", "人", "骑走了"], answer: "我的自行车被人骑走了", acceptedAnswers: [] },
+          { type: "order", prompt: "Ngay cả nước anh ấy cũng không uống.", words: ["他", "连", "水", "也", "没喝"], answer: "他连水也没喝", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “xui xẻo” bằng chữ Hán hoặc pinyin.", answer: "倒霉", acceptedAnswers: ["dǎoméi", "daomei"], hint: "d… m…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Câu 把 + bổ ngữ kết quả/xu hướng — 快把空调关上 ; 把书拿出来",
+          "Phủ định: 没/别 + 把 — 我没把窗户关上 ; 别把花瓶摔了",
+          "Đi khám: 头疼, 嗓子疼, 咳嗽, 发烧, 量体温, 打针",
+          "按时吃药 — uống thuốc đúng giờ"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["我把窗户没关上。", "我没把窗户关上。", "我把没窗户关上。"], correct: 1 },
+          { type: "fill", text: "请___窗户打开。别把花瓶摔___。", answers: [["把"], ["了", "坏"]], bank: ["把", "了", "被", "着"] },
+          { type: "flashcards", cards: [
+            { word: "感冒", phonetic: "gǎnmào", meaning: "cảm" },
+            { word: "发烧", phonetic: "fā shāo", meaning: "sốt" },
+            { word: "嗓子", phonetic: "sǎngzi", meaning: "họng" },
+            { word: "打针", phonetic: "dǎ zhēn", meaning: "tiêm" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Bài 30: 祝你一路平安",
+        vocabulary: [
+          { word: "告别", phonetic: "gàobié", meaning: "từ biệt" },
+          { word: "行李", phonetic: "xíngli", meaning: "hành lý" },
+          { word: "收拾", phonetic: "shōushi", meaning: "thu dọn" },
+          { word: "祝", phonetic: "zhù", meaning: "chúc" },
+          { word: "一路平安", phonetic: "yílù píng'ān", meaning: "thượng lộ bình an" },
+          { word: "护照", phonetic: "hùzhào", meaning: "hộ chiếu" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Kể một ngày xui xẻo của em bằng 4 câu, dùng 被" },
+        { id: "t2", text: "Viết 2 câu với 连……也/都……" }
+      ]
+    },
+
+    {
+      id: "bai-30",
+      title: "Bài 30: 祝你一路平安。",
+      subtitle: "Chúc bạn thượng lộ bình an.",
+      lang: "zh-CN",
+      unlocked: false,
+      videoUrl: "", // dán link video vào đây; để trống thì bài hiện "Sắp ra mắt"
+      cover: "祝",
+      checkpoints: [
+        { id: "cp1", time: "auto", question: "行李收拾好了 là kiểu câu gì?", options: ["Câu chữ 把", "Câu bị động về ý nghĩa (không có 被)", "Câu chữ 比", "Câu hỏi"], correct: 1, hint: "Vật + động từ + bổ ngữ: bị động về ý nghĩa" },
+        { id: "cp2", time: "auto", question: "“Hộ chiếu và vé máy bay đều mang theo rồi” nói thế nào?", options: ["护照和机票都带好了。", "护照和机票被都带了。", "都带好了护照和机票被。", "护照把机票都带好了。"], correct: 0, hint: "Chủ ngữ là vật chịu tác động, không cần 被" },
+        { id: "cp3", time: "auto", question: "Khi tiễn bạn ra sân bay, nói câu nào?", options: ["祝你一路平安！", "祝你生日快乐！", "欢迎光临！", "慢慢吃！"], correct: 0, hint: "祝你一路平安 / 一路顺风" }
+      ],
+      skills: {
+        listening: [
+          { audioText: "行李都收拾好了，护照也带好了。", audioUrl: "", question: "Đã chuẩn bị xong những gì?", options: ["Hành lý và hộ chiếu", "Chỉ vé máy bay", "Chưa chuẩn bị gì", "Quà tặng"], correct: 0 },
+          { audioText: "为我们的友谊干杯！", audioUrl: "", question: "Họ cạn ly vì điều gì?", options: ["Sức khỏe", "Tình hữu nghị", "Thành công", "Sinh nhật"], correct: 1 },
+          { audioText: "到了以后，代我向你父母问好。", audioUrl: "", question: "Người nói nhờ điều gì?", options: ["Gửi quà", "Gửi lời hỏi thăm bố mẹ", "Gọi điện ngay", "Viết thư"], correct: 1 }
+        ],
+        speaking: [
+          { text: "祝你一路平安！", phonetic: "Zhù nǐ yílù píng'ān!", meaning: "Chúc bạn thượng lộ bình an!", audioUrl: "", minScore: 80 },
+          { text: "为我们的友谊干杯！", phonetic: "Wèi wǒmen de yǒuyì gān bēi!", meaning: "Cạn ly vì tình bạn của chúng ta!", audioUrl: "", minScore: 80 },
+          { text: "代我向你父母问好。", phonetic: "Dài wǒ xiàng nǐ fùmǔ wèn hǎo.", meaning: "Cho tôi gửi lời hỏi thăm bố mẹ bạn.", audioUrl: "", minScore: 80 }
+        ],
+        reading: {
+          passage: "明天保罗就要回国了，今天朋友们来给他饯行。\n大家举起杯说：“为我们的友谊干杯！”\n保罗说：“感谢大家的帮助，我真舍不得离开这儿。”\n第二天，行李收拾好了，护照和机票也带好了。\n在机场，朋友们说：“祝你一路平安，代我们向你父母问好！”",
+          phonetic: "Míngtiān Bǎoluó jiù yào huí guó le, jīntiān péngyoumen lái gěi tā jiànxíng.\nDàjiā jǔ qǐ bēi shuō: “Wèi wǒmen de yǒuyì gān bēi!”\nBǎoluó shuō: “Gǎnxiè dàjiā de bāngzhù, wǒ zhēn shěbude líkāi zhèr.”\nDì èr tiān, xíngli shōushi hǎo le, hùzhào hé jīpiào yě dài hǎo le.\nZài jīchǎng, péngyoumen shuō: “Zhù nǐ yílù píng'ān, dài wǒmen xiàng nǐ fùmǔ wèn hǎo!”",
+          questions: [
+            { question: "Hôm nay bạn bè làm gì cho Paul?", options: ["Tiệc tiễn chân", "Mừng sinh nhật", "Đi du lịch"], correct: 0 },
+            { question: "Paul cảm thấy thế nào?", options: ["Rất muốn về ngay", "Không nỡ rời đi", "Rất mệt"], correct: 1 },
+            { question: "Paul quên mang hộ chiếu.", options: ["Đúng", "Sai"], correct: 1 }
+          ]
+        },
+        writing: [
+          { type: "order", prompt: "Hành lý đã thu dọn xong rồi.", words: ["行李", "收拾", "好了"], answer: "行李收拾好了", acceptedAnswers: [] },
+          { type: "order", prompt: "Chúc bạn thượng lộ bình an!", words: ["祝", "你", "一路", "平安"], answer: "祝你一路平安", acceptedAnswers: [] },
+          { type: "input", prompt: "Viết “hộ chiếu” bằng chữ Hán hoặc pinyin.", answer: "护照", acceptedAnswers: ["hùzhào", "huzhao"], hint: "h… zh…" }
+        ]
+      },
+      reviewOld: {
+        summary: [
+          "Câu bị động: vật + 被/叫/让 + người + động từ + thành phần khác — 钱包被小偷偷走了",
+          "Phủ định: 没 + 被 — 自行车没被人骑走",
+          "连……也/都……: ngay cả … cũng …",
+          "倒霉 xui xẻo ; 小心 cẩn thận"
+        ],
+        exercises: [
+          { type: "quiz", question: "Câu nào đúng?", options: ["钱包被偷走了小偷。", "钱包被小偷偷走了。", "小偷被钱包偷走了。"], correct: 1 },
+          { type: "fill", text: "我的自行车___人骑走了。他___饭也没吃。", answers: [["被", "叫", "让"], ["连"]], bank: ["被", "连", "把", "比"] },
+          { type: "flashcards", cards: [
+            { word: "小偷", phonetic: "xiǎotōu", meaning: "kẻ trộm" },
+            { word: "倒霉", phonetic: "dǎoméi", meaning: "xui xẻo" },
+            { word: "撞", phonetic: "zhuàng", meaning: "đâm, va" },
+            { word: "小心", phonetic: "xiǎoxīn", meaning: "cẩn thận" }
+          ] }
+        ]
+      },
+      previewNew: {
+        title: "Ôn tổng hợp Sách 2",
+        vocabulary: [
+          { word: "正在", phonetic: "zhèngzài", meaning: "đang" },
+          { word: "过", phonetic: "guo", meaning: "đã từng" },
+          { word: "着", phonetic: "zhe", meaning: "(đang ở trạng thái)" },
+          { word: "比", phonetic: "bǐ", meaning: "so với, hơn" },
+          { word: "把", phonetic: "bǎ", meaning: "(đưa tân ngữ lên trước)" },
+          { word: "被", phonetic: "bèi", meaning: "bị, được" }
+        ]
+      },
+      tasks: [
+        { id: "t1", text: "Viết lời chúc tiễn một người bạn đi xa (3 câu)" },
+        { id: "t2", text: "Ôn lại ngữ pháp Sách 2: mỗi điểm 了, 过, 着, 比, 把, 被 đặt 1 câu" }
+      ]
     }
   ]
 };
@@ -1748,6 +2860,23 @@ function checkLessonUnlock(lessonId) {
 }
 
 // 'open' = học được · 'locked' = chờ hoàn thành bài trước · 'plan' = cần kích hoạt tài khoản hoặc nằm ngoài gói học · 'soon' = bài chưa có video
+// Khoảng bài được học theo cột "Số bài tối đa": [bài đầu, bài cuối], đánh số từ 1.
+function lessonRange(spec) {
+  const total = APP_CONFIG.lessons.length;
+  if (spec === '' || spec == null || spec === 0) return [1, total];
+  if (typeof spec === 'number' || /^\s*\d+\s*$/.test(String(spec))) { const n = Number(spec); return n > 0 ? [1, Math.min(n, total)] : [1, total]; }
+  const text = String(spec);
+  const books = APP_CONFIG.books || [];
+  const picked = [];
+  const re = /s(?:á|a)ch\s*([\d+,\s&và]+)/gi;
+  let m;
+  while ((m = re.exec(text))) (m[1].match(/\d+/g) || []).forEach((d) => { const b = books[Number(d) - 1]; if (b) picked.push(b); });
+  if (picked.length) return [Math.min(...picked.map((b) => b.from)), Math.max(...picked.map((b) => b.to))];
+  const r = text.match(/(\d+)\s*[-–—~]\s*(\d+)/);
+  if (r) return [Math.max(1, Math.min(+r[1], +r[2])), Math.min(total, Math.max(+r[1], +r[2]))];
+  return [1, 0];   // ghi sai: không mở bài nào, để giáo viên sửa lại
+}
+
 function lessonAccess(lesson) {
   const index = lessonIndex(lesson.id);
   if (isTeacher()) return 'open';
@@ -1756,8 +2885,9 @@ function lessonAccess(lesson) {
   if (!session.active) {   // chưa kích hoạt hoặc đã hết hạn: chỉ học thử
     if (index >= Math.max(0, Number(SETTINGS.trialLessons) || 0)) return 'plan';
   } else {
-    const max = Number(session.maxLessons) || 0;
-    if (max > 0 && index >= max) return 'plan';
+    const [from, to] = lessonRange(session.maxLessons);
+    if (index + 1 < from || index + 1 > to) return 'plan';
+    if (index + 1 === from) return 'open';
   }
   if (index === 0 || lesson.unlocked === true) return 'open';
   const up = userProgress();
@@ -3126,7 +4256,7 @@ const LocalBackend = {
       const email = cleanEmail(demo.email);
       if (!email) return;
       const base = db[email] || { email, name: demo.name || '', pass: this.digest(String(demo.password || '')), tokens: [] };
-      db[email] = Object.assign(base, { active: demo.active !== false, plan: demo.plan || '', maxLessons: Number(demo.maxLessons) || 0, expiresAt: demo.expiresAt || '', role: demo.role || '' });
+      db[email] = Object.assign(base, { active: demo.active !== false, plan: demo.plan || '', maxLessons: demo.maxLessons || 0, expiresAt: demo.expiresAt || '', role: demo.role || '' });
     });
     return db;
   },
@@ -3138,7 +4268,7 @@ const LocalBackend = {
       plan: account.plan || '',
       active: !!account.active && !expired,
       expired,
-      maxLessons: Number(account.maxLessons) || 0,
+      maxLessons: account.maxLessons || 0,
       expiresAt: account.expiresAt || '',
       role: account.role === 'teacher' ? 'teacher' : 'student'
     };
@@ -3186,7 +4316,7 @@ const LocalBackend = {
 const Api = {
   remote() { return !!(APP_CONFIG.api && APP_CONFIG.api.url); },
   // Gửi JSON dạng text/plain để trình duyệt không gửi preflight (Apps Script không trả lời OPTIONS).
-  async call(payload, timeoutMs = 15000) {
+  async call(payload, timeoutMs = 30000) {
     if (!this.remote()) return LocalBackend.handle(payload);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -3217,14 +4347,25 @@ const Account = {
     session: 'Tài khoản vừa đăng nhập trên thiết bị khác. Đăng nhập lại để học tiếp',
     network: 'Không kết nối được máy chủ'
   },
-  message(reason) { return this.messages[reason] || this.messages.network; },
-  async request(payload) {
+  message(reason) { return this.messages[reason] || this.messages[reason === 'error' ? 'busy' : 'network']; },
+  async once(payload) {
     try {
       const result = await Api.call(payload);
       return result && typeof result === 'object' ? result : { ok: false, reason: 'network' };
     } catch (err) {
       return { ok: false, reason: 'network' };
     }
+  },
+  // Máy chủ bận hoặc mất mạng chốc lát (nhiều người vào cùng lúc): tự thử lại 2 lần trước khi báo lỗi.
+  async request(payload) {
+    const waits = payload.action === 'register' ? [] : [1500, 4000];
+    let result = await this.once(payload);
+    for (const wait of waits) {
+      if (result.ok || !['network', 'busy', 'error'].includes(result.reason)) break;
+      await new Promise((resolve) => setTimeout(resolve, wait + Math.random() * 1000));
+      result = await this.once(payload);
+    }
+    return result;
   },
   // Ghi phiên đăng nhập vào máy sau khi máy chủ chấp nhận.
   apply(result) {
@@ -3309,7 +4450,7 @@ const Cloud = {
     } catch (err) {
       this.setStatus('error');
       clearTimeout(this.timer);
-      this.timer = setTimeout(() => this.flush(), 30000);
+      this.timer = setTimeout(() => this.flush(), 10000 + Math.random() * 10000);
     } finally {
       this.busy = false;
       if (this.again) { this.again = false; this.schedule(300); }
