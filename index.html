@@ -300,6 +300,22 @@ const APP_CONFIG = {
   brand: "Riying Laoshi",
   seal: "学",
   teacherEmail: "nguyennhatanh30.11@gmail.com",
+
+  // Thanh toán: hiện trong hộp "Kích hoạt / Gia hạn". qrImage = tên file ảnh QR đặt cạnh index.html trên GitHub (để trống = không hiện ảnh).
+  // Các dòng để trống sẽ tự ẩn. Nội dung chuyển khoản luôn là email tài khoản của học viên.
+  payment: {
+    qrImage: "qr.png",
+    bank: "Vietcombank",
+    accountNumber: "0921000715279",
+    accountName: "NGUYEN NHAT ANH",
+    // Bảng giá hiện trong hộp Kích hoạt / Gia hạn. Học viên chọn một gói, gói đó được ghi vào email báo chuyển khoản.
+    prices: [
+      { name: "5 bài", price: "50.000đ" },
+      { name: "10 bài", price: "100.000đ" },
+      { name: "Sách 1 · 15 bài", price: "150.000đ" },
+      { name: "Trọn bộ · 30 bài", price: "300.000đ" }
+    ]
+  },
   language: "zh-CN",
 
   // Dán URL Web App của Google Apps Script (kết thúc bằng /exec): tài khoản và tiến trình học viên nằm trên Google Sheets.
@@ -4992,7 +5008,7 @@ function accountStatusHtml(session) {
   const chip = (tone, text) => `<span class="inline-flex items-center h-6 px-2 rounded-full text-xs font-semibold ${tone}">${esc(text)}</span>`;
   if (session.role === 'teacher') return chip('bg-brand-soft text-brand', 'Giáo viên');
   const upgrade = (label) => `<button type="button" data-action="activate" class="h-7 px-2.5 rounded-full bg-brand text-white text-xs font-semibold inline-flex items-center gap-1 hover:bg-brand-dark">${icon('key', 'size-3.5')}${label}</button>`;
-  if (session.expired) return chip('bg-rose-50 text-rose-600', 'Đã hết hạn') + upgrade('Gia hạn');
+  if (session.expired) return chip('bg-rose-50 text-rose-600', session.expiresAt ? `Hết hạn ${fmtDate(session.expiresAt)}` : 'Đã hết hạn') + upgrade('Gia hạn');
   if (!session.active) return chip('bg-amber-50 text-gold', 'Chưa kích hoạt') + upgrade('Kích hoạt');
   const left = daysLeft(session.expiresAt);
   const term = session.expiresAt ? `Hạn dùng ${fmtDate(session.expiresAt)}${left != null && left >= 0 ? `, còn ${left} ngày` : ''}` : 'Không giới hạn thời gian';
@@ -5103,14 +5119,36 @@ const Modal = {
         <a href="${esc(href)}" class="h-11 rounded-xl bg-brand text-white text-sm font-semibold inline-flex items-center justify-center gap-2 hover:bg-brand-dark">${icon('send')}Gửi email</a>
       </div>`);
   },
+  // Hộp thanh toán: mã QR, số tài khoản, nội dung chuyển khoản (= email), nút "Tôi đã chuyển khoản" báo cho giáo viên.
   activate() {
     const session = store.session || {};
     const renew = !!session.expired;
-    this.contact({
-      title: renew ? 'Gia hạn khóa học' : 'Kích hoạt tài khoản',
-      subject: renew ? 'Gia hạn khóa học E-Learning' : 'Kích hoạt tài khoản E-Learning',
-      body: session.email ? `Email tài khoản: ${session.email}` : ''
-    });
+    const pay = APP_CONFIG.payment || {};
+    const line = (label, value, copy) => value ? `<div class="flex items-center gap-2 h-11 px-3 rounded-xl bg-paper border border-line">
+        <span class="w-24 shrink-0 text-xs text-ink-3">${esc(label)}</span>
+        <span class="min-w-0 flex-1 truncate font-semibold select-all">${esc(value)}</span>
+        ${copy ? `<button type="button" data-action="copy-text" data-text="${esc(value)}" aria-label="Sao chép ${esc(label)}" class="size-8 shrink-0 grid place-items-center rounded-lg text-ink-3 hover:bg-white hover:text-brand">${icon('copy', 'size-4')}</button>` : ''}
+      </div>` : '';
+    const prices = (pay.prices || []).filter((p) => p && p.name && p.price);
+    this.open(`<div class="flex items-start gap-3">
+        <span class="size-11 shrink-0 grid place-items-center rounded-2xl bg-brand-soft text-brand">${icon('key', 'size-5')}</span>
+        <div class="min-w-0 flex-1 pt-0.5">
+          <h2 id="modal-title" class="font-semibold leading-tight">${renew ? 'Gia hạn khóa học' : 'Kích hoạt tài khoản'}</h2>
+          <p class="mt-0.5 text-sm text-ink-2 truncate">${esc(session.email || '')}</p>
+        </div>
+        <button type="button" data-action="modal-close" aria-label="Đóng" class="size-9 -mt-1 -mr-1 grid place-items-center rounded-lg text-ink-3 hover:bg-paper hover:text-ink">${icon('x', 'size-5')}</button>
+      </div>
+      ${prices.length ? `<div class="mt-4 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Chọn gói">${prices.map((p, i) => `<button type="button" role="radio" aria-checked="${i === 0}" data-action="pick-plan" data-price="${esc(p.price)}" data-plan="${esc(p.name + ' – ' + p.price)}" class="plan-opt rounded-xl border-2 px-3 py-2.5 text-center transition ${i === 0 ? 'border-brand bg-brand-soft' : 'border-line hover:border-brand/50'}"><div class="text-xs text-ink-2">${esc(p.name)}</div><div class="text-lg font-bold text-ink">${esc(p.price)}</div></button>`).join('')}</div>` : ''}
+      ${pay.qrImage ? `<img src="${esc(pay.qrImage)}" alt="Mã QR chuyển khoản" class="mt-4 mx-auto w-full max-w-[260px] aspect-square object-contain rounded-xl border border-line bg-white" onerror="this.remove()">` : ''}
+      <div class="mt-4 grid gap-2">
+        ${prices.length ? `<div class="flex items-center gap-2 h-11 px-3 rounded-xl bg-brand-soft border border-brand/30"><span class="w-24 shrink-0 text-xs text-ink-3">Số tiền</span><span id="pay-amount" class="min-w-0 flex-1 truncate font-bold text-brand">${esc(prices[0].price)}</span></div>` : ''}
+        ${line('Ngân hàng', pay.bank, false)}
+        ${line('Số tài khoản', pay.accountNumber, true)}
+        ${line('Chủ tài khoản', pay.accountName, false)}
+        ${line('Nội dung CK', session.email || '', true)}
+      </div>
+      <button type="button" data-action="paid" data-kind="${renew ? 'renew' : 'activate'}" data-plan="${esc(prices[0] ? prices[0].name + ' – ' + prices[0].price : '')}" class="mt-4 w-full h-12 rounded-xl bg-brand text-white font-semibold inline-flex items-center justify-center gap-2 hover:bg-brand-dark disabled:opacity-60">${icon('check')}<span>Tôi đã chuyển khoản</span></button>
+      <a href="mailto:${esc(APP_CONFIG.teacherEmail || '')}?subject=${encodeURIComponent(renew ? 'Gia hạn khóa học E-Learning' : 'Kích hoạt tài khoản E-Learning')}&body=${encodeURIComponent('Email tài khoản: ' + (session.email || ''))}" class="mt-2 h-10 w-full rounded-xl text-sm text-ink-2 inline-flex items-center justify-center gap-2 hover:text-brand">${icon('mail', 'size-4')}${esc(APP_CONFIG.teacherEmail || '')}</a>`);
   },
   forgot() {
     const email = cleanEmail(($('#gate-email') || {}).value);
@@ -5551,6 +5589,42 @@ const Actions = {
 
   /* ----- Liên hệ giáo viên ----- */
   'modal-close'() { Modal.close(); },
+  async 'copy-text'(button) {
+    const ok = await copyText(button.dataset.text || '');
+    toast(ok ? 'Đã sao chép' : 'Chưa sao chép được', ok ? 'ok' : 'err', 1600);
+  },
+  'pick-plan'(button) {
+    document.querySelectorAll('#modal-card .plan-opt').forEach((b) => {
+      const on = b === button;
+      b.setAttribute('aria-checked', String(on));
+      b.classList.toggle('border-brand', on);
+      b.classList.toggle('bg-brand-soft', on);
+      b.classList.toggle('border-line', !on);
+    });
+    const paid = document.querySelector('#modal-card [data-action="paid"]');
+    if (paid) paid.dataset.plan = button.dataset.plan;
+    const amount = document.getElementById('pay-amount');
+    if (amount) amount.textContent = button.dataset.price || '';
+  },
+  // Học viên báo đã chuyển khoản: máy chủ gửi email cho giáo viên và ghi vào cột "Ghi chú".
+  async paid(button) {
+    const session = store.session;
+    if (!session) return;
+    const label = button.querySelector('span');
+    button.disabled = true;
+    if (label) label.textContent = 'Đang gửi…';
+    let result;
+    if (Cloud.enabled()) result = await Account.request({ action: 'notify', email: session.email, token: session.token, kind: button.dataset.kind, plan: button.dataset.plan || '' });
+    else result = { ok: true };
+    if (result.ok) {
+      if (label) label.textContent = 'Đã báo cho giáo viên';
+      toast('Đã báo cho giáo viên. Tài khoản sẽ được mở sau khi cô kiểm tra.', 'ok', 5000);
+      return;
+    }
+    button.disabled = false;
+    if (label) label.textContent = 'Tôi đã chuyển khoản';
+    toast(result.reason === 'session' ? 'Phiên đăng nhập đã hết, vui lòng đăng nhập lại' : 'Chưa gửi được, bấm lại hoặc gửi email cho giáo viên', 'err', 5000);
+  },
   async 'copy-email'(button) {
     const ok = await copyText(APP_CONFIG.teacherEmail || '');
     const label = button.querySelector('span');
