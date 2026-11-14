@@ -4,6 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Riying Laoshi E-Learning</title>
+<meta name="description" content="Học tiếng Trung tại nhà cùng Riying Laoshi: 30 bài video, luyện Nghe – Nói – Đọc – Viết, máy chấm phát âm, kiểm tra sau mỗi 5 bài. Học thử Bài 1 miễn phí.">
+<link rel="icon" type="image/png" href="logo-icon.png">
+<link rel="apple-touch-icon" href="logo-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://riyingelearning.netlify.app/">
+<meta property="og:title" content="Riying Laoshi E-Learning – Học tiếng Trung tại nhà">
+<meta property="og:description" content="30 bài video, luyện Nghe – Nói – Đọc – Viết, máy chấm phát âm. Chỉ từ 50.000đ / 5 bài, học thử Bài 1 miễn phí.">
+<meta property="og:image" content="https://riyingelearning.netlify.app/banner.jpg">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="497">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
@@ -171,7 +182,8 @@
 <div id="boot-wait" class="min-h-dvh grid place-items-center text-brand"><svg class="ico size-8 spin" aria-hidden="true"><use href="#i-loader"></use></svg></div>
 
 <!-- ============================ CỔNG ĐĂNG NHẬP ============================ -->
-<section id="view-gate" hidden class="relative min-h-dvh grid place-items-center px-4 py-10 overflow-hidden">
+<section id="view-gate" hidden class="relative min-h-dvh flex flex-col items-center justify-center gap-6 px-4 py-10 overflow-hidden">
+  <img id="gate-banner" hidden alt="" class="relative w-full max-w-3xl rounded-3xl shadow-[0_30px_70px_-36px_rgb(22_32_58/.5)]">
   <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 -bottom-10 flex justify-center gap-3 opacity-60 select-none">
     <span class="tian w-[26vw] max-w-56 text-[18vw] sm:text-9xl text-brand/10">学</span>
     <span class="tian w-[26vw] max-w-56 text-[18vw] sm:text-9xl text-brand/10">习</span>
@@ -303,6 +315,8 @@
 const APP_CONFIG = {
   brand: "Riying Laoshi",
   seal: "学",
+  logo: "logo-icon.png",     // ảnh logo (đặt cạnh index.html); để trống thì dùng chữ ở dòng seal
+  banner: "banner.jpg",      // ảnh banner ở trang đăng nhập; để trống thì ẩn
   teacherEmail: "nguyennhatanh30.11@gmail.com",
 
   // Thanh toán: hiện trong hộp "Kích hoạt / Gia hạn". qrImage = tên file ảnh QR đặt cạnh index.html trên GitHub (để trống = không hiện ảnh).
@@ -6049,7 +6063,19 @@ const App = {
   renderHeader() {
     const session = store.session;
     $$('[data-brand]').forEach((node) => { node.textContent = APP_CONFIG.brand || 'E-Learning'; });
-    $$('[data-seal]').forEach((node) => { node.textContent = APP_CONFIG.seal || '学'; });
+    $$('[data-seal]').forEach((node) => {
+      if (APP_CONFIG.logo) {
+        node.style.background = '#192030';
+        node.innerHTML = `<img src="${esc(APP_CONFIG.logo)}" alt="" class="size-full rounded-[inherit] object-cover">`;
+        node.firstChild.onerror = () => { node.style.background = ''; node.textContent = APP_CONFIG.seal || '学'; };
+      } else node.textContent = APP_CONFIG.seal || '学';
+    });
+    const banner = $('#gate-banner');
+    if (banner && APP_CONFIG.banner && !banner.dataset.src) {
+      banner.dataset.src = APP_CONFIG.banner;
+      banner.onload = () => { banner.hidden = false; };
+      banner.src = APP_CONFIG.banner;
+    }
     document.title = `${APP_CONFIG.brand || 'E-Learning'} E-Learning`;
     if (session) {
       const label = session.name || session.email || '';
