@@ -3348,12 +3348,118 @@ function numberToHanzi(n) {
 function isCharBased(text) {
   return /[぀-ヿ㐀-䶿一-鿿]/.test(String(text ?? ''));
 }
+// ---- Chấm Nói theo âm đọc: chữ khác nhưng cùng âm (bỏ qua thanh điệu) vẫn tính đúng ----
+// Máy nhận diện hay viết nhầm chữ đồng âm (她/他, 在/再, 吗/嘛…) dù học viên đọc đúng. Bảng âm đọc được dựng từ
+// chính phiên âm trong bài học, cộng thêm một nhóm chữ đồng âm thường gặp bên dưới.
+const COMMON_SOUNDS = 'ta:他她它塔踏 de:的地得德 zai:在再载 ma:吗嘛妈马码骂麻 ne:呢 ba:吧八爸把 a:啊阿 shi:是事市试时十识实使室视师诗世式 ' +
+  'men:们门 hao:好号 ni:你呢泥 na:那哪拿 zuo:做作坐座昨左 ji:几己机鸡记计寄级极急挤 jia:家加价假 qi:起七气汽期骑其奇 ' +
+  'yi:一以已衣医意易亿 you:有又友右油游由 jiu:就九久酒旧 dou:都豆斗 le:了乐 guo:过国果锅 mai:买卖 jin:进近今金斤 ' +
+  'xie:谢写些鞋 qing:请清情青轻晴 wen:问文闻温 yao:要药 xiang:想香相向像 shuo:说 dian:点电店 fan:饭反 qian:钱前千 ' +
+  'shu:书数树叔 xue:学雪 xiao:小笑校 da:大打达答 duo:多 shao:少 jian:见间件建简 mian:面免 dong:东懂动 xi:西洗喜系习 ' +
+  'nan:南男难 bei:北被杯背 he:和喝河合 gen:跟 hen:很 zhe:这着 zhi:只知支直之纸 ge:个哥歌 ren:人认 zhong:中钟种重 wei:为位喂未 ' +
+  'shang:上商 xia:下夏吓 tian:天田甜 nian:年念 yue:月越 ri:日 hou:后候 zao:早 wan:晚完玩碗万 che:车 kan:看 ting:听停 ' +
+  'du:读度 ke:可课客渴 lai:来 qu:去取 hui:回会 zou:走 kuai:快块 man:慢 gui:贵 pian:便片 yong:用 bu:不步部 mei:没美每妹 ';
+let SOUND_MAP = null;
+function soundKey(syllable) {
+  return String(syllable).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/v/g, 'u');
+}
+// Tách một chuỗi phiên âm liền (vd. "Lǎoshī") thành các âm tiết.
+const PINYIN_SYLLABLE = /(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])?(iang|iong|uang|ueng|ang|eng|ing|ong|ian|iao|uai|uan|ai|ei|ao|ou|an|en|er|ia|ie|iu|in|ua|uo|ui|un|ue|a|o|e|i|u)/g;
+function pinyinSyllables(text) {
+  const plain = soundKey(text).replace(/[^a-z\s']/g, ' ');
+  const out = [];
+  plain.split(/[\s']+/).filter(Boolean).forEach((word) => {
+    const parts = word.match(PINYIN_SYLLABLE) || [];
+    if (parts.join('') === word) out.push(...parts);
+    else out.push(null);   // không tách chắc chắn được: bỏ cả câu này
+  });
+  return out.includes(null) ? null : out;
+}
+function soundMap() {
+  if (SOUND_MAP) return SOUND_MAP;
+  const map = {};
+  COMMON_SOUNDS.trim().split(/\s+/).forEach((group) => {
+    const [py, chars] = group.split(':');
+    Array.from(chars || '').forEach((c) => { if (!map[c]) map[c] = py; });
+  });
+  const learn = (han, phonetic) => {
+    const chars = Array.from(String(han || '')).filter((c) => /[㐀-鿿]/.test(c));
+    let syll = pinyinSyllables(phonetic || '');
+    // Âm cuốn lưỡi: "nǎr" ứng với 2 chữ 哪儿 → tách thành "na er".
+    if ((!syll || syll.length !== chars.length) && chars.includes('儿')) syll = pinyinSyllables(String(phonetic || '').replace(/(\S{2,})r(?=[\s,.!?;:，。！？]|$)/g, '$1 er'));
+    if (!chars.length || !syll || syll.length !== chars.length) return;
+    chars.forEach((c, i) => { if (!map[c]) map[c] = syll[i]; });
+  };
+  (APP_CONFIG.lessons || []).forEach((lesson) => {
+    const sk = lesson.skills || {};
+    (sk.speaking || []).forEach((it) => learn(it.text, it.phonetic));
+    ((lesson.previewNew || {}).vocabulary || []).forEach((v) => learn(v.word, v.phonetic));
+  });
+  SOUND_MAP = map;
+  return map;
+}
+// Phiên âm có dấu thanh lấy từ chính giáo trình (chữ → âm tiết), dùng để hiện câu máy nghe được.
+let TONED_MAP = null;
+function tonedSyllables(text) {
+  const out = [];
+  String(text || '').normalize('NFC').toLowerCase().split(/[^a-zA-ZÀ-ɏǍ-ǜ̀-ͯü]+/).filter(Boolean).forEach((word) => {
+    const chars = Array.from(word);
+    const plain = chars.map((c) => soundKey(c).charAt(0) || c).join('');
+    if (plain.length !== chars.length) { out.push(null); return; }
+    const re = new RegExp(PINYIN_SYLLABLE.source, 'g');
+    let m, pos = 0;
+    while ((m = re.exec(plain))) {
+      if (m.index !== pos) { out.push(null); return; }
+      out.push(chars.slice(m.index, m.index + m[0].length).join(''));
+      pos = m.index + m[0].length;
+    }
+    if (pos !== plain.length) out.push(null);
+  });
+  return out.includes(null) ? null : out;
+}
+function tonedMap() {
+  if (TONED_MAP) return TONED_MAP;
+  const map = {};
+  const learn = (han, phonetic) => {
+    const chars = Array.from(String(han || '')).filter((c) => /[㐀-鿿]/.test(c));
+    let syll = tonedSyllables(phonetic);
+    if ((!syll || syll.length !== chars.length) && chars.includes('儿')) syll = tonedSyllables(String(phonetic || '').replace(/(\S{2,})r(?=[\s,.!?;:，。！？]|$)/g, '$1 er'));
+    if (!chars.length || !syll || syll.length !== chars.length) return;
+    chars.forEach((c, i) => { if (!map[c]) map[c] = syll[i]; });
+  };
+  (APP_CONFIG.lessons || []).forEach((lesson) => {
+    const sk = lesson.skills || {};
+    (sk.speaking || []).forEach((it) => learn(it.text, it.phonetic));
+    ((lesson.previewNew || {}).vocabulary || []).forEach((v) => learn(v.word, v.phonetic));
+  });
+  TONED_MAP = map;
+  return map;
+}
+// Câu máy nghe được → phiên âm, để học viên không thấy chữ Hán máy viết nhầm.
+function heardPinyin(text) {
+  const toned = tonedMap();
+  const sounds = soundMap();
+  const out = [];
+  let ascii = false;
+  Array.from(String(text || '').normalize('NFKC')).forEach((c) => {
+    if (/[㐀-鿿]/.test(c)) { out.push(toned[c] || sounds[c] || '·'); ascii = false; }
+    else if (/[a-z0-9]/i.test(c)) { if (ascii) out[out.length - 1] += c; else out.push(c); ascii = true; }
+    else ascii = false;
+  });
+  return out.join(' ');
+}
 function speechTokens(text, charBased) {
   let s = String(text ?? '').normalize('NFKC').toLowerCase();
   if (charBased) s = s.replace(/\d+/g, (d) => numberToHanzi(parseInt(d, 10)));
   s = s.replace(/[\p{P}\p{S}]/gu, ' ').replace(/\s+/g, ' ').trim();
   if (!s) return [];
-  if (charBased) return Array.from(s.replace(/ /g, '')).map((c) => HOMOPHONE_MAP[c] || c);
+  if (charBased) {
+    const sounds = soundMap();
+    return Array.from(s.replace(/ /g, '')).map((c) => {
+      const same = HOMOPHONE_MAP[c] || c;
+      return sounds[same] ? 'py:' + sounds[same] : same;   // so theo âm đọc (bỏ thanh điệu) nếu biết âm của chữ
+    });
+  }
   return s.split(' ');
 }
 // Gióng chuỗi con chung dài nhất giữa câu mẫu và câu nhận diện được.
@@ -3492,13 +3598,18 @@ function emptyLessonProgress() {
 }
 // Tiến độ của học viên trong một bài.
 function LP(lessonId) {
+  // Luôn trả về CÙNG một đối tượng (chỉ bổ sung trường còn thiếu). Trước đây mỗi lần gọi lại tạo đối tượng mới,
+  // nên đánh dấu "đã xong bài" ghi vào đối tượng cũ bị mất.
   const up = userProgress();
-  const p = up.lessons[lessonId] = Object.assign(emptyLessonProgress(), up.lessons[lessonId] || {});
-  p.preview = Object.assign({ seen: [], ex: {} }, p.preview || {});
-  p.preview.seen = p.preview.seen || [];
-  p.preview.ex = p.preview.ex || {};
-  p.review = p.review || {};
-  p.speaking = p.speaking || {};
+  let p = up.lessons[lessonId];
+  if (!p || typeof p !== 'object') p = up.lessons[lessonId] = emptyLessonProgress();
+  const base = emptyLessonProgress();
+  Object.keys(base).forEach((key) => { if (p[key] === undefined || p[key] === null && key !== 'doneAt') p[key] = base[key]; });
+  if (!p.preview || typeof p.preview !== 'object') p.preview = { seen: [], ex: {} };
+  if (!Array.isArray(p.preview.seen)) p.preview.seen = [];
+  if (!p.preview.ex || typeof p.preview.ex !== 'object') p.preview.ex = {};
+  if (!p.review || typeof p.review !== 'object') p.review = {};
+  if (!p.speaking || typeof p.speaking !== 'object') p.speaking = {};
   return p;
 }
 
@@ -4305,7 +4416,7 @@ const Voice = {
         rec.lang = lang;
         rec.continuous = false;
         rec.interimResults = true;
-        rec.maxAlternatives = 3;
+        rec.maxAlternatives = 5;   // lấy nhiều cách nghe nhất có thể rồi chọn cách khớp câu mẫu nhất
         rec.onresult = (event) => {
           let interim = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -5641,7 +5752,7 @@ const Panels = {
 
     let feedback = '';
     if (recording) {
-      feedback = `<p id="sp-live" class="hz min-h-7 text-lg text-ink-2" lang="${esc(lesson.lang)}">${esc(st.live || '')}</p>`;
+      feedback = `<p id="sp-live" class="py min-h-7 text-lg text-ink-2">${esc(heardPinyin(st.live || ''))}</p>`;
     } else if (st.error) {
       feedback = `<p class="inline-flex items-center gap-1.5 text-sm text-rose-600" role="alert">${icon('alert')}${esc(SPEAK_ERRORS[st.error] || (String(st.error).startsWith('asr:') ? SPEAK_ERRORS.asr + ' (' + String(st.error).slice(4) + ')' : SPEAK_ERRORS.retry))}</p>`;
     } else if (st.result) {
@@ -5650,7 +5761,7 @@ const Panels = {
           <span class="text-3xl font-bold tabular-nums ${pass ? 'text-emerald-600' : 'text-rose-600'}">${st.result.score}%</span>
           <span class="inline-flex items-center gap-1 h-7 px-2.5 rounded-full text-xs font-semibold ${pass ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-600'}">${pass ? icon('check', 'size-3.5') + 'Đạt' : 'Cần ' + min + '%'}</span>
         </div>
-        <p class="hz text-ink-2" lang="${esc(lesson.lang)}">${esc(st.result.transcript)}</p>`;
+        ${st.result.transcript ? `<p class="py text-ink-2"><span class="text-xs text-ink-3">Máy nghe:</span> ${esc(heardPinyin(st.result.transcript))}</p>` : ''}`;
     } else if (st.mode === 'record' && st.recorded) {
       const chip = (ok, label) => `<span class="inline-flex items-center gap-1 h-7 px-2.5 rounded-full text-xs font-semibold ${ok ? 'bg-emerald-50 text-emerald-700' : 'bg-paper text-ink-2'}">${icon(ok ? 'check' : 'clock', 'size-3.5')}${label}</span>`;
       feedback = `<div class="flex flex-wrap justify-center gap-2" role="status">${chip(true, 'Thu âm ' + st.seconds.toFixed(1) + 's')}${chip(!!st.heardSample, 'Nghe mẫu')}${chip(!!st.heardSelf, 'Nghe lại giọng của bạn')}</div>`;
@@ -6192,13 +6303,17 @@ const App = {
     Voice.release();
     Modal.close();
     this.show('gate');
-    this.setGateMode('login');
+    // Từ trang giới thiệu bấm "Đăng ký học" (hoc.html#dang-ky): mở sẵn thẻ Đăng ký.
+    const wantRegister = !message && /^#dang-?ky$/i.test(location.hash);
+    this.setGateMode(wantRegister ? 'register' : 'login');
+    if (wantRegister) { try { history.replaceState(null, '', location.pathname + location.search); } catch (err) { /* bỏ qua */ } }
     const error = $('#gate-error');
     error.hidden = !message;
     error.innerHTML = message ? `${icon('alert')}<span>${esc(message)}</span>` : '';
     $('#gate-password').value = '';
     const email = $('#gate-email');
-    (email.value ? $('#gate-password') : email).focus();
+    if (wantRegister) $('#gate-name').focus();
+    else (email.value ? $('#gate-password') : email).focus();
   },
   async submitAuth() {
     const register = this.gateMode === 'register';
@@ -6786,7 +6901,7 @@ const Actions = {
       onLive: (text) => {
         st.live = text;
         const live = $('#sp-live');
-        if (live) live.textContent = text;
+        if (live) live.textContent = heardPinyin(text);
       },
       onDone: (result) => finishSpeaking(lesson, index, result)
     });
