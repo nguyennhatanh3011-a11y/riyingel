@@ -5012,7 +5012,7 @@ function accountStatusHtml(session) {
   if (!session.active) return chip('bg-amber-50 text-gold', 'Chưa kích hoạt') + upgrade('Kích hoạt');
   const left = daysLeft(session.expiresAt);
   const term = session.expiresAt ? `Hạn dùng ${fmtDate(session.expiresAt)}${left != null && left >= 0 ? `, còn ${left} ngày` : ''}` : 'Không giới hạn thời gian';
-  return (session.plan ? chip('bg-emerald-50 text-emerald-700', session.plan) : '') + `<span class="text-xs text-ink-2">${esc(term)}</span>`;
+  return (session.plan ? chip('bg-emerald-50 text-emerald-700', session.plan) : '') + `<span class="text-xs text-ink-2">${esc(term)}</span>` + upgrade('Gia hạn');
 }
 function dashboardHtml() {
   const session = store.session;
@@ -5122,7 +5122,7 @@ const Modal = {
   // Hộp thanh toán: mã QR, số tài khoản, nội dung chuyển khoản (= email), nút "Tôi đã chuyển khoản" báo cho giáo viên.
   activate() {
     const session = store.session || {};
-    const renew = !!session.expired;
+    const renew = !!(session.expired || session.active);   // còn hạn vẫn gia hạn / mua thêm trước được
     const pay = APP_CONFIG.payment || {};
     const line = (label, value, copy) => value ? `<div class="flex items-center gap-2 h-11 px-3 rounded-xl bg-paper border border-line">
         <span class="w-24 shrink-0 text-xs text-ink-3">${esc(label)}</span>
@@ -5297,7 +5297,7 @@ const App = {
       $('#panel').innerHTML = `<div class="p-8 flex flex-col items-center gap-4 text-center">
         <span class="size-14 grid place-items-center rounded-2xl bg-amber-50 text-gold">${icon('lock', 'size-6')}</span>
         <p class="font-semibold">${store.session.expired ? 'Khóa học đã hết hạn' : 'Tài khoản chưa được kích hoạt'}</p>
-        <button type="button" data-action="activate" class="h-11 px-5 rounded-xl bg-brand text-white font-semibold inline-flex items-center gap-2 hover:bg-brand-dark">${icon('key')}${store.session.expired ? 'Gia hạn khóa học' : 'Kích hoạt tài khoản'}</button>
+        <button type="button" data-action="activate" class="h-11 px-5 rounded-xl bg-brand text-white font-semibold inline-flex items-center gap-2 hover:bg-brand-dark">${icon('key')}${store.session.expired ? 'Gia hạn khóa học' : store.session.active ? 'Gia hạn / Mua thêm bài' : 'Kích hoạt tài khoản'}</button>
       </div>`;
       this.renderSidebar();
       return;
@@ -5506,8 +5506,8 @@ const App = {
       </button>`;
     }).join('');
     const session = store.session || {};
-    const upgrade = !isTeacher() && !session.active
-      ? `<button type="button" data-action="activate" class="mt-auto h-10 rounded-xl text-sm font-medium text-brand inline-flex items-center justify-center gap-2 hover:bg-brand-soft">${icon('key')}${session.expired ? 'Gia hạn khóa học' : 'Kích hoạt tài khoản'}</button>`
+    const upgrade = !isTeacher()
+      ? `<button type="button" data-action="activate" class="mt-auto h-10 rounded-xl text-sm font-medium text-brand inline-flex items-center justify-center gap-2 hover:bg-brand-soft">${icon('key')}${session.active ? 'Gia hạn / Mua thêm bài' : session.expired ? 'Gia hạn khóa học' : 'Kích hoạt tài khoản'}</button>`
       : '';
     $('#sidebar').innerHTML = `<div class="px-1 pt-1 pb-1">
         <div class="flex items-baseline justify-between gap-3">
