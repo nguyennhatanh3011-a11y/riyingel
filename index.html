@@ -289,7 +289,7 @@
 <div id="view-builder" hidden class="min-h-dvh flex flex-col"></div>
 
 <div id="modal" hidden class="fixed inset-0 z-50 grid place-items-center p-4 bg-ink/45 backdrop-blur-[2px]">
-  <div id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="w-full max-w-sm max-h-full overflow-y-auto scroll-thin bg-surface rounded-3xl p-5 sm:p-6 shadow-2xl animate-rise"></div>
+  <div id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="w-full max-w-sm max-h-full overflow-y-auto overflow-x-hidden scroll-thin bg-surface rounded-3xl p-5 sm:p-6 shadow-2xl animate-rise"></div>
 </div>
 <div id="toasts" aria-live="polite" class="fixed z-[60] inset-x-0 top-[4.25rem] px-4 flex flex-col items-center gap-2 pointer-events-none"></div>
 <canvas id="confetti" hidden class="fixed inset-0 z-[55] w-full h-full pointer-events-none"></canvas>
@@ -5148,7 +5148,30 @@ const Modal = {
         ${line('Nội dung CK', session.email || '', true)}
       </div>
       <button type="button" data-action="paid" data-kind="${renew ? 'renew' : 'activate'}" data-plan="${esc(prices[0] ? prices[0].name + ' – ' + prices[0].price : '')}" class="mt-4 w-full h-12 rounded-xl bg-brand text-white font-semibold inline-flex items-center justify-center gap-2 hover:bg-brand-dark disabled:opacity-60">${icon('check')}<span>Tôi đã chuyển khoản</span></button>
+      <button type="button" data-action="free-form" class="mt-2 w-full h-11 rounded-xl border border-line text-sm font-semibold text-ink-2 inline-flex items-center justify-center gap-2 hover:border-brand hover:text-brand">${icon('user', 'size-4')}Học viên đang học tại lớp · Miễn phí</button>
       <a href="mailto:${esc(APP_CONFIG.teacherEmail || '')}?subject=${encodeURIComponent(renew ? 'Gia hạn khóa học E-Learning' : 'Kích hoạt tài khoản E-Learning')}&body=${encodeURIComponent('Email tài khoản: ' + (session.email || ''))}" class="mt-2 h-10 w-full rounded-xl text-sm text-ink-2 inline-flex items-center justify-center gap-2 hover:text-brand">${icon('mail', 'size-4')}${esc(APP_CONFIG.teacherEmail || '')}</a>`);
+  },
+  // Học viên đang học tại lớp: nhập họ tên và lớp, gửi yêu cầu mở khóa miễn phí cho giáo viên.
+  freeForm() {
+    const session = store.session || {};
+    const field = (id, label, value, placeholder) => `<label class="block">
+        <span class="text-xs font-medium text-ink-2">${esc(label)}</span>
+        <input id="${id}" type="text" value="${esc(value || '')}" placeholder="${esc(placeholder)}" maxlength="80" autocomplete="off" class="mt-1 w-full h-11 px-3 rounded-xl border border-line bg-surface focus:border-brand focus:outline-none">
+      </label>`;
+    this.open(`<div class="flex items-start gap-3">
+        <span class="size-11 shrink-0 grid place-items-center rounded-2xl bg-emerald-50 text-emerald-600">${icon('user', 'size-5')}</span>
+        <div class="min-w-0 flex-1 pt-0.5">
+          <h2 id="modal-title" class="font-semibold leading-tight">Học viên đang học tại lớp</h2>
+          <p class="mt-0.5 text-sm text-ink-2 truncate">${esc(session.email || '')}</p>
+        </div>
+        <button type="button" data-action="modal-close" aria-label="Đóng" class="size-9 -mt-1 -mr-1 grid place-items-center rounded-lg text-ink-3 hover:bg-paper hover:text-ink">${icon('x', 'size-5')}</button>
+      </div>
+      <div class="mt-4 grid gap-3">
+        ${field('free-name', 'Họ và tên', session.name, 'Nguyễn Văn A')}
+        ${field('free-class', 'Lớp đang học', '', 'Ví dụ: Sơ cấp 1 – tối thứ 3, 5')}
+      </div>
+      <button type="button" data-action="free-send" class="mt-4 w-full h-12 rounded-xl bg-emerald-600 text-white font-semibold inline-flex items-center justify-center gap-2 hover:bg-emerald-700 disabled:opacity-60">${icon('send')}<span>Gửi yêu cầu mở khóa</span></button>
+      <button type="button" data-action="activate" class="mt-2 w-full h-10 rounded-xl text-sm text-ink-2 inline-flex items-center justify-center gap-2 hover:text-brand">${icon('chevron-left', 'size-4')}Bảng giá</button>`);
   },
   forgot() {
     const email = cleanEmail(($('#gate-email') || {}).value);
@@ -5593,6 +5616,35 @@ const Actions = {
     const ok = await copyText(button.dataset.text || '');
     toast(ok ? 'Đã sao chép' : 'Chưa sao chép được', ok ? 'ok' : 'err', 1600);
   },
+  'free-form'() { Modal.freeForm(); },
+  async 'free-send'(button) {
+    const session = store.session;
+    if (!session) return;
+    const nameInput = $('#free-name');
+    const classInput = $('#free-class');
+    const name = String(nameInput.value || '').trim();
+    const className = String(classInput.value || '').trim();
+    if (!name) { nameInput.focus(); toast('Nhập họ và tên', 'err'); return; }
+    if (!className) { classInput.focus(); toast('Nhập lớp đang học', 'err'); return; }
+    const label = button.querySelector('span');
+    button.disabled = true;
+    if (label) label.textContent = 'Đang gửi…';
+    const result = Cloud.enabled()
+      ? await Account.request({ action: 'notify', email: session.email, token: session.token, kind: 'student', name, className })
+      : { ok: true };
+    if (result.ok) {
+      if (label) label.textContent = 'Đã gửi yêu cầu';
+      toast('Đã gửi yêu cầu. Tài khoản sẽ được mở sau khi cô kiểm tra.', 'ok', 5000);
+      return;
+    }
+    button.disabled = false;
+    if (label) label.textContent = 'Gửi yêu cầu mở khóa';
+    const detail = String(result.error || '');
+    toast(result.reason === 'session' ? 'Phiên đăng nhập đã hết, vui lòng đăng nhập lại'
+      : result.reason === 'unknown' ? 'Máy chủ chưa cập nhật bản mới (Code.gs)'
+      : /mail|quyền|permission|authoriz/i.test(detail) ? 'Máy chủ chưa được cấp quyền gửi email (chạy hàm thuGuiMail)'
+      : 'Chưa gửi được, bấm lại hoặc gửi email cho giáo viên', 'err', 6000);
+  },
   'pick-plan'(button) {
     document.querySelectorAll('#modal-card .plan-opt').forEach((b) => {
       const on = b === button;
@@ -5623,7 +5675,12 @@ const Actions = {
     }
     button.disabled = false;
     if (label) label.textContent = 'Tôi đã chuyển khoản';
-    toast(result.reason === 'session' ? 'Phiên đăng nhập đã hết, vui lòng đăng nhập lại' : 'Chưa gửi được, bấm lại hoặc gửi email cho giáo viên', 'err', 5000);
+    const detail = String(result.error || '');
+    const why = result.reason === 'session' ? 'Phiên đăng nhập đã hết, vui lòng đăng nhập lại'
+      : result.reason === 'unknown' ? 'Máy chủ chưa cập nhật bản mới (Code.gs)'
+      : /mail|quyền|permission|authoriz/i.test(detail) ? 'Máy chủ chưa được cấp quyền gửi email (chạy hàm thuGuiMail)'
+      : 'Chưa gửi được, bấm lại hoặc gửi email cho giáo viên';
+    toast(why, 'err', 6000);
   },
   async 'copy-email'(button) {
     const ok = await copyText(APP_CONFIG.teacherEmail || '');
