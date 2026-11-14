@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /audio/
+
+Sitemap: https://riyingelearning.netlify.app/sitemap.xml
