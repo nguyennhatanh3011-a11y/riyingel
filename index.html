@@ -150,6 +150,7 @@
 <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
 <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
 <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
 <symbol id="i-crown" viewBox="0 0 24 24"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></symbol>
 <symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
 <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></symbol>
@@ -219,6 +220,9 @@
       <span class="font-semibold tracking-tight truncate" data-brand></span>
       <span class="flex-1"></span>
       <span id="sync-badge" hidden class="size-9 grid place-items-center rounded-lg text-ink-3"></span>
+      <button id="btn-board" type="button" data-action="board" aria-label="Bảng xếp hạng" title="Bảng xếp hạng" class="size-9 grid place-items-center rounded-lg text-gold hover:bg-amber-50">
+        <svg class="ico size-5" aria-hidden="true"><use href="#i-trophy"></use></svg>
+      </button>
       <button id="user-chip" type="button" data-action="me" aria-label="Tiến trình của tôi" title="Tiến trình của tôi" class="h-9 pl-1.5 pr-1.5 sm:pr-3 flex items-center gap-2 rounded-lg bg-paper text-sm font-medium text-ink max-w-56 hover:bg-brand-soft hover:text-brand"></button>
       <button id="btn-builder" type="button" hidden data-action="open-builder" aria-label="Công cụ tạo bài học" title="Công cụ tạo bài học" class="size-9 grid place-items-center rounded-lg text-ink-2 hover:bg-paper hover:text-brand">
         <svg class="ico size-5" aria-hidden="true"><use href="#i-wrench"></use></svg>
@@ -2904,6 +2908,9 @@ const APP_CONFIG = {
 /*       "order" (xếp thẻ từ thành câu) · "write" (dịch, gõ câu tiếng Trung)    */
 /* a = vị trí đáp án đúng (0 = A, 1 = B, 2 = C, 3 = D)                          */
 /* ========================================================================== */
+// Đua hạng: ai đứng hạng 1 ở mỗi bài kiểm tra (tính lần làm đầu tiên, điểm máy chấm) được thưởng.
+APP_CONFIG.testPrize = "10.000đ";
+
 APP_CONFIG.tests = [
   {
     id: "kt-1", title: "Kiểm tra 1", subtitle: "Bài 1 – 5", range: [1, 5],
@@ -3571,8 +3578,9 @@ function lessonAccess(lesson) {
   } else {
     const [from, to] = lessonRange(session.maxLessons);
     if (index + 1 < from || index + 1 > to) return 'plan';
-    if (index + 1 === from) return 'open';
+    if (index + 1 === from) return testBlocking(index + 1) ? 'locked' : 'open';
   }
+  if (testBlocking(index + 1)) return 'locked';   // bài kiểm tra trước chưa đạt: làm lại kỹ năng đã
   if (index === 0 || lesson.unlocked === true) return 'open';
   const up = userProgress();
   if (up.unlocked.includes(lesson.id)) return 'open';
@@ -5204,7 +5212,9 @@ function mergeProgress(remote) {
     const l = local.tests[id];
     if (!l) { local.tests[id] = r; return; }
     const newer = String(r.at || '') > String(l.at || '');
-    local.tests[id] = { best: Math.max(Number(l.best) || 0, Number(r.best) || 0), last: newer ? r.last : l.last, n: Math.max(Number(l.n) || 0, Number(r.n) || 0), at: newer ? r.at : l.at };
+    const src = newer ? r : l;
+    local.tests[id] = { best: Math.max(Number(l.best) || 0, Number(r.best) || 0), last: src.last, n: Math.max(Number(l.n) || 0, Number(r.n) || 0), at: src.at, redo: !!src.redo, cleared: !!src.cleared,
+      first: !l.first ? r.first || null : !r.first ? l.first : (String(r.first.at) < String(l.first.at) ? r.first : l.first) };
   });
   Object.keys(remote.lessons || {}).forEach((id) => {
     const r = remote.lessons[id] || {};
@@ -6013,6 +6023,7 @@ const App = {
     this.show('app');
     ui.testId = null;
     ui.test = null;
+    applyTestRedo(null);
     this.renderHeader();
     Cloud.setStatus('ok');
     const up = userProgress();
@@ -6056,11 +6067,18 @@ const App = {
     if (access === 'soon') { toast(`${lesson.title} sắp ra mắt`, 'info'); return; }
     if (access === 'plan') { Modal.activate(); return; }
     if (access === 'locked') {
+      const block = testBlocking(lessonIndex(id) + 1);
+      if (block) {
+        toast(`${block.title} chưa đạt: làm lại Nghe, Nói, Đọc, Viết của Bài ${block.range[0]} – ${block.range[1]}`, 'warn', 4200);
+        shakeNode($(`#sidebar [data-id="${CSS.escape(id)}"]`));
+        return;
+      }
       const previous = APP_CONFIG.lessons[lessonIndex(id) - 1];
       toast(`Hoàn thành ${previous ? previous.title : 'bài trước'} để mở khóa`, 'warn');
       shakeNode($(`#sidebar [data-id="${CSS.escape(id)}"]`));
       return;
     }
+    applyTestRedo(null);
     if (ui.lessonId === id && !ui.testId && !(options && options.force)) return;
     ui.testId = null;
     Voice.release();
@@ -6853,7 +6871,10 @@ function bindGlobalEvents() {
 /* ========================================================================== */
 /* 12. BÀI KIỂM TRA SAU MỖI 5 BÀI                                              */
 /* ========================================================================== */
-const TEST_PASS = 5;   // điểm đạt (thang 10)
+const TEST_PASS = 5;      // điểm đạt (thang 10)
+const TEST_MINUTES = 45;  // thời gian làm mỗi bài (phút); muốn đổi riêng một bài thì thêm minutes: 30 vào bài đó
+const testMinutes = (test) => Number(test && test.minutes) || TEST_MINUTES;
+const mmss = (ms) => { const sec = Math.max(0, Math.ceil(ms / 1000)); return `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`; };
 
 const testList = () => (Array.isArray(APP_CONFIG.tests) ? APP_CONFIG.tests : []);
 const getTest = (id) => testList().find((t) => t.id === id) || null;
@@ -6877,18 +6898,77 @@ function testAccess(test) {
   const access = lessons.map((l) => lessonAccess(l));
   if (access.includes('plan')) return 'plan';
   if (access.includes('soon')) return 'soon';
-  return lessons.every((l) => LP(l.id).done || checkLessonUnlock(l.id)) ? 'open' : 'locked';
+  if (!lessons.every((l) => LP(l.id).done || checkLessonUnlock(l.id))) return 'locked';
+  const record = userTests()[test.id];
+  if (record && record.redo && !skillsRedone(test)) return 'redo';
+  return 'open';
+}
+// Dưới điểm đạt: phải làm lại Nghe – Nói – Đọc – Viết của 5 bài thì mới được thi lại.
+const SKILL_PARTS = ['listeningDone', 'speakingDone', 'readingDone', 'writingDone'];
+function skillsRedone(test) {
+  return testLessons(test).every((l) => l && SKILL_PARTS.every((k) => lessonStatus(l).skills[k]));
+}
+// Bài kiểm tra chưa đạt (và chưa làm lại kỹ năng) nằm trước bài số lessonNumber: chặn học tiếp.
+function testBlocking(lessonNumber) {
+  if (isTeacher() || !store.session) return null;
+  const record = userTests();
+  return testList().find((t) => Array.isArray(t.range) && Number(t.range[1]) < lessonNumber && record[t.id] && record[t.id].redo && !skillsRedone(t)) || null;
+}
+function firstRedoLesson(test) {
+  return testLessons(test).find((l) => l && !SKILL_PARTS.every((k) => lessonStatus(l).skills[k])) || testLessons(test)[0];
+}
+// Xóa kết quả 4 kỹ năng của các bài thuộc bài kiểm tra chưa đạt (làm khi học viên rời trang kết quả).
+function applyTestRedo(keepId) {
+  const record = userTests();
+  let changed = false;
+  testList().forEach((test) => {
+    const r = record[test.id];
+    if (!r || !r.redo || r.cleared) return;
+    if (keepId && keepId === test.id) return;   // còn đang xem kết quả bài này
+    testLessons(test).forEach((l) => {
+      if (!l) return;
+      const p = LP(l.id);
+      p.listening = []; p.speaking = {}; p.reading = []; p.writing = [];
+    });
+    r.cleared = true;
+    if (ui.test && ui.test.id === test.id) ui.test = null;   // lần thi sau bắt đầu lại từ đầu
+    changed = true;
+  });
+  if (changed) { persist(); Cloud.schedule(); }
 }
 const testKey = (s, i) => `${s}-${i}`;
+
+// Điểm quá trình (thang 10) của 5 bài: điểm Nói trung bình do máy chấm (câu tự thu âm, không có điểm, tính 8).
+function processScore(test) {
+  const scores = [];
+  testLessons(test).forEach((lesson) => {
+    if (!lesson) return;
+    const p = LP(lesson.id);
+    lesson.skills.speaking.forEach((_, i) => {
+      const entry = p.speaking[i];
+      if (entry && typeof entry.score === 'number') scores.push(clamp(entry.score, 0, 100) / 10);
+      else if (speakingPassed(entry)) scores.push(8);
+    });
+  });
+  return scores.length ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10 : 0;
+}
+// Điểm xếp hạng = (quá trình + kiểm tra × 2) / 3 — giống công thức trong Code.gs.
+const prizeTotal = (f) => ((Number(f.p) || 0) + 2 * (Number(f.s) || 0)) / 3;
 
 const Tests = {
   // ui.test = { id, ans: {key: số|chuỗi}, order: {key: {pool, picked}}, credit: {key: true}, submitted, armed }
   open(id) {
     const test = getTest(id);
     if (!test) return;
+    applyTestRedo(id);
     const access = testAccess(test);
     if (access === 'plan') { Modal.activate(); return; }
     if (access === 'soon') { toast(`${test.title} sắp ra mắt`, 'info'); return; }
+    if (access === 'redo') {
+      toast(`Làm lại Nghe, Nói, Đọc, Viết của Bài ${test.range[0]} – ${test.range[1]} để thi lại`, 'warn', 4200);
+      shakeNode($(`#sidebar [data-test="${CSS.escape(id)}"]`));
+      return;
+    }
     if (access === 'locked') {
       toast(`Hoàn thành Bài ${test.range[0]} – ${test.range[1]} để làm ${test.title}`, 'warn');
       shakeNode($(`#sidebar [data-test="${CSS.escape(id)}"]`));
@@ -6900,7 +6980,13 @@ const Tests = {
     Player.destroy();
     ui.lessonId = null;
     ui.testId = id;
-    if (!ui.test || ui.test.id !== id) ui.test = { id, ans: {}, order: {}, credit: {}, submitted: false, armed: false };
+    if (ui.test && ui.test.id !== id && ui.test.startedAt && !ui.test.submitted) {
+      const running = getTest(ui.test.id);
+      toast(`Đang làm ${running.title}, nộp bài đó trước đã`, 'warn');
+      return;
+    }
+    if (!ui.test || ui.test.id !== id) ui.test = { id, ans: {}, order: {}, credit: {}, submitted: false, armed: false, startedAt: 0 };
+    if (ui.test.startedAt && !ui.test.submitted) this.watch();
     $('#player').hidden = true;
     $('#stepper').innerHTML = '';
     $('#panel').dataset.compact = 'false';
@@ -6909,17 +6995,68 @@ const Tests = {
     $('#panel').scrollTop = 0;
     window.scrollTo({ top: 0 });
   },
+  timer: 0,
+  // Bắt đầu tính giờ; hết giờ thì tự nộp bài.
+  start() {
+    const t = ui.test;
+    if (!t || t.startedAt || t.submitted) return;
+    t.startedAt = Date.now();
+    this.render();
+    this.watch();
+  },
+  watch() {
+    clearInterval(this.timer);
+    this.timer = setInterval(() => this.tick(), 1000);
+  },
+  remaining() {
+    const t = ui.test;
+    const test = t && getTest(t.id);
+    if (!test || !t.startedAt) return null;
+    return t.startedAt + testMinutes(test) * 60000 - Date.now();
+  },
+  tick() {
+    const t = ui.test;
+    if (!t || !t.startedAt || t.submitted) { clearInterval(this.timer); return; }
+    const left = this.remaining();
+    if (left <= 0) { this.finish(getTest(t.id), true); return; }
+    const chip = $('#test-timer');
+    if (chip) {
+      chip.textContent = mmss(left);
+      chip.parentElement.className = this.timerTone(left);
+    }
+  },
+  timerTone(left) {
+    return `h-9 px-3 rounded-xl inline-flex items-center gap-1.5 font-bold tabular-nums ${left <= 5 * 60000 ? 'bg-rose-50 text-rose-600' : 'bg-paper text-ink'}`;
+  },
+  finish(test, timeUp) {
+    const t = ui.test;
+    if (!test || !t || t.submitted) return;
+    clearInterval(this.timer);
+    t.submitted = true;
+    t.armed = false;
+    t.usedMs = Math.min(Date.now() - (t.startedAt || Date.now()), testMinutes(test) * 60000);
+    t.timeUp = !!timeUp;
+    const result = this.save(test);
+    if (timeUp) toast(`Hết giờ, đã tự nộp ${test.title}`, 'warn', 4200);
+    if (ui.testId === test.id && ui.view === 'app') {
+      if (result.score >= TEST_PASS) confettiBurst();
+      this.render();
+      $('#panel').scrollTop = 0;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    if (ui.view === 'app') App.renderSidebar();
+  },
   close() {
     ui.testId = null;
   },
 
-  isCorrect(test, s, i) {
+  isCorrect(test, s, i, noCredit) {
     const section = test.sections[s];
     const item = section.items[i];
     const key = testKey(s, i);
     const t = ui.test;
     if (section.type === 'choice' || section.type === 'place') return t.ans[key] === item.a;
-    if (t.credit[key]) return true;
+    if (t.credit[key] && !noCredit) return true;
     const accepted = [item.a].concat(item.alt || []);
     if (section.type === 'order') {
       const state = t.order[key];
@@ -6934,7 +7071,7 @@ const Tests = {
     const value = ui.test.ans[key];
     return section.type === 'write' ? !!String(value || '').trim() : typeof value === 'number';
   },
-  tally(test) {
+  tally(test, noCredit) {
     let score = 0, total = 0, count = 0, answered = 0, right = 0;
     test.sections.forEach((section, s) => {
       const each = (Number(section.points) || 0) / section.items.length;
@@ -6942,7 +7079,7 @@ const Tests = {
       section.items.forEach((_, i) => {
         count++;
         if (this.answered(test, s, i)) answered++;
-        if (this.isCorrect(test, s, i)) { score += each; right++; }
+        if (this.isCorrect(test, s, i, noCredit)) { score += each; right++; }
       });
     });
     const scaled = total ? Math.round((score / total) * 100) / 10 : 0;
@@ -6952,12 +7089,18 @@ const Tests = {
     const result = this.tally(test);
     const record = userTests();
     const old = record[test.id] || {};
-    if (!ui.test.counted) ui.test.baseBest = Number(old.best) || 0;
+    if (!ui.test.counted) { ui.test.baseBest = Number(old.best) || 0; ui.test.isFirst = !old.first; }
+    // Lần làm đầu tiên (điểm máy chấm, không tính tự chấm "Đúng ý") dùng cho bảng xếp hạng.
+    const first = ui.test.isFirst ? { s: this.tally(test, true).score, p: ui.test.process != null ? ui.test.process : (ui.test.process = processScore(test)), t: Math.round(ui.test.usedMs || 0), at: old.first ? old.first.at : new Date().toISOString() } : old.first;
+    if (ui.test.isFirst && !ui.test.counted) first.at = new Date().toISOString();
     record[test.id] = {
       best: Math.max(ui.test.baseBest || 0, result.score),
       last: result.score,
       n: (Number(old.n) || 0) + (ui.test.counted ? 0 : 1),
-      at: new Date().toISOString()
+      at: new Date().toISOString(),
+      redo: result.score < TEST_PASS && !isTeacher(),
+      first: first || null,
+      cleared: ui.test.counted ? !!old.cleared : false
     };
     ui.test.counted = true;
     addUnique(userProgress().days, dayKey(new Date()));
@@ -7076,6 +7219,25 @@ const Tests = {
     const t = ui.test;
     const sum = this.tally(test);
     const record = userTests()[test.id];
+    panel.setAttribute('role', 'region');
+    panel.setAttribute('aria-label', test.title);
+    panel.removeAttribute('aria-labelledby');
+    const titleRow = (extra) => `<div class="flex items-center gap-3">
+        <span class="size-11 shrink-0 grid place-items-center rounded-xl bg-amber-50 text-gold">${icon('flag', 'size-5')}</span>
+        <div class="min-w-0 flex-1">
+          <h2 class="font-semibold leading-tight">${esc(test.title)}</h2>
+          <p class="text-sm text-ink-2">${esc(test.subtitle || '')}</p>
+        </div>${extra}
+      </div>`;
+    if (!t.startedAt && !t.submitted) {
+      const fact = (ic, text) => `<span class="h-9 px-3 rounded-xl bg-paper inline-flex items-center gap-1.5 text-sm font-semibold tabular-nums">${icon(ic, 'size-4')}${text}</span>`;
+      panel.innerHTML = `<div class="p-4 sm:p-6 w-full max-w-3xl mx-auto flex flex-col gap-6">
+        ${titleRow('')}
+        <div class="flex flex-wrap gap-2">${fact('clock', `${testMinutes(test)} phút`)}${fact('list', `${sum.count} câu`)}${fact('target', `Đạt từ ${TEST_PASS}/10`)}${record ? fact('flag', `Cao nhất ${String(Math.round(record.best * 10) / 10).replace('.', ',')}`) : ''}</div>
+        <button type="button" data-action="test-start" class="self-start h-12 px-6 rounded-xl bg-brand text-white font-semibold inline-flex items-center gap-2 hover:bg-brand-dark">${icon('play')}Bắt đầu làm bài</button>
+      </div>`;
+      return;
+    }
     const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
     const fmt = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
     const sections = test.sections.map((section, s) => {
@@ -7101,27 +7263,24 @@ const Tests = {
           <div class="flex items-baseline gap-1"><span class="text-4xl font-bold tabular-nums ${pass ? 'text-emerald-600' : 'text-rose-600'}">${fmt(sum.score)}</span><span class="text-ink-2 font-semibold">/10</span></div>
           <div class="flex-1 min-w-40">
             <p class="font-semibold ${pass ? 'text-emerald-700' : 'text-rose-600'}">${pass ? 'Đạt' : 'Chưa đạt'}</p>
-            <p class="text-sm text-ink-2 tabular-nums">${sum.right}/${sum.count} câu đúng${record ? ` · Cao nhất ${fmt(record.best)}` : ''}</p>
+            <p class="text-sm text-ink-2 tabular-nums">${sum.right}/${sum.count} câu đúng${t.usedMs ? ` · ${t.timeUp ? 'Hết giờ' : `Làm trong ${mmss(t.usedMs)}`}` : ''}${record ? ` · Cao nhất ${fmt(record.best)}` : ''}</p>
           </div>
-          <button type="button" data-action="test-retry" class="h-10 px-4 rounded-xl bg-brand text-white text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-brand-dark">${icon('rotate-ccw')}Làm lại</button>
+          ${pass || isTeacher()
+            ? `<button type="button" data-action="test-retry" class="h-10 px-4 rounded-xl bg-brand text-white text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-brand-dark">${icon('rotate-ccw')}Làm lại</button>`
+            : `<button type="button" data-action="open-lesson" data-id="${esc(testLessons(test)[0].id)}" class="h-10 px-4 rounded-xl bg-brand text-white text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-brand-dark">${icon('history')}Ôn lại kỹ năng</button>`}
+          <button type="button" data-action="test-board" data-test="${esc(test.id)}" aria-label="Bảng xếp hạng" title="Bảng xếp hạng" class="h-10 px-3 rounded-xl border border-amber-300 bg-surface text-gold text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-amber-50">${icon('trophy')}Xếp hạng</button>
+          ${pass || isTeacher() ? '' : `<p class="basis-full text-sm text-rose-600">Làm lại Nghe, Nói, Đọc, Viết của Bài ${test.range[0]} – ${test.range[1]} rồi mới được thi lại.</p>`}
         </div>`
       : '';
     const submit = t.submitted ? '' : `<div class="flex flex-wrap items-center justify-end gap-3 pt-2">
         ${t.armed && sum.answered < sum.count ? `<span class="text-sm text-gold font-medium" role="alert">Còn ${sum.count - sum.answered} câu chưa làm</span>` : ''}
         <button type="button" data-action="test-submit" class="h-11 px-5 rounded-xl bg-brand text-white font-semibold inline-flex items-center gap-2 hover:bg-brand-dark">${icon('send')}${t.armed && sum.answered < sum.count ? 'Vẫn nộp bài' : 'Nộp bài'}</button>
       </div>`;
-    panel.setAttribute('role', 'region');
-    panel.setAttribute('aria-label', test.title);
-    panel.removeAttribute('aria-labelledby');
-    panel.innerHTML = `<div class="p-4 sm:p-6 w-full max-w-3xl mx-auto flex flex-col gap-6">
-      <div class="flex items-center gap-3">
-        <span class="size-11 shrink-0 grid place-items-center rounded-xl bg-amber-50 text-gold">${icon('flag', 'size-5')}</span>
-        <div class="min-w-0 flex-1">
-          <h2 class="font-semibold leading-tight">${esc(test.title)}</h2>
-          <p class="text-sm text-ink-2">${esc(test.subtitle || '')}</p>
-        </div>
-        ${t.submitted ? '' : `<span class="text-sm font-semibold tabular-nums text-ink-2">${sum.answered}/${sum.count}</span>`}
-      </div>
+    const left = this.remaining();
+    const live = t.submitted ? '' : `<span class="text-sm font-semibold tabular-nums text-ink-2">${sum.answered}/${sum.count}</span>
+        <span class="${this.timerTone(left)}" role="timer" aria-label="Thời gian còn lại">${icon('clock', 'size-4')}<span id="test-timer">${mmss(left)}</span></span>`;
+    panel.innerHTML = `<div class="p-4 sm:p-6 pt-0 sm:pt-0 w-full max-w-3xl mx-auto flex flex-col gap-6">
+      <div class="${t.submitted ? 'pt-4 sm:pt-6' : 'sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 sm:pt-6 pb-3 bg-surface border-b border-line'}">${titleRow(live)}</div>
       ${head}${sections}${submit}
     </div>`;
   }
@@ -7131,7 +7290,7 @@ const Tests = {
 Object.assign(Actions, {
   'open-test'(button) { Tests.open(button.dataset.test); },
   'test-pick'(button) {
-    if (!ui.test || ui.test.submitted) return;
+    if (!ui.test || ui.test.submitted || !ui.test.startedAt) return;
     ui.test.ans[button.dataset.key] = Number(button.dataset.i);
     ui.test.armed = false;
     Tests.render();
@@ -7161,15 +7320,9 @@ Object.assign(Actions, {
     if (!test || ui.test.submitted) return;
     const sum = Tests.tally(test);
     if (sum.answered < sum.count && !ui.test.armed) { ui.test.armed = true; Tests.render(); return; }
-    ui.test.submitted = true;
-    ui.test.armed = false;
-    const result = Tests.save(test);
-    if (result.score >= TEST_PASS) confettiBurst();
-    Tests.render();
-    App.renderSidebar();
-    $('#panel').scrollTop = 0;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    Tests.finish(test, false);
   },
+  'test-start'() { Tests.start(); },
   'test-credit'(button) {
     const test = getTest(ui.testId);
     if (!test || !ui.test.submitted) return;
@@ -7182,7 +7335,7 @@ Object.assign(Actions, {
   },
   'test-retry'() {
     const id = ui.testId;
-    ui.test = { id, ans: {}, order: {}, credit: {}, submitted: false, armed: false };
+    ui.test = { id, ans: {}, order: {}, credit: {}, submitted: false, armed: false, startedAt: 0 };
     Tests.render();
     $('#panel').scrollTop = 0;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -7198,9 +7351,9 @@ function testSidebarItem(lessonNumber) {
   const active = ui.testId === test.id;
   const fmt = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
   const passed = record && record.best >= TEST_PASS;
-  const badge = access === 'open' ? (passed ? icon('check', 'size-4') : icon('flag', 'size-4')) : access === 'plan' ? icon('crown', 'size-4') : access === 'soon' ? icon('clock', 'size-4') : icon('lock', 'size-4');
-  const tone = access !== 'open' ? 'bg-paper text-ink-3' : passed ? 'bg-emerald-500 text-white' : active ? 'bg-gold text-white' : 'bg-amber-50 text-gold';
-  const state = access === 'locked' ? `Hoàn thành Bài ${test.range[0]} – ${test.range[1]}` : access === 'plan' ? 'Ngoài gói học' : access === 'soon' ? 'Sắp ra mắt' : record ? `Cao nhất ${fmt(record.best)}/10` : 'Chưa làm';
+  const badge = access === 'redo' ? icon('rotate-ccw', 'size-4') : access === 'open' ? (passed ? icon('check', 'size-4') : icon('flag', 'size-4')) : access === 'plan' ? icon('crown', 'size-4') : access === 'soon' ? icon('clock', 'size-4') : icon('lock', 'size-4');
+  const tone = access === 'redo' ? 'bg-rose-50 text-rose-600' : access !== 'open' ? 'bg-paper text-ink-3' : passed ? 'bg-emerald-500 text-white' : active ? 'bg-gold text-white' : 'bg-amber-50 text-gold';
+  const state = access === 'redo' ? `Ôn lại kỹ năng Bài ${test.range[0]} – ${test.range[1]}` : access === 'locked' ? `Hoàn thành Bài ${test.range[0]} – ${test.range[1]}` : access === 'plan' ? 'Ngoài gói học' : access === 'soon' ? 'Sắp ra mắt' : record ? `Cao nhất ${fmt(record.best)}/10` : 'Chưa làm';
   return `<button type="button" data-action="open-test" data-test="${esc(test.id)}" ${active ? 'aria-current="true"' : ''} aria-label="${esc(test.title)} — ${esc(state)}"
     class="w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dashed transition-colors ${active ? 'border-gold bg-amber-50' : 'border-amber-300/70 hover:border-gold'} ${access === 'open' ? '' : 'opacity-70'}">
     <span class="size-9 shrink-0 grid place-items-center rounded-lg ${tone}">${badge}</span>
@@ -7222,6 +7375,258 @@ function testScoresHtml() {
   }).join('');
   return chips ? `<div class="mt-3 flex flex-wrap gap-1.5">${chips}</div>` : '';
 }
+
+/* ========================================================================== */
+/* 13. BẢNG XẾP HẠNG                                                            */
+/* ========================================================================== */
+// Tháng (giờ Việt Nam) của một mốc ISO: "2026-11" — giống monthOf_ trong Code.gs.
+const monthOf = (iso) => { const t = Date.parse(String(iso || '')); return isNaN(t) ? '' : new Date(t + 7 * 3600000).toISOString().slice(0, 7); };
+const thisMonth = () => monthOf(new Date().toISOString());
+const shiftMonth = (m, d) => { const [y, mo] = m.split('-').map(Number); const t = new Date(Date.UTC(y, mo - 1 + d, 1)); return t.toISOString().slice(0, 7); };
+const monthLabel = (m) => `Tháng ${Number(m.slice(5))}/${m.slice(0, 4)}`;
+const FIRST_MONTH = '2026-11';   // tháng bắt đầu đua
+
+const Board = {
+  rows: null,       // dữ liệu lấy từ máy chủ
+  loadedAt: 0,
+  loading: false,
+  failed: false,
+  tab: 'month',     // month (tiến trình trong tháng) · total (từ đầu khóa) · kt-1…
+  month: '',
+
+  // Khi chạy thử không có máy chủ: chỉ có tiến trình của chính mình.
+  localRows() {
+    const up = userProgress();
+    const tests = {};
+    Object.keys(up.tests || {}).forEach((id) => { const f = up.tests[id] && up.tests[id].first; if (f) tests[id] = f; });
+    const ml = {}, md = {};
+    Object.values(up.lessons).forEach((p) => { if (p && p.done && p.doneAt) { const m = monthOf(p.doneAt); if (m) ml[m] = (ml[m] || 0) + 1; } });
+    up.days.forEach((d) => { const m = String(d).slice(0, 7); md[m] = (md[m] || 0) + 1; });
+    return [{ name: (store.session && store.session.name) || 'Tôi', me: true, lessons: Object.values(up.lessons).filter((p) => p && p.done).length, days: up.days.length, ml, md, tests }];
+  },
+  async load(force) {
+    if (this.loading) return;
+    if (!force && this.rows && Date.now() - this.loadedAt < 60000) return;
+    if (!Api.remote()) { this.rows = this.localRows(); this.loadedAt = Date.now(); return; }
+    this.loading = true;
+    this.failed = false;
+    try {
+      const result = await Api.call({ action: 'board', email: store.session.email, token: store.session.token });
+      if (result && result.ok && Array.isArray(result.rows)) { this.rows = result.rows; this.prizes = result.prizes || {}; this.loadedAt = Date.now(); }
+      else if (result && result.reason === 'session') { this.loading = false; Modal.close(); App.sessionLost(); return; }
+      else this.failed = true;
+    } catch (err) {
+      this.failed = true;
+    }
+    this.loading = false;
+  },
+  // Gộp điểm mới nhất của chính mình (có thể chưa kịp lưu lên máy chủ).
+  merged() {
+    const rows = (this.rows || []).map((r) => Object.assign({}, r));
+    const mine = this.localRows()[0];
+    const me = rows.find((r) => r.me);
+    if (me) {
+      me.lessons = Math.max(me.lessons || 0, mine.lessons); me.days = Math.max(me.days || 0, mine.days); me.tests = Object.assign({}, me.tests || {}, mine.tests);
+      const maxMap = (a, b) => { const out = Object.assign({}, a || {}); Object.keys(b || {}).forEach((k) => { out[k] = Math.max(out[k] || 0, b[k]); }); return out; };
+      me.ml = maxMap(me.ml, mine.ml); me.md = maxMap(me.md, mine.md);
+    }
+    else if (!isTeacher()) rows.push(mine);
+    return rows;
+  },
+  ranked(tab) {
+    const rows = this.merged();
+    const m = this.month;
+    if (tab === 'month') {
+      const L = (r) => (r.ml && r.ml[m]) || 0, D = (r) => (r.md && r.md[m]) || 0;
+      return rows.filter((r) => L(r) > 0 || D(r) > 0)
+        .sort((a, b) => (L(b) - L(a)) || (D(b) - D(a)) || String(a.name).localeCompare(String(b.name), 'vi'));
+    }
+    if (tab === 'total') {
+      const total = (r) => Object.values(r.tests || {}).reduce((a, f) => a + (Number(f.s) || 0), 0);
+      return rows.filter((r) => r.lessons > 0 || r.days > 0)
+        .sort((a, b) => (b.lessons - a.lessons) || (total(b) - total(a)) || (b.days - a.days) || String(a.name).localeCompare(String(b.name), 'vi'));
+    }
+    return rows.filter((r) => r.tests && r.tests[tab] && monthOf(r.tests[tab].at) === m)
+      .sort((a, b) => {
+        const x = a.tests[tab], y = b.tests[tab];
+        return (prizeTotal(y) - prizeTotal(x)) || (y.s - x.s) || ((x.t || 9e9) - (y.t || 9e9)) || String(x.at).localeCompare(String(y.at));
+      });
+  },
+  async open(tab) {
+    if (!store.session) return;
+    if (tab) this.tab = tab;
+    this.month = thisMonth();
+    this.claim = null;
+    Modal.open(this.html(), true);
+    await this.load(false);
+    if (!$('#modal').hidden && $('#board')) this.refresh();
+  },
+  refresh() {
+    const card = $('#modal-card');
+    const top = card.scrollTop;
+    card.innerHTML = this.html();
+    card.scrollTop = top;
+  },
+  claimHtml() {
+    const c = this.claim;
+    const test = getTest(c.test);
+    const option = (value, ic, label) => `<button type="button" data-action="claim-method" data-v="${value}" aria-pressed="${c.method === value}" class="h-14 rounded-xl border-2 font-semibold inline-flex items-center justify-center gap-2 ${c.method === value ? 'border-brand bg-brand-soft text-brand' : 'border-line hover:border-brand'}">${icon(ic, 'size-5')}${label}</button>`;
+    const upload = c.method === 'bank'
+      ? `<label class="flex flex-col items-center justify-center gap-2 min-h-40 p-3 rounded-xl border-2 border-dashed ${c.image ? 'border-emerald-400' : 'border-line hover:border-brand'} cursor-pointer text-sm text-ink-2">
+          ${c.image ? `<img src="data:image/jpeg;base64,${c.image}" alt="Mã QR" class="max-h-56 rounded-lg">` : `${icon('upload', 'size-6')}<span>Ảnh mã QR ngân hàng của bạn</span>`}
+          <input id="claim-file" type="file" accept="image/*" class="sr-only">
+        </label>`
+      : '';
+    const ready = c.method === 'cash' || (c.method === 'bank' && c.image);
+    return `<div class="flex flex-col gap-3">
+      <p class="font-semibold">${esc(test ? test.title : '')} · ${monthLabel(c.month)} · ${esc(APP_CONFIG.testPrize || '')}</p>
+      <div class="grid grid-cols-2 gap-2">${option('cash', 'party', 'Tiền mặt')}${option('bank', 'send', 'Chuyển khoản')}</div>
+      ${upload}
+      ${c.error ? `<p role="alert" class="text-sm text-rose-600">${esc(c.error)}</p>` : ''}
+      <div class="flex justify-end gap-2">
+        <button type="button" data-action="claim-cancel" class="h-10 px-4 rounded-xl border border-line text-sm font-medium hover:border-brand hover:text-brand">Hủy</button>
+        <button type="button" data-action="claim-send" ${ready && !c.sending ? '' : 'disabled'} class="h-10 px-4 rounded-xl bg-brand text-white text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-brand-dark disabled:opacity-50">${icon(c.sending ? 'loader' : 'send', c.sending ? 'size-4 spin' : 'size-4')}Gửi</button>
+      </div>
+    </div>`;
+  },
+  html() {
+    const fmt = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
+    const tabs = [{ id: 'month', label: 'Tháng này' }, { id: 'total', label: 'Tổng' }].concat(testList().map((t) => ({ id: t.id, label: t.title.replace('Kiểm tra ', 'KT') })));
+    const tabBar = `<div role="tablist" aria-label="Bảng xếp hạng" class="mt-4 flex gap-1 overflow-x-auto scroll-thin pb-1">${tabs.map((t) => {
+      const on = this.tab === t.id;
+      const label = t.id === 'month' && this.month !== thisMonth() ? 'Tháng' : t.label;
+      return `<button type="button" role="tab" aria-selected="${on}" data-action="board-tab" data-tab="${t.id}" class="shrink-0 h-9 px-3 rounded-lg text-sm font-semibold ${on ? 'bg-brand text-white' : 'bg-paper text-ink-2 hover:text-brand'}">${esc(label)}</button>`;
+    }).join('')}</div>`;
+    const test = getTest(this.tab);
+    const now = thisMonth();
+    const closed = this.month < now;
+    const nav = this.tab === 'total' || this.claim ? '' : `<div class="mt-3 flex items-center gap-2">
+      <button type="button" data-action="board-month" data-d="-1" ${this.month <= FIRST_MONTH ? 'disabled' : ''} aria-label="Tháng trước" class="size-9 grid place-items-center rounded-lg border border-line text-ink-2 hover:border-brand hover:text-brand disabled:opacity-40">${icon('chevron-left', 'size-4')}</button>
+      <span class="min-w-32 text-center font-semibold tabular-nums">${monthLabel(this.month)}</span>
+      <button type="button" data-action="board-month" data-d="1" ${this.month >= now ? 'disabled' : ''} aria-label="Tháng sau" class="size-9 grid place-items-center rounded-lg border border-line text-ink-2 hover:border-brand hover:text-brand disabled:opacity-40">${icon('chevron-right', 'size-4')}</button>
+      <span class="ml-auto h-7 px-2.5 rounded-full text-xs font-semibold inline-flex items-center ${closed ? 'bg-paper text-ink-2' : 'bg-emerald-50 text-emerald-700'}">${closed ? 'Đã chốt' : 'Đang đua'}</span>
+    </div>`;
+    let body;
+    if (this.claim) body = this.claimHtml();
+    else if (!this.rows && (this.loading || !this.failed)) {
+      body = `<div class="py-10 grid place-items-center text-brand">${icon('loader', 'size-6 spin')}</div>`;
+    } else if (!this.rows) {
+      body = `<div class="py-8 flex flex-col items-center gap-3 text-sm text-ink-2">${icon('cloud-off', 'size-6 text-rose-600')}<span>Chưa tải được bảng xếp hạng</span><button type="button" data-action="board-reload" class="h-9 px-3 rounded-lg border border-line font-medium hover:border-brand hover:text-brand">Thử lại</button></div>`;
+    } else {
+      const list = this.ranked(this.tab);
+      const medal = (n) => n === 1 ? 'bg-amber-400 text-white' : n === 2 ? 'bg-slate-300 text-slate-700' : n === 3 ? 'bg-orange-300 text-white' : 'bg-paper text-ink-2';
+      const items = list.map((r, i) => {
+        const n = i + 1;
+        let value, sub = '';
+        if (test) {
+          const f = r.tests[this.tab];
+          value = `<span class="text-lg font-bold tabular-nums text-ink">${fmt(prizeTotal(f))}</span>`;
+          sub = `KT ${fmt(f.s)} · QT ${fmt(Number(f.p) || 0)}${f.t ? ` · ${mmss(f.t)}` : ''}`;
+        } else if (this.tab === 'month') {
+          value = `<span class="text-lg font-bold tabular-nums">${(r.ml && r.ml[this.month]) || 0}</span><span class="text-xs text-ink-2"> bài</span>`;
+          sub = `${(r.md && r.md[this.month]) || 0} ngày học`;
+        } else {
+          const tests = Object.keys(r.tests || {}).length;
+          value = `<span class="text-lg font-bold tabular-nums">${r.lessons}</span><span class="text-xs text-ink-2"> bài</span>`;
+          sub = `${r.days} ngày học${tests ? ` · ${tests} bài KT` : ''}`;
+        }
+        const claim = test && this.prizes && this.prizes[`${this.tab}@${this.month}`];
+        const isWinner = test && (claim ? (claim.email ? claim.email === r.email : claim.me ? !!r.me : !r.me && claim.name === r.name) : n === 1);
+        let prize = isWinner && APP_CONFIG.testPrize ? `<span class="shrink-0 h-6 px-2 rounded-full bg-amber-50 text-gold text-xs font-bold inline-flex items-center gap-1">${icon('trophy', 'size-3.5')}${esc(APP_CONFIG.testPrize)}${claim ? ` · Đã nhận${claim.method ? (claim.method === 'bank' ? ' (CK)' : ' (TM)') : ''}` : ''}</span>` : '';
+        if (isWinner && !claim && r.me && n === 1 && closed && Api.remote()) prize += `<button type="button" data-action="claim-open" class="shrink-0 h-7 px-2.5 rounded-lg bg-gold text-white text-xs font-semibold hover:opacity-90">Nhận thưởng</button>`;
+        return `<li class="flex items-center gap-3 px-3 py-2.5 rounded-xl ${r.me ? 'bg-brand-soft' : ''}">
+          <span class="size-8 shrink-0 grid place-items-center rounded-full text-sm font-bold tabular-nums ${medal(n)}">${n}</span>
+          <span class="min-w-0 flex-1">
+            <span class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="font-medium truncate">${esc(r.name || '—')}</span>${r.me ? '<span class="shrink-0 text-xs font-semibold text-brand">Bạn</span>' : ''}${prize}</span>
+            ${r.email || sub ? `<span class="block text-xs text-ink-2 truncate">${[sub, r.email ? esc(r.email) : ''].filter(Boolean).join(' · ')}</span>` : ''}
+          </span>
+          <span class="shrink-0 text-right">${value}</span>
+        </li>`;
+      }).join('');
+      const note = test
+        ? `<p class="flex items-center gap-2 text-sm text-ink-2">${icon('trophy', 'size-4 text-gold')}<span>Hạng 1 tháng nhận <b class="text-gold">${esc(APP_CONFIG.testPrize || '')}</b>${closed ? '' : ', nhận từ ngày 1 tháng sau'} · Chỉ tính người làm bài lần đầu trong tháng. Điểm = (Quá trình + Kiểm tra × 2) ÷ 3; Kiểm tra: điểm máy chấm; Quá trình: điểm Nói trung bình 5 bài.</span></p>`
+        : '';
+      body = `${note}${items ? `<ol class="mt-2 flex flex-col gap-1">${items}</ol>` : `<p class="py-8 text-center text-sm text-ink-3">Chưa có ai</p>`}`;
+    }
+    return `<div id="board">
+      <div class="flex items-center gap-3">
+        <span class="size-10 shrink-0 grid place-items-center rounded-xl bg-amber-50 text-gold">${icon('trophy', 'size-5')}</span>
+        <h2 id="modal-title" class="flex-1 font-semibold">Bảng xếp hạng</h2>
+        <button type="button" data-action="board-reload" aria-label="Tải lại" title="Tải lại" class="size-9 grid place-items-center rounded-lg text-ink-3 hover:bg-paper hover:text-brand">${icon('refresh', `size-5 ${this.loading ? 'spin' : ''}`)}</button>
+        <button type="button" data-action="modal-close" aria-label="Đóng" class="size-9 -mr-1 grid place-items-center rounded-lg text-ink-3 hover:bg-paper hover:text-ink">${icon('x', 'size-5')}</button>
+      </div>
+      ${tabBar}${nav}
+      <div class="mt-3">${body}</div>
+    </div>`;
+  }
+};
+
+Object.assign(Actions, {
+  board() { Board.open(); },
+  'board-tab'(button) { Board.tab = button.dataset.tab; Board.claim = null; Board.refresh(); },
+  async 'board-reload'() { const p = Board.load(true); Board.refresh(); await p; if ($('#board')) Board.refresh(); },
+  'test-board'(button) { Board.open(button.dataset.test); },
+  'board-month'(button) { const next = shiftMonth(Board.month, Number(button.dataset.d)); if (next >= FIRST_MONTH && next <= thisMonth()) { Board.month = next; Board.claim = null; Board.refresh(); } },
+  'claim-open'() { Board.claim = { test: Board.tab, month: Board.month, method: '', image: '', error: '' }; Board.refresh(); },
+  'claim-cancel'() { Board.claim = null; Board.refresh(); },
+  'claim-method'(button) { Board.claim.method = button.dataset.v; Board.claim.error = ''; Board.refresh(); },
+  async 'claim-send'() {
+    const c = Board.claim;
+    if (!c || c.sending) return;
+    c.sending = true; c.error = ''; Board.refresh();
+    let result;
+    try {
+      result = await Api.call({ action: 'prize', email: store.session.email, token: store.session.token, test: c.test, month: c.month, method: c.method, image: c.method === 'bank' ? c.image : '' }, 60000);
+    } catch (err) { result = { ok: false, reason: 'network' }; }
+    c.sending = false;
+    if (result && result.ok) {
+      Board.claim = null;
+      toast('Đã gửi yêu cầu nhận thưởng cho giáo viên', 'ok', 4200);
+      confettiBurst();
+      await Board.load(true);
+    } else if (result && result.reason === 'session') { Modal.close(); App.sessionLost(); return; }
+    else {
+      c.error = {
+        'not-first': 'Bạn không còn đứng hạng 1 ở bài này.',
+        claimed: 'Giải của bài này đã có người nhận.',
+        'claimed-me': 'Bạn đã gửi yêu cầu nhận thưởng rồi.',
+        image: 'Ảnh không hợp lệ, chọn lại ảnh mã QR.',
+        open: 'Tháng này chưa kết thúc, chờ đến ngày 1 tháng sau nhé.',
+        unknown: 'Máy chủ chưa được cập nhật (Code.gs). Báo giáo viên nhé.'
+      }[result && result.reason] || 'Chưa gửi được, thử lại sau ít phút.';
+    }
+    if ($('#board')) Board.refresh();
+  }
+});
+
+// Đọc ảnh mã QR, thu nhỏ còn tối đa 1000px rồi nén JPEG để gửi qua email.
+async function readClaimImage(file) {
+  if (!file || !/^image\//.test(file.type)) return '';
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((resolve, reject) => { const i = new Image(); i.onload = () => resolve(i); i.onerror = reject; i.src = url; });
+    const scale = Math.min(1, 1000 / Math.max(img.naturalWidth, img.naturalHeight));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+    canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', 0.85).split(',')[1] || '';
+  } catch (err) {
+    return '';
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+document.addEventListener('change', async (event) => {
+  if (event.target.id !== 'claim-file' || !Board.claim) return;
+  const data = await readClaimImage(event.target.files && event.target.files[0]);
+  if (!Board.claim) return;
+  Board.claim.image = data;
+  Board.claim.error = data ? '' : 'Không đọc được ảnh, chọn ảnh khác.';
+  if ($('#board')) Board.refresh();
+});
 
 /* ========================================================================== */
 /* 12. CÔNG CỤ TẠO BÀI CHO GIÁO VIÊN: link video → chọn mốc → câu hỏi → JSON    */
