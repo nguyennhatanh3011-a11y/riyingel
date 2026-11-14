@@ -2898,6 +2898,318 @@ const APP_CONFIG = {
   ]
 };
 /* ============================ APP_CONFIG: KẾT THÚC ============================ */
+/* ========================================================================== */
+/* BÀI KIỂM TRA: cứ 5 bài có 1 bài kiểm tra (theo đề kiểm tra của trung tâm)   */
+/* type: "choice" (chọn đáp án) · "place" (chọn vị trí A/B/C/D đặt từ)          */
+/*       "order" (xếp thẻ từ thành câu) · "write" (dịch, gõ câu tiếng Trung)    */
+/* a = vị trí đáp án đúng (0 = A, 1 = B, 2 = C, 3 = D)                          */
+/* ========================================================================== */
+APP_CONFIG.tests = [
+  {
+    id: "kt-1", title: "Kiểm tra 1", subtitle: "Bài 1 – 5", range: [1, 5],
+    sections: [
+      { title: "Chọn phiên âm đúng", points: 1.5, type: "choice", items: [
+        { q: "那儿", o: ["nàr", "nà'er", "nà'ér", "nǎr"], a: 0 },
+        { q: "客气", o: ["kèqì", "kèqi", "kéqì", "kèqī"], a: 1 },
+        { q: "商店", o: ["shāngdian", "shāngdiàn", "shàngdiàn", "shāngdiān"], a: 1 },
+        { q: "多少", o: ["duōshǎo", "duōshāo", "duòshǎo", "duōshao"], a: 3 },
+        { q: "宿舍", o: ["sùshè", "sūshè", "xūshè", "xùshè"], a: 0 }
+      ] },
+      { title: "Chọn câu đúng", points: 1.5, type: "choice", items: [
+        { o: ["老师再见。", "再见老师。", "再老师见。", "见再老师。"], a: 0 },
+        { o: ["不气客。", "不客气。", "不可欺。", "客不气。"], a: 1 },
+        { o: ["就那儿在。", "在哪儿就。", "就在那儿。", "就那儿。"], a: 2 },
+        { o: ["多少哥美元？", "多少个钱？", "个钱多少？", "面包多少钱？"], a: 3 },
+        { o: ["我去食堂。", "我食堂去。", "我去食堂不。", "我去哪儿食堂。"], a: 0 }
+      ] },
+      { title: "Chọn vị trí đặt từ", points: 1.5, type: "place", items: [
+        { q: "我A爸爸B妈妈C也D很好。", w: "都", a: 3 },
+        { q: "图书馆A在B那C儿D。", w: "就", a: 0 },
+        { q: "老师们A不B去C宿舍D。", w: "都", a: 0 },
+        { q: "我不A吃面包B，我C吃面条，你D？", w: "呢", a: 3 },
+        { q: "我A要换B八百美元，你C要换D吗？", w: "也", a: 2 }
+      ] },
+      { title: "Chọn từ điền vào chỗ trống", points: 1.5, type: "choice", items: [
+        { q: "我很饿，我要吃____个面包。", o: ["二", "少", "两", "多"], a: 2 },
+        { q: "两瓶啤酒四____五角六分。", o: ["块", "毛", "元", "钱"], a: 2 },
+        { q: "弟弟去商店买两____可口可乐。", o: ["块", "瓶", "个", "本"], a: 1 },
+        { q: "我妈妈去商店，我____去。", o: ["也", "都", "也不", "就"], a: 0 },
+        { q: "我要去银行____钱。", o: ["买", "吃", "喝", "换"], a: 3 }
+      ] },
+      { title: "Sắp xếp thành câu", points: 2, type: "order", items: [
+        { t: ["我", "很", "你", "好", "呢"], a: "我很好，你呢？" },
+        { t: ["去", "老师", "也", "图书馆", "你", "去", "吗", "要"], a: "老师去图书馆，你也要去吗？" },
+        { t: ["他", "美元", "银行", "去", "换", "三百"], a: "他去银行换三百美元。" },
+        { t: ["我", "咖啡", "要", "累", "我", "喝", "很"], a: "我很累，我要喝咖啡。" },
+        { t: ["我", "医院", "很", "累", "要", "她", "去", "妹妹"], a: "我妹妹很累，她要去医院。" }
+      ] },
+      { title: "Dịch sang tiếng Trung", points: 2, type: "write", items: [
+        { q: "Tôi không biết anh ấy đi mua bia ở đâu.", a: "我不知道他去哪儿买啤酒。", alt: ["我不知道他在哪儿买啤酒。", "我不知道他去哪里买啤酒。"] },
+        { q: "Tôi cần đi ngân hàng số 9 đổi tiền.", a: "我要去九号银行换钱。", alt: ["我要去9号银行换钱。", "我得去九号银行换钱。"] },
+        { q: "Tôi xin lỗi, tôi không biết nhà ăn ở đâu.", a: "对不起，我不知道食堂在哪儿。", alt: ["对不起，我不知道食堂在哪里。"] },
+        { q: "Em trai tôi ra cửa hàng mua 2 chai nước suối và 1 quyển vở.", a: "我弟弟去商店买两瓶矿泉水和一本本子。", alt: ["我弟弟去商店买两瓶矿泉水和一个本子。", "弟弟去商店买两瓶矿泉水和一本本子。"] },
+        { q: "Bạn không biết cũng không sao đâu.", a: "你不知道也没关系。", alt: ["你不知道也没关系呢。"] }
+      ] }
+    ]
+  },
+
+  {
+    id: "kt-2", title: "Kiểm tra 2", subtitle: "Bài 6 – 10", range: [6, 10],
+    sections: [
+      { title: "Chọn phiên âm đúng", points: 1.5, type: "choice", items: [
+        { q: "记者", o: ["jízhě", "qízhě", "jìzhě", "jìzhē"], a: 2 },
+        { q: "职员", o: ["zhíyuán", "zhèyuán", "zhíyán", "zhéyuán"], a: 0 },
+        { q: "出发", o: ["shūfā", "chūfā", "chúfā", "chūpā"], a: 1 },
+        { q: "房间", o: ["pángjiān", "pángzān", "fángjiān", "fǎngjiān"], a: 2 },
+        { q: "休息", o: ["xiūxi", "shūxi", "qiūxi", "xiūxǐ"], a: 0 }
+      ] },
+      { title: "Chọn từ điền vào chỗ trống", points: 1.5, type: "choice", items: [
+        { q: "你____时候来都行。", o: ["什么", "是", "那", "谁"], a: 0 },
+        { q: "他第一次来中国，____都想去看看。", o: ["谁", "什么", "哪儿", "那"], a: 2 },
+        { q: "你在____地方见过他？", o: ["那儿", "什么", "谁", "哪儿"], a: 1 },
+        { q: "____想去长城，请到王老师那儿报名。", o: ["哪儿", "什么", "是", "谁"], a: 3 },
+        { q: "从这儿到百货大楼有____远？", o: ["多少", "多", "哪儿", "那儿"], a: 1 }
+      ] },
+      { title: "Chọn vị trí đặt từ", points: 1.5, type: "place", items: [
+        { q: "小明A家有四口人，爸爸B妈妈、妹妹C他D。", w: "和", a: 2 },
+        { q: "A明天B九点C，我们D在学校门口见面。", w: "上午", a: 1 },
+        { q: "我A是越南人，小美和小明B是韩国人，我们C不D是越南人。", w: "都", a: 3 },
+        { q: "我A我的B中国朋友C一起D学习。", w: "跟", a: 0 },
+        { q: "你A的B电话C是D多少？", w: "号码", a: 2 }
+      ] },
+      { title: "Đọc đoạn văn, chọn từ", points: 1.5, type: "choice",
+        passage: "我的一天\n我每天早上六点半（16）____，然后洗漱到七点。我七点一（17）____吃早餐，七点四十五出门。8点我去咖啡店（18）____一杯咖啡。我今天从上午九点到十二点在学校上课。中午十二点十五我跟朋友去（19）____吃午餐。今天下午我没课，就回宿舍（20）____。",
+        items: [
+          { o: ["睡觉", "起床", "学习", "吃饭"], a: 1 },
+          { o: ["课", "个", "刻", "半"], a: 2 },
+          { o: ["卖", "买", "看", "吃"], a: 1 },
+          { o: ["食堂", "公司", "宿舍", "教室"], a: 0 },
+          { o: ["上课", "吃饭", "下课", "休息"], a: 3 }
+        ] },
+      { title: "Sắp xếp thành câu", points: 2, type: "order", items: [
+        { t: ["是", "老师", "汉语", "教", "人", "我们", "中国", "的"], a: "教我们汉语的老师是中国人。" },
+        { t: ["常", "每天", "宿舍", "西蒙", "在", "下午", "休息"], a: "每天下午西蒙常在宿舍休息。", alt: ["西蒙每天下午常在宿舍休息。"] },
+        { t: ["早上", "我", "学校", "明天", "去", "要"], a: "明天早上我要去学校。", alt: ["我明天早上要去学校。"] },
+        { t: ["号码", "呢", "我", "学校", "你", "知道", "的", "不", "电话"], a: "我不知道学校的电话号码，你呢？" },
+        { t: ["学校", "我们", "去", "后天", "从", "门口", "上午", "出发", "长城", "九点"], a: "后天上午九点我们从学校门口出发去长城。", alt: ["我们后天上午九点从学校门口出发去长城。"] }
+      ] },
+      { title: "Dịch sang tiếng Trung", points: 2, type: "write", items: [
+        { q: "Lớp chúng tôi có 20 học sinh, 18 bạn là người Trung Quốc, 2 bạn là người Việt Nam.", a: "我们班有二十个学生，十八个是中国人，两个是越南人。", alt: ["我们班有二十个学生，十八个学生是中国人，两个学生是越南人。", "我们班有20个学生，18个是中国人，2个是越南人。", "我们班有20个学生，18个学生是中国人，两个学生是越南人。"] },
+        { q: "Chào mọi người, tôi xin giới thiệu, tôi tên là Tiểu Minh, năm nay 20 tuổi.", a: "大家好，我来介绍一下儿，我叫小明，今年二十岁。", alt: ["大家好，我来介绍一下，我叫小明，今年二十岁。", "大家好，我来介绍一下儿，我叫小明，今年20岁。", "大家好，我来介绍一下，我叫小明，今年20岁。"] },
+        { q: "Nhà tôi có 4 người, đây là ba mẹ tôi, kia là em gái tôi, con bé rất dễ thương.", a: "我家有四口人，这是我爸爸妈妈，那是我妹妹，她很可爱。", alt: ["我家有四口人，这是我爸妈，那是我妹妹，她挺可爱的。", "我家有四口人，这是我爸爸妈妈，那是我妹妹，她挺可爱的。", "我家有四口人，这是我爸妈，那是我妹妹，她很可爱。"] },
+        { q: "Bánh chẻo ở căn tin của công ty chúng ta rất ngon.", a: "我们公司食堂的饺子很好吃。", alt: ["咱们公司食堂的饺子很好吃。"] },
+        { q: "Công việc dạo gần đây của bạn như thế nào?", a: "你最近工作怎么样？", alt: ["最近你工作怎么样？", "你最近的工作怎么样？"] }
+      ] }
+    ]
+  },
+
+  {
+    id: "kt-3", title: "Kiểm tra 3", subtitle: "Bài 11 – 15", range: [11, 15],
+    sections: [
+      { title: "Chọn phiên âm đúng", points: 1.5, type: "choice", items: [
+        { q: "衬衣", o: ["chēnyī", "cènyì", "zhēnyī", "chènyī"], a: 3 },
+        { q: "自行车", o: ["zīxíngchē", "zǐxíngchē", "zíxíngchē", "zìxíngchē"], a: 3 },
+        { q: "西红柿", o: ["xīhóngshì", "xīhǒngshī", "xīhóngshī", "sīhóngshì"], a: 0 },
+        { q: "新鲜", o: ["xīnxiàn", "xīnxian", "xīnxiān", "xìnxiān"], a: 2 },
+        { q: "眼镜", o: ["yànjíng", "yǎnjìng", "yǎnjīng", "yǎnjíng"], a: 1 }
+      ] },
+      { title: "Chọn từ điền vào chỗ trống", points: 1.5, type: "choice", items: [
+        { q: "你____喝啤酒，____喝汽水？", o: ["有…也有", "要…还是", "是…也是", "又是…又是"], a: 1 },
+        { q: "这双鞋____多大号的？", o: ["怎么", "什么", "没有", "是"], a: 3 },
+        { q: "颐和园的北边____！", o: ["太快", "太美了", "太棒", "太了"], a: 1 },
+        { q: "____想去长城，请到王老师那儿报名。", o: ["哪儿", "什么", "是", "谁"], a: 3 },
+        { q: "从这儿到百货大楼有____远？", o: ["多少", "多", "哪儿", "那儿"], a: 1 }
+      ] },
+      { title: "Chọn vị trí đặt từ", points: 1.5, type: "place", items: [
+        { q: "我看看A那件B白C真丝D衬衣。", w: "的", a: 2 },
+        { q: "你A这条路或者B那条路C都行D。", w: "走", a: 0 },
+        { q: "听到这件事儿A，你B点儿C了D吧？", w: "高兴", a: 1 },
+        { q: "北京烤鸭是中国A最B有名C菜D。", w: "的", a: 2 },
+        { q: "今天A有点儿B，你C多D穿一件毛衣吧。", w: "冷", a: 1 }
+      ] },
+      { title: "Đọc đoạn văn, chọn từ", points: 1.5, type: "choice",
+        passage: "中国菜的（16）____是南甜北咸、东辣西酸。就是说南方人（17）____吃甜的，北方人（18）____吃咸的。不过我（19）____一个中国朋友，是个南方人，他呀，酸的、辣的、咸的都喜欢吃，（20）____不喜欢吃甜的。",
+        items: [
+          { o: ["特别", "特点", "特地", "特定"], a: 1 },
+          { o: ["都来", "都是", "喜欢", "不是"], a: 2 },
+          { o: ["因为", "喜欢", "不喜欢", "来"], a: 1 },
+          { o: ["认识", "知道", "会", "见面"], a: 0 },
+          { o: ["不是", "都是", "也是", "就是"], a: 3 }
+        ] },
+      { title: "Sắp xếp thành câu", points: 2, type: "order", items: [
+        { t: ["人", "是", "个", "就", "那", "老师", "我们", "的"], a: "我们的老师就是那个人。", alt: ["那个人就是我们的老师。"] },
+        { t: ["她", "莉莉", "的", "保罗", "告诉", "年纪", "不"], a: "莉莉不告诉保罗她的年纪。" },
+        { t: ["早点儿", "我", "学校", "明天", "来", "要"], a: "我明天要早点儿来学校。", alt: ["明天我要早点儿来学校。"] },
+        { t: ["这本", "过", "就", "书", "很早", "我", "看"], a: "这本书我很早就看过。", alt: ["我很早就看过这本书。"] },
+        { t: ["妈妈", "写", "我", "要", "信", "给"], a: "我要给妈妈写信。" }
+      ] },
+      { title: "Dịch sang tiếng Trung", points: 2, type: "write", items: [
+        { q: "Người ngồi cạnh giám đốc Lý là thầy giáo của chúng tôi.", a: "坐在李经理旁边的人是我们的老师。", alt: ["坐在李经理旁边的是我们的老师。", "在李经理旁边坐着的人是我们的老师。"] },
+        { q: "Quyển từ điển bên trái sách tiếng Hàn bao nhiêu tiền?", a: "韩语书左边的那本词典多少钱？", alt: ["韩语书左边的词典多少钱？", "韩文书左边的那本词典多少钱？"] },
+        { q: "Phía đông toà nhà ký túc xá là toà nhà văn phòng.", a: "宿舍楼东边是办公楼。", alt: ["宿舍楼的东边是办公楼。"] },
+        { q: "Bánh xếp ở nhà hàng gần ngân hàng rất ngon.", a: "银行附近的饭馆儿里的饺子很好吃。", alt: ["银行附近的饭馆的饺子很好吃。", "银行附近饭馆的饺子很好吃。", "银行附近的饭馆儿的饺子很好吃。"] },
+        { q: "Trong hình, người phía sau ba mẹ tôi là anh trai tôi.", a: "照片里，我父母后边的人是我哥哥。", alt: ["照片里，我爸爸妈妈后边的人是我哥哥。", "照片上，我父母后边的人是我哥哥。", "照片里我父母后面的人是我哥哥。"] }
+      ] }
+    ]
+  },
+
+  {
+    id: "kt-4", title: "Kiểm tra 4", subtitle: "Bài 16 – 20", range: [16, 20],
+    sections: [
+      { title: "Chọn phiên âm đúng", points: 1.5, type: "choice", items: [
+        { q: "旅行", o: ["lǐxín", "lǐxíng", "lǚxíng", "lǔháng"], a: 2 },
+        { q: "风景", o: ["fēngjǐng", "fèngjǐng", "fēngjǐn", "fèngjǐn"], a: 0 },
+        { q: "香山", o: ["Xiāngshāng", "Xiàngshāng", "Xiāngshān", "Xiàngshān"], a: 2 },
+        { q: "羡慕", o: ["xiānmù", "xiànmù", "xiānmū", "xiànmū"], a: 1 },
+        { q: "巴黎", o: ["Pàlí", "Pālí", "Bàlí", "Bālí"], a: 3 }
+      ] },
+      { title: "Chọn từ điền vào chỗ trống", points: 1.5, type: "choice", items: [
+        { q: "我住北京饭店1104____房间。", o: ["层", "个", "号", "间"], a: 2 },
+        { q: "我们俩____认识到现在已经两年多了。", o: ["离", "从", "当", "在"], a: 1 },
+        { q: "他刚从上海回____，住在我家。", o: ["到", "了", "去", "来"], a: 3 },
+        { q: "我打算先去食堂吃饭，____去邮局。", o: ["以后", "又", "好了", "然后"], a: 3 },
+        { q: "他下星期____回越南来了。", o: ["快", "快要", "就要", "就快要"], a: 2 }
+      ] },
+      { title: "Chọn câu đúng", points: 1.5, type: "choice", items: [
+        { o: ["那本词典越汉你要的现在买不到。", "那本越汉词典你要的现在买不到。", "你要的那本词典越汉现在买不到。", "你要的那本越汉词典现在买不到。"], a: 3 },
+        { o: ["去邮局从这儿有十四五里路。", "从这儿邮局去路有十四五里。", "从这儿去邮局有十四五里路。", "从这儿去邮局有十四十五里路。"], a: 2 },
+        { o: ["你去图书馆下午还是晚上去？", "你下午去图书馆还是晚上去？", "下午你去图书馆还是去晚上？", "去图书馆你下午还是晚上去？"], a: 1 },
+        { o: ["录音机这个一百五十万元。", "这个录音机一百五十万元。", "一百五十万元这个录音机。", "这个一百五十万元录音机。"], a: 1 },
+        { o: ["我来了北京一个多月了。", "北京我来一个多月了。", "我来北京一个多月了。", "我北京来了一个多月了。"], a: 2 }
+      ] },
+      { title: "Đọc đoạn văn, chọn từ", points: 1.5, type: "choice",
+        passage: "我是个（16）____鸭子，我很想学游泳。从上星期（17）____，我的一个朋友教我学游泳。我（18）____游泳有意思是有意思，不过（19）____难。现在我会一点儿了，可是游得不怎么样，只能游二十多米。我要（20）____练习，以后我想跟我的游泳老师比赛，你们说，我能赢吗？",
+        items: [
+          { o: ["懒", "白", "好", "旱"], a: 3 },
+          { o: ["结束", "开始", "以后", "打算"], a: 1 },
+          { o: ["看见", "可能", "觉得", "可以"], a: 2 },
+          { o: ["有点儿", "一点儿", "不太", "更"], a: 0 },
+          { o: ["做", "准备", "非常", "努力"], a: 3 }
+        ] },
+      { title: "Sắp xếp thành câu", points: 2, type: "order", items: [
+        { t: ["一边", "她", "一边", "聊天儿", "吃", "小雨", "跟"], a: "她一边吃一边跟小雨聊天儿。", alt: ["她跟小雨一边吃一边聊天儿。"] },
+        { t: ["长城", "早饭", "了", "去", "吃", "就", "我们", "明天"], a: "明天我们吃了早饭就去长城。", alt: ["我们明天吃了早饭就去长城。"] },
+        { t: ["了", "结婚", "就要", "姐姐", "我", "下个月"], a: "下个月我姐姐就要结婚了。", alt: ["我姐姐下个月就要结婚了。"] },
+        { t: ["做", "妈妈", "她", "得", "中国饭", "好吃", "做", "很"], a: "她妈妈做中国饭做得很好吃。" },
+        { t: ["所以", "因为", "哥哥", "他", "都", "每天", "很好", "身体", "身体", "锻炼"], a: "因为他哥哥每天都锻炼身体，所以身体很好。" }
+      ] },
+      { title: "Dịch sang tiếng Trung", points: 2, type: "write", items: [
+        { q: "Tiểu Vũ vừa nghe nhạc vừa đọc báo.", a: "小雨一边听音乐一边看报纸。", alt: ["小雨一边听音乐一边看报。", "小雨一边听音乐，一边看报纸。"] },
+        { q: "Người đến Trung Quốc du lịch không phải đều biết nói tiếng Hoa.", a: "来中国旅行的人不都会说汉语。", alt: ["来中国旅行的人不是都会说汉语。", "来中国旅游的人不都会说汉语。", "来中国旅游的人不是都会说汉语。"] },
+        { q: "Simon định đi thư viện với bạn bè trước, sau đó mới đi uống bia.", a: "西蒙想先跟朋友去图书馆，然后才去喝啤酒。", alt: ["西蒙打算先跟朋友去图书馆，然后才去喝啤酒。", "西蒙想先跟朋友去图书馆，然后去喝啤酒。", "西蒙打算先跟朋友去图书馆，然后再去喝啤酒。"] },
+        { q: "Bây giờ Paul là nhân viên ngân hàng rồi, anh ta không thể ngủ nướng nữa.", a: "现在保罗是银行职员了，他不能睡懒觉了。", alt: ["保罗现在是银行职员了，他不能睡懒觉了。"] },
+        { q: "Em gái của Trực Mỹ cũng học tiếng Hoa ở Trung Quốc.", a: "直美的妹妹也在中国学习汉语。", alt: ["直美的妹妹也在中国学汉语。"] }
+      ] }
+    ]
+  },
+
+  {
+    id: "kt-5", title: "Kiểm tra 5", subtitle: "Bài 21 – 25", range: [21, 25],
+    sections: [
+      { title: "Chọn phiên âm đúng", points: 1.5, type: "choice", items: [
+        { q: "紧张", o: ["jǐnzhāng", "jīnzhāng", "jǐnzhàng", "jǐngzhāng"], a: 0 },
+        { q: "愉快", o: ["yùkuài", "yúkuài", "yúguài", "yǔkuài"], a: 1 },
+        { q: "整齐", o: ["zhěngqí", "zhēngqí", "zěnqí", "zhěngqǐ"], a: 0 },
+        { q: "抱歉", o: ["bàoqiān", "bāoqiàn", "bàoqiàn", "pàoqiàn"], a: 2 },
+        { q: "恐怕", o: ["kǒngbà", "gǒngpà", "kòngpà", "kǒngpà"], a: 3 }
+      ] },
+      { title: "Chọn từ điền vào chỗ trống", points: 1.5, type: "choice", items: [
+        { q: "你去____香山吗？", o: ["了", "着", "过", "的"], a: 2 },
+        { q: "墙上挂____一张中国地图。", o: ["过", "着", "了", "得"], a: 1 },
+        { q: "对不起，我打____电话了。", o: ["完", "见", "懂", "错"], a: 3 },
+        { q: "外边太冷了，你快进____吧！", o: ["来", "去", "上", "下"], a: 0 },
+        { q: "明天我有事，恐怕去____了。", o: ["不了", "得了", "不得", "没了"], a: 0 }
+      ] },
+      { title: "Chọn vị trí đặt từ", points: 1.5, type: "place", items: [
+        { q: "我A没B去C过D长城。", w: "还", a: 0 },
+        { q: "桌子上A放B很多C书D。", w: "着", a: 1 },
+        { q: "我A一B到家C给你D打电话。", w: "就", a: 2 },
+        { q: "A妈妈B我C去超市D买东西。", w: "让", a: 1 },
+        { q: "要是明天A下雨，我们B不C去D了。", w: "就", a: 1 }
+      ] },
+      { title: "Đọc đoạn văn, chọn từ", points: 1.5, type: "choice",
+        passage: "昨天晚上我给小王打电话，可是我打（16）____了，是一位老先生接的。我说：“对不起，（17）____您了。”老先生说：“没关系。”后来我又打了一次，小王的妈妈说：“小王（18）____了，大概九点回来。你有什么事，我可以（19）____他。”我说：“麻烦您告诉他，明天的约会我（20）____去不了了。”",
+        items: [
+          { o: ["完", "错", "见", "懂"], a: 1 },
+          { o: ["打扰", "帮忙", "放心", "认识"], a: 0 },
+          { o: ["出来", "进去", "出去", "回来"], a: 2 },
+          { o: ["回答", "转告", "打算", "介绍"], a: 1 },
+          { o: ["恐怕", "从来", "差不多", "已经"], a: 0 }
+        ] },
+      { title: "Sắp xếp thành câu", points: 2, type: "order", items: [
+        { t: ["过", "吗", "你", "中国菜", "吃"], a: "你吃过中国菜吗？" },
+        { t: ["着", "墙上", "一张", "挂", "照片"], a: "墙上挂着一张照片。" },
+        { t: ["完", "作业", "我", "还", "没", "做"], a: "我还没做完作业。", alt: ["作业我还没做完。"] },
+        { t: ["我们", "老师", "进来", "让"], a: "老师让我们进来。" },
+        { t: ["了", "今天", "他", "去", "恐怕", "不"], a: "他今天恐怕去不了。", alt: ["今天他恐怕去不了。", "恐怕他今天去不了。", "他恐怕今天去不了。"] }
+      ] },
+      { title: "Dịch sang tiếng Trung", points: 2, type: "write", items: [
+        { q: "Bạn đã từng đến Hà Nội chưa?", a: "你去过河内吗？", alt: ["你去过河内没有？", "你去没去过河内？"] },
+        { q: "Cửa mở, trong phòng không có ai.", a: "门开着，房间里没有人。", alt: ["门开着，房间里没人。", "门开着，屋里没有人。", "门开着，屋里没人。"] },
+        { q: "Xin lỗi, tôi gọi nhầm số rồi.", a: "对不起，我打错了。", alt: ["对不起，我打错电话了。", "不好意思，我打错了。", "对不起，我打错号码了。"] },
+        { q: "Cô ấy ra ngoài rồi, khoảng 5 giờ mới về.", a: "她出去了，大概五点才回来。", alt: ["她出去了，大概五点回来。", "她出去了，大概5点才回来。"] },
+        { q: "Bài này khó quá, tôi nghe không hiểu.", a: "这课太难了，我听不懂。", alt: ["这一课太难了，我听不懂。", "这篇课文太难了，我听不懂。"] }
+      ] }
+    ]
+  },
+
+  {
+    id: "kt-6", title: "Kiểm tra 6", subtitle: "Bài 26 – 30", range: [26, 30],
+    sections: [
+      { title: "Chọn phiên âm đúng", points: 1.5, type: "choice", items: [
+        { q: "愿意", o: ["yuǎnyì", "yuànyī", "yuànyì", "yuányì"], a: 2 },
+        { q: "好处", o: ["hāochù", "hǎochu", "hǎochù", "hǎozhu"], a: 1 },
+        { q: "批评", o: ["bīpíng", "pībing", "pīpíng", "pípǐng"], a: 2 },
+        { q: "警察", o: ["jǐngchá", "jīngzhá", "qìngchá", "qǐngchá"], a: 0 },
+        { q: "舍不得", o: ["sěbùdé", "sěbude", "shěbude", "shěbùde"], a: 2 }
+      ] },
+      { title: "Chọn từ điền vào chỗ trống", points: 1.5, type: "choice", items: [
+        { q: "我的啤酒都____他喝完了。", o: ["没", "被", "把", "是"], a: 1 },
+        { q: "我听说西安比北京____热。", o: ["不", "很", "还", "非常"], a: 2 },
+        { q: "小南把闹钟____在床旁边。", o: ["送", "放", "方", "用"], a: 1 },
+        { q: "那本小说已经____翻译成英文了。", o: ["叫", "让", "被", "给"], a: 2 },
+        { q: "请代我们____他问好。", o: ["帮", "向", "替", "往"], a: 1 }
+      ] },
+      { title: "Chọn vị trí đặt từ", points: 1.5, type: "place", items: [
+        { q: "老刘A叫人B行李都C搬到汽车上去D。", w: "把", a: 1 },
+        { q: "大同A比B北京C凉快D。", w: "不", a: 0 },
+        { q: "我们同学A都要B他C学习D。", w: "向", a: 1 },
+        { q: "如果A您有B好的C建议D，请告诉我们。", w: "什么", a: 1 },
+        { q: "A我们俩B是已经决定C明年春天D结婚了吗？", w: "不", a: 1 }
+      ] },
+      { title: "Chọn câu đúng", points: 1.5, type: "choice", items: [
+        { o: ["他把没拿雨衣到楼上去。", "他把雨衣没拿到楼上去。", "他把雨衣没拿到上楼去。", "他没把雨衣拿到楼上去。"], a: 3 },
+        { o: ["手续该我们办登机了。", "我们该登记办手续了。", "该我们登机办手续了。", "我们该办登机手续了。"], a: 3 },
+        { o: ["今天我们去机场送行她。", "今天我们去机场给她送行。", "今天我们去机场送她行。", "今天我们去机场给送行她。"], a: 1 },
+        { o: ["我离开三年多越南了。", "我离开越南离开了三年多了。", "我离开了三年多越南。", "我离开越南三年多了。"], a: 3 },
+        { o: ["学法语难同一样学汉语。", "学法语难跟一样学汉语。", "学法语跟学汉语一样难。", "学法语一样难跟学汉语。"], a: 2 }
+      ] },
+      { title: "Đọc đoạn văn, chọn từ", points: 1, type: "choice",
+        passage: "张先生的爱人问张先生：“你在（21）____什么呢？”张先生回答说：“我在找我的汽车钥匙呢。”张先生的爱人说：“你不（22）____说‘我在找我的汽车钥匙’，你应该说‘我在找我们的汽车钥匙’。（23）____以后，应该只说‘我们的’，不应该说‘我的’。”晚上，张先生正在洗手，张先生的爱人问张先生：“你在（24）____什么呢？”张先生想起他爱人（25）____对他说的话，便回答说：“亲爱的，我在洗我们的手呢。”",
+        items: [
+          { o: ["听", "看", "吃", "找"], a: 3 },
+          { o: ["应该", "会", "想是", "好"], a: 0 },
+          { o: ["买车", "结婚", "毕业", "卖车"], a: 1 },
+          { o: ["做", "找", "写", "看"], a: 0 },
+          { o: ["昨天", "白天", "晚上", "明天"], a: 1 }
+        ] },
+      { title: "Sắp xếp thành câu", points: 1.5, type: "order", items: [
+        { t: ["窗户", "空气", "把", "不", "快", "开", "屋", "打", "里", "好"], a: "屋里空气不好，快把窗户打开。" },
+        { t: ["了", "公共", "小英", "上", "把", "汽车", "书包", "忘", "在"], a: "小英把书包忘在公共汽车上了。" },
+        { t: ["名字", "牌子", "他", "当成", "字", "路", "的", "这", "把", "上", "的", "条", "了"], a: "他把牌子上的字当成了这条路的名字。" },
+        { t: ["摔", "胳膊", "滑", "今", "倒", "早", "和", "伤", "了", "下", "腿", "楼", "都", "她", "就", "一"], a: "今早她一下楼就滑倒，胳膊和腿都摔伤了。", alt: ["她今早一下楼就滑倒，胳膊和腿都摔伤了。"] },
+        { t: ["来", "要", "我", "就", "告别", "您", "向", "我", "了", "回", "国"], a: "我就要回国了，我来向您告别。" }
+      ] },
+      { title: "Dịch sang tiếng Trung", points: 1.5, type: "write", items: [
+        { q: "Tôi cảm thấy học tiếng Anh tuy không dễ, nhưng rất có ý nghĩa.", a: "我觉得学英语虽然不容易，但是很有意思。", alt: ["我觉得学英语虽然不容易，可是很有意思。", "我觉得虽然学英语不容易，但是很有意思。", "我觉得学英语虽然不容易，但是很有意义。"] },
+        { q: "Em gái tôi 23 tuổi đã kết hôn rồi, anh hai tôi 35 tuổi mới kết hôn.", a: "我妹妹二十三岁就结婚了，我哥哥三十五岁才结婚。", alt: ["我妹妹23岁就结婚了，我哥哥35岁才结婚。"] },
+        { q: "Tôi đến sân bay Trung Quốc rồi thì gọi điện cho bạn ngay.", a: "我到了中国机场就马上给你打电话。", alt: ["我到了中国机场就给你打电话。", "我一到中国机场就给你打电话。", "我到中国机场就马上给你打电话。"] },
+        { q: "Ngoài Anna ra, chúng tôi đều không biết nói tiếng Pháp.", a: "除了安娜以外，我们都不会说法语。", alt: ["除了安娜，我们都不会说法语。", "除了安娜以外，我们都不会说法文。"] },
+        { q: "Anh ấy không nhìn thấy tôi, tôi gọi anh ấy, anh ấy cũng không nghe thấy.", a: "他没看见我，我叫他，他也没听见。", alt: ["他没看见我，我叫他，他也听不见。", "他没有看见我，我叫他，他也没有听见。"] }
+      ] }
+    ]
+  }
+];
 
 /* ========================================================================== */
 /* 1. TIỆN ÍCH CHUNG                                                           */
@@ -4819,7 +5131,7 @@ const Cloud = {
         || Object.keys(p.review).length || p.preview.seen.length || Object.keys(p.preview.ex).length || p.tasks.length;
       if (touched) lessons[id] = p;
     });
-    return { lessons, unlocked: up.unlocked, days: up.days, lastLesson: up.lastLesson };
+    return { lessons, unlocked: up.unlocked, days: up.days, lastLesson: up.lastLesson, tests: up.tests || {} };
   },
   payload() {
     return { action: 'save', email: store.session.email, token: store.session.token, state: this.compact() };
@@ -4886,6 +5198,14 @@ function mergeProgress(remote) {
   local.unlocked = union(local.unlocked, remote.unlocked);
   local.days = union(local.days, remote.days).sort();
   if (!local.lastLesson && remote.lastLesson) local.lastLesson = remote.lastLesson;
+  Object.keys(remote.tests || {}).forEach((id) => {
+    const r = remote.tests[id] || {};
+    local.tests = local.tests || {};
+    const l = local.tests[id];
+    if (!l) { local.tests[id] = r; return; }
+    const newer = String(r.at || '') > String(l.at || '');
+    local.tests[id] = { best: Math.max(Number(l.best) || 0, Number(r.best) || 0), last: newer ? r.last : l.last, n: Math.max(Number(l.n) || 0, Number(r.n) || 0), at: newer ? r.at : l.at };
+  });
   Object.keys(remote.lessons || {}).forEach((id) => {
     const r = remote.lessons[id] || {};
     const l = LP(id);
@@ -4934,7 +5254,9 @@ const ui = {
   resetArmed: 0,
   mePassword: false,
   content: null,   // kết quả đọc file Excel đặt cạnh trang
-  justUnlocked: null
+  justUnlocked: null,
+  testId: null,    // bài kiểm tra đang mở
+  test: null       // bài làm kiểm tra (chưa lưu)
 };
 
 const TAB_META = {
@@ -5454,6 +5776,7 @@ function dashboardHtml() {
         ${stat(view.streak, 'ngày liên tiếp')}
         ${stat(view.speakingAvg == null ? '–' : view.speakingAvg + '%', 'điểm nói trung bình')}
       </div>
+      ${testScoresHtml()}
     </div>
     <ul class="mt-4">${rows}${view.soon ? `<li class="flex items-center gap-2 py-3 border-t border-line first:border-t-0 text-sm text-ink-2">${icon('clock')}${view.soon} bài sắp ra mắt</li>` : ''}</ul>
     <div class="mt-2 pt-4 border-t border-line flex flex-wrap items-center gap-2">
@@ -5688,6 +6011,8 @@ const App = {
   /* Vào học */
   enter() {
     this.show('app');
+    ui.testId = null;
+    ui.test = null;
     this.renderHeader();
     Cloud.setStatus('ok');
     const up = userProgress();
@@ -5736,7 +6061,8 @@ const App = {
       shakeNode($(`#sidebar [data-id="${CSS.escape(id)}"]`));
       return;
     }
-    if (ui.lessonId === id && !(options && options.force)) return;
+    if (ui.lessonId === id && !ui.testId && !(options && options.force)) return;
+    ui.testId = null;
     Voice.release();
     Sound.stop();
     clearInterval(ui.spTimer);
@@ -5862,6 +6188,7 @@ const App = {
 
   /* Vẽ bảng nội dung, giữ nguyên tiêu điểm bàn phím */
   renderPanel() {
+    if (ui.testId) { Tests.render(); return; }
     const lesson = currentLesson();
     const panel = $('#panel');
     if (!lesson) { panel.innerHTML = ''; return; }
@@ -5909,7 +6236,7 @@ const App = {
           ${lesson.subtitle ? `<span class="block mt-0.5 text-xs text-ink-2 truncate">${esc(lesson.subtitle)}</span>` : ''}
           ${foot}
         </span>
-      </button>`;
+      </button>` + testSidebarItem(index + 1);
     }).join('');
     const session = store.session || {};
     const upgrade = !isTeacher()
@@ -6496,6 +6823,7 @@ function bindGlobalEvents() {
   document.addEventListener('input', (event) => {
     const target = event.target;
     if (target.dataset && target.dataset.draft) ui.drafts[target.dataset.draft] = target.value;
+    if (target.dataset && target.dataset.testInput && ui.test && !ui.test.submitted) ui.test.ans[target.dataset.testInput] = target.value;
     if (target.dataset && target.dataset.fill && ui.fill[target.dataset.fill]) ui.fill[target.dataset.fill].values[Number(target.dataset.b)] = target.value;
     if (target.id && target.id.indexOf('gate-') === 0) $('#gate-error').hidden = true;
   });
@@ -6521,6 +6849,378 @@ function bindGlobalEvents() {
   window.addEventListener('online', () => { if (Cloud.dirty) Cloud.schedule(300); });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') Cloud.beacon(); });
   window.addEventListener('pagehide', () => Cloud.beacon());
+}
+/* ========================================================================== */
+/* 12. BÀI KIỂM TRA SAU MỖI 5 BÀI                                              */
+/* ========================================================================== */
+const TEST_PASS = 5;   // điểm đạt (thang 10)
+
+const testList = () => (Array.isArray(APP_CONFIG.tests) ? APP_CONFIG.tests : []);
+const getTest = (id) => testList().find((t) => t.id === id) || null;
+const testAfterLesson = (number) => testList().find((t) => Array.isArray(t.range) && Number(t.range[1]) === number) || null;
+function testLessons(test) {
+  const [from, to] = test.range || [1, 0];
+  const list = [];
+  for (let n = Number(from); n <= Number(to); n++) list.push(APP_CONFIG.lessons[n - 1] || null);
+  return list;
+}
+function userTests() {
+  const up = userProgress();
+  if (!up.tests || typeof up.tests !== 'object') up.tests = {};
+  return up.tests;
+}
+// 'open' · 'locked' (chưa học xong 5 bài) · 'plan' (ngoài gói học) · 'soon' (bài chưa có video)
+function testAccess(test) {
+  if (isTeacher()) return 'open';
+  const lessons = testLessons(test);
+  if (!lessons.length || lessons.some((l) => !l)) return 'soon';
+  const access = lessons.map((l) => lessonAccess(l));
+  if (access.includes('plan')) return 'plan';
+  if (access.includes('soon')) return 'soon';
+  return lessons.every((l) => LP(l.id).done || checkLessonUnlock(l.id)) ? 'open' : 'locked';
+}
+const testKey = (s, i) => `${s}-${i}`;
+
+const Tests = {
+  // ui.test = { id, ans: {key: số|chuỗi}, order: {key: {pool, picked}}, credit: {key: true}, submitted, armed }
+  open(id) {
+    const test = getTest(id);
+    if (!test) return;
+    const access = testAccess(test);
+    if (access === 'plan') { Modal.activate(); return; }
+    if (access === 'soon') { toast(`${test.title} sắp ra mắt`, 'info'); return; }
+    if (access === 'locked') {
+      toast(`Hoàn thành Bài ${test.range[0]} – ${test.range[1]} để làm ${test.title}`, 'warn');
+      shakeNode($(`#sidebar [data-test="${CSS.escape(id)}"]`));
+      return;
+    }
+    Voice.release();
+    Sound.stop();
+    clearInterval(ui.spTimer);
+    Player.destroy();
+    ui.lessonId = null;
+    ui.testId = id;
+    if (!ui.test || ui.test.id !== id) ui.test = { id, ans: {}, order: {}, credit: {}, submitted: false, armed: false };
+    $('#player').hidden = true;
+    $('#stepper').innerHTML = '';
+    $('#panel').dataset.compact = 'false';
+    this.render();
+    App.renderSidebar();
+    $('#panel').scrollTop = 0;
+    window.scrollTo({ top: 0 });
+  },
+  close() {
+    ui.testId = null;
+  },
+
+  isCorrect(test, s, i) {
+    const section = test.sections[s];
+    const item = section.items[i];
+    const key = testKey(s, i);
+    const t = ui.test;
+    if (section.type === 'choice' || section.type === 'place') return t.ans[key] === item.a;
+    if (t.credit[key]) return true;
+    const accepted = [item.a].concat(item.alt || []);
+    if (section.type === 'order') {
+      const state = t.order[key];
+      return !!state && state.picked.length === item.t.length && isAnswerAccepted(state.picked.map((w) => item.t[w]).join(''), accepted);
+    }
+    return isAnswerAccepted(t.ans[key] || '', accepted);
+  },
+  answered(test, s, i) {
+    const section = test.sections[s];
+    const key = testKey(s, i);
+    if (section.type === 'order') { const state = ui.test.order[key]; return !!state && state.picked.length > 0; }
+    const value = ui.test.ans[key];
+    return section.type === 'write' ? !!String(value || '').trim() : typeof value === 'number';
+  },
+  tally(test) {
+    let score = 0, total = 0, count = 0, answered = 0, right = 0;
+    test.sections.forEach((section, s) => {
+      const each = (Number(section.points) || 0) / section.items.length;
+      total += Number(section.points) || 0;
+      section.items.forEach((_, i) => {
+        count++;
+        if (this.answered(test, s, i)) answered++;
+        if (this.isCorrect(test, s, i)) { score += each; right++; }
+      });
+    });
+    const scaled = total ? Math.round((score / total) * 100) / 10 : 0;
+    return { score: scaled, count, answered, right };
+  },
+  save(test) {
+    const result = this.tally(test);
+    const record = userTests();
+    const old = record[test.id] || {};
+    if (!ui.test.counted) ui.test.baseBest = Number(old.best) || 0;
+    record[test.id] = {
+      best: Math.max(ui.test.baseBest || 0, result.score),
+      last: result.score,
+      n: (Number(old.n) || 0) + (ui.test.counted ? 0 : 1),
+      at: new Date().toISOString()
+    };
+    ui.test.counted = true;
+    addUnique(userProgress().days, dayKey(new Date()));
+    persist();
+    Cloud.schedule();
+    return result;
+  },
+
+  /* ----- Vẽ ----- */
+  numberOf(test, s, i) {
+    let n = 0;
+    for (let k = 0; k < s; k++) n += test.sections[k].items.length;
+    return n + i + 1;
+  },
+  choiceHtml(test, s, i) {
+    const section = test.sections[s];
+    const item = section.items[i];
+    const key = testKey(s, i);
+    const t = ui.test;
+    const picked = t.ans[key];
+    const isPlace = section.type === 'place';
+    const options = isPlace ? ['A', 'B', 'C', 'D'] : item.o;
+    const long = !isPlace && options.some((o) => Array.from(o).length > 12);
+    const buttons = options.map((option, k) => {
+      const chosen = picked === k;
+      let tone = chosen ? 'border-brand bg-brand-soft text-brand' : 'border-line hover:border-brand';
+      let badge = chosen ? 'bg-brand text-white' : 'bg-paper text-ink-2';
+      let mark = String.fromCharCode(65 + k);
+      if (t.submitted) {
+        if (k === item.a) { tone = 'border-emerald-500 bg-emerald-50 text-emerald-700'; badge = 'bg-emerald-500 text-white'; mark = icon('check', 'size-3.5'); }
+        else if (chosen) { tone = 'border-rose-300 bg-rose-50 text-rose-600'; badge = 'bg-rose-500 text-white'; mark = icon('x', 'size-3.5'); }
+        else tone = 'border-line text-ink-3';
+      }
+      if (isPlace) {
+        return `<button type="button" data-action="test-pick" data-key="${key}" data-i="${k}" ${t.submitted ? 'disabled' : ''} aria-pressed="${chosen}" class="h-11 rounded-xl border font-semibold grid place-items-center transition-colors ${tone}">${option}</button>`;
+      }
+      return `<button type="button" data-action="test-pick" data-key="${key}" data-i="${k}" ${t.submitted ? 'disabled' : ''} aria-pressed="${chosen}" class="min-h-11 px-3 py-2 rounded-xl border text-left font-medium flex items-center gap-2.5 transition-colors ${tone}">
+        <span class="size-6 shrink-0 grid place-items-center rounded-full text-xs font-semibold ${badge}">${mark}</span>
+        <span class="hz min-w-0" lang="zh-CN">${esc(option)}</span>
+      </button>`;
+    }).join('');
+    let prompt = '';
+    if (isPlace) {
+      const sentence = esc(item.q).replace(/[ABCD]/g, (m) => `<sup class="mx-0.5 px-1 rounded bg-brand-soft text-brand text-[11px] font-bold not-italic">${m}</sup>`);
+      prompt = `<span class="hz text-lg leading-loose" lang="zh-CN">${sentence}</span><span class="hz ml-2 inline-flex items-center h-7 px-2.5 rounded-lg bg-amber-50 text-gold font-semibold" lang="zh-CN">${esc(item.w)}</span>`;
+    } else if (item.q) {
+      prompt = `<span class="hz text-lg" lang="zh-CN">${esc(item.q)}</span>`;
+    }
+    const grid = isPlace ? 'grid-cols-4 max-w-xs' : long ? 'grid-cols-1' : !item.q && !section.passage ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2 sm:grid-cols-4';
+    return `<div class="flex flex-col gap-2">
+      <p class="flex items-baseline gap-2"><span class="shrink-0 w-7 text-sm text-ink-3 tabular-nums">${this.numberOf(test, s, i)}.</span><span class="min-w-0">${prompt}</span></p>
+      <div class="pl-9 grid gap-2 ${grid}">${buttons}</div>
+    </div>`;
+  },
+  orderHtml(test, s, i) {
+    const item = test.sections[s].items[i];
+    const key = testKey(s, i);
+    const t = ui.test;
+    if (!t.order[key]) {
+      const indices = item.t.map((_, k) => k);
+      let pool = shuffled(indices);
+      for (let tries = 0; tries < 8 && isAnswerAccepted(pool.map((k) => item.t[k]).join(''), [item.a].concat(item.alt || [])); tries++) pool = shuffled(indices);
+      t.order[key] = { pool, picked: [] };
+    }
+    const state = t.order[key];
+    const ok = t.submitted && this.isCorrect(test, s, i);
+    const chip = 'hz h-10 px-3 rounded-xl border bg-surface text-lg font-medium shadow-sm';
+    const row = state.picked.map((w, pos) => `<button type="button" data-action="test-unpick" data-key="${key}" data-pos="${pos}" ${t.submitted ? 'disabled' : ''} class="${chip} ${t.submitted ? (ok ? 'border-emerald-400 text-emerald-700' : 'border-rose-300 text-rose-600') : 'border-brand text-brand'}" lang="zh-CN">${esc(item.t[w])}</button>`).join('');
+    const pool = t.submitted ? '' : `<div class="flex flex-wrap gap-2">${state.pool.map((w) => {
+      const used = state.picked.includes(w);
+      return `<button type="button" data-action="test-tile" data-key="${key}" data-w="${w}" ${used ? 'disabled aria-hidden="true" tabindex="-1"' : ''} class="${chip} border-line hover:border-brand hover:text-brand ${used ? 'invisible' : ''}" lang="zh-CN">${esc(item.t[w])}</button>`;
+    }).join('')}</div>`;
+    return `<div class="flex flex-col gap-2">
+      <div class="flex items-stretch gap-2">
+        <span class="shrink-0 w-7 pt-3 text-sm text-ink-3 tabular-nums">${this.numberOf(test, s, i)}.</span>
+        <div class="flex-1 min-w-0 min-h-14 px-2.5 py-2 rounded-xl border-2 border-dashed flex flex-wrap items-center gap-2 ${t.submitted ? (ok ? 'border-emerald-400 bg-emerald-50' : 'border-rose-300 bg-rose-50') : 'border-line'}">${row}</div>
+        ${t.submitted ? '' : `<button type="button" data-action="test-order-reset" data-key="${key}" aria-label="Xếp lại" title="Xếp lại" class="shrink-0 w-11 grid place-items-center rounded-xl border border-line text-ink-2 hover:border-brand hover:text-brand">${icon('undo', 'size-5')}</button>`}
+      </div>
+      <div class="pl-9 flex flex-col gap-2">${pool}${this.reviewHtml(test, s, i)}</div>
+    </div>`;
+  },
+  writeHtml(test, s, i) {
+    const item = test.sections[s].items[i];
+    const key = testKey(s, i);
+    const t = ui.test;
+    const ok = t.submitted && this.isCorrect(test, s, i);
+    const tone = t.submitted ? (ok ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-rose-300 bg-rose-50') : 'border-line bg-surface focus:border-brand';
+    return `<div class="flex flex-col gap-2">
+      <label for="test-${key}" class="flex items-baseline gap-2"><span class="shrink-0 w-7 text-sm text-ink-3 tabular-nums">${this.numberOf(test, s, i)}.</span><span class="min-w-0 font-medium leading-snug">${esc(item.q)}</span></label>
+      <div class="pl-9 flex flex-col gap-2">
+        <input id="test-${key}" type="text" data-test-input="${key}" value="${esc(t.ans[key] || '')}" ${t.submitted ? 'readonly' : ''} lang="zh-CN" autocomplete="off" autocapitalize="off" spellcheck="false"
+          class="hz w-full h-12 px-4 rounded-xl border-2 text-lg focus:outline-none ${tone}">
+        ${this.reviewHtml(test, s, i)}
+      </div>
+    </div>`;
+  },
+  // Sau khi nộp: câu xếp/dịch chưa khớp đáp án thì hiện đáp án mẫu và cho tự chấm "Đúng ý".
+  reviewHtml(test, s, i) {
+    const t = ui.test;
+    if (!t.submitted) return '';
+    const item = test.sections[s].items[i];
+    const key = testKey(s, i);
+    const credited = !!t.credit[key];
+    if (this.isCorrect(test, s, i) && !credited) return '';
+    const toggle = this.answered(test, s, i)
+      ? `<button type="button" data-action="test-credit" data-key="${key}" aria-pressed="${credited}" class="shrink-0 h-8 px-2.5 rounded-lg border text-xs font-semibold inline-flex items-center gap-1 ${credited ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-line text-ink-2 hover:border-emerald-500 hover:text-emerald-600'}">${icon('check', 'size-3.5')}Đúng ý</button>`
+      : '';
+    return `<div class="flex flex-wrap items-center gap-2 text-sm">
+      <span class="inline-flex items-center gap-1.5 text-emerald-700">${icon('circle-check', 'size-4')}<span class="hz text-base" lang="zh-CN">${esc(item.a)}</span></span>${toggle}
+    </div>`;
+  },
+  render() {
+    const test = getTest(ui.testId);
+    const panel = $('#panel');
+    if (!test) { panel.innerHTML = ''; return; }
+    const t = ui.test;
+    const sum = this.tally(test);
+    const record = userTests()[test.id];
+    const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+    const fmt = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
+    const sections = test.sections.map((section, s) => {
+      const body = section.items.map((_, i) => (section.type === 'order' ? this.orderHtml(test, s, i)
+        : section.type === 'write' ? this.writeHtml(test, s, i)
+        : this.choiceHtml(test, s, i))).join('');
+      const passage = section.passage
+        ? `<div class="hz rounded-xl bg-paper px-4 py-3 text-lg leading-loose whitespace-pre-line" lang="zh-CN">${esc(section.passage)}</div>`
+        : '';
+      let got = '';
+      if (t.submitted) {
+        const right = section.items.filter((_, i) => this.isCorrect(test, s, i)).length;
+        got = `<span class="text-xs font-semibold tabular-nums ${right === section.items.length ? 'text-emerald-600' : 'text-ink-2'}">${right}/${section.items.length}</span>`;
+      }
+      return `<section class="flex flex-col gap-4">
+        <h3 class="flex items-center gap-2 font-semibold"><span class="size-7 shrink-0 grid place-items-center rounded-lg bg-brand-soft text-brand text-xs font-bold">${roman[s]}</span><span class="flex-1">${esc(section.title)}</span><span class="text-xs font-medium text-ink-3 tabular-nums">${fmt(section.points)}đ</span>${got}</h3>
+        ${passage}${body}
+      </section>`;
+    }).join('<hr class="border-line">');
+    const pass = sum.score >= TEST_PASS;
+    const head = t.submitted
+      ? `<div class="flex flex-wrap items-center gap-4 p-4 rounded-2xl ${pass ? 'bg-emerald-50' : 'bg-rose-50'}">
+          <div class="flex items-baseline gap-1"><span class="text-4xl font-bold tabular-nums ${pass ? 'text-emerald-600' : 'text-rose-600'}">${fmt(sum.score)}</span><span class="text-ink-2 font-semibold">/10</span></div>
+          <div class="flex-1 min-w-40">
+            <p class="font-semibold ${pass ? 'text-emerald-700' : 'text-rose-600'}">${pass ? 'Đạt' : 'Chưa đạt'}</p>
+            <p class="text-sm text-ink-2 tabular-nums">${sum.right}/${sum.count} câu đúng${record ? ` · Cao nhất ${fmt(record.best)}` : ''}</p>
+          </div>
+          <button type="button" data-action="test-retry" class="h-10 px-4 rounded-xl bg-brand text-white text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-brand-dark">${icon('rotate-ccw')}Làm lại</button>
+        </div>`
+      : '';
+    const submit = t.submitted ? '' : `<div class="flex flex-wrap items-center justify-end gap-3 pt-2">
+        ${t.armed && sum.answered < sum.count ? `<span class="text-sm text-gold font-medium" role="alert">Còn ${sum.count - sum.answered} câu chưa làm</span>` : ''}
+        <button type="button" data-action="test-submit" class="h-11 px-5 rounded-xl bg-brand text-white font-semibold inline-flex items-center gap-2 hover:bg-brand-dark">${icon('send')}${t.armed && sum.answered < sum.count ? 'Vẫn nộp bài' : 'Nộp bài'}</button>
+      </div>`;
+    panel.setAttribute('role', 'region');
+    panel.setAttribute('aria-label', test.title);
+    panel.removeAttribute('aria-labelledby');
+    panel.innerHTML = `<div class="p-4 sm:p-6 w-full max-w-3xl mx-auto flex flex-col gap-6">
+      <div class="flex items-center gap-3">
+        <span class="size-11 shrink-0 grid place-items-center rounded-xl bg-amber-50 text-gold">${icon('flag', 'size-5')}</span>
+        <div class="min-w-0 flex-1">
+          <h2 class="font-semibold leading-tight">${esc(test.title)}</h2>
+          <p class="text-sm text-ink-2">${esc(test.subtitle || '')}</p>
+        </div>
+        ${t.submitted ? '' : `<span class="text-sm font-semibold tabular-nums text-ink-2">${sum.answered}/${sum.count}</span>`}
+      </div>
+      ${head}${sections}${submit}
+    </div>`;
+  }
+};
+
+/* ----- Thao tác trong bài kiểm tra ----- */
+Object.assign(Actions, {
+  'open-test'(button) { Tests.open(button.dataset.test); },
+  'test-pick'(button) {
+    if (!ui.test || ui.test.submitted) return;
+    ui.test.ans[button.dataset.key] = Number(button.dataset.i);
+    ui.test.armed = false;
+    Tests.render();
+  },
+  'test-tile'(button) {
+    const state = ui.test && ui.test.order[button.dataset.key];
+    if (!state || ui.test.submitted) return;
+    const w = Number(button.dataset.w);
+    if (!state.picked.includes(w)) state.picked.push(w);
+    ui.test.armed = false;
+    Tests.render();
+  },
+  'test-unpick'(button) {
+    const state = ui.test && ui.test.order[button.dataset.key];
+    if (!state || ui.test.submitted) return;
+    state.picked.splice(Number(button.dataset.pos), 1);
+    Tests.render();
+  },
+  'test-order-reset'(button) {
+    const state = ui.test && ui.test.order[button.dataset.key];
+    if (!state || ui.test.submitted) return;
+    state.picked = [];
+    Tests.render();
+  },
+  'test-submit'() {
+    const test = getTest(ui.testId);
+    if (!test || ui.test.submitted) return;
+    const sum = Tests.tally(test);
+    if (sum.answered < sum.count && !ui.test.armed) { ui.test.armed = true; Tests.render(); return; }
+    ui.test.submitted = true;
+    ui.test.armed = false;
+    const result = Tests.save(test);
+    if (result.score >= TEST_PASS) confettiBurst();
+    Tests.render();
+    App.renderSidebar();
+    $('#panel').scrollTop = 0;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  },
+  'test-credit'(button) {
+    const test = getTest(ui.testId);
+    if (!test || !ui.test.submitted) return;
+    const key = button.dataset.key;
+    if (ui.test.credit[key]) delete ui.test.credit[key];
+    else ui.test.credit[key] = true;
+    Tests.save(test);
+    Tests.render();
+    App.renderSidebar();
+  },
+  'test-retry'() {
+    const id = ui.testId;
+    ui.test = { id, ans: {}, order: {}, credit: {}, submitted: false, armed: false };
+    Tests.render();
+    $('#panel').scrollTop = 0;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
+
+/* ----- Mục kiểm tra trên lộ trình (sau bài thứ 5, 10, 15…) ----- */
+function testSidebarItem(lessonNumber) {
+  const test = testAfterLesson(lessonNumber);
+  if (!test) return '';
+  const access = testAccess(test);
+  const record = userTests()[test.id];
+  const active = ui.testId === test.id;
+  const fmt = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
+  const passed = record && record.best >= TEST_PASS;
+  const badge = access === 'open' ? (passed ? icon('check', 'size-4') : icon('flag', 'size-4')) : access === 'plan' ? icon('crown', 'size-4') : access === 'soon' ? icon('clock', 'size-4') : icon('lock', 'size-4');
+  const tone = access !== 'open' ? 'bg-paper text-ink-3' : passed ? 'bg-emerald-500 text-white' : active ? 'bg-gold text-white' : 'bg-amber-50 text-gold';
+  const state = access === 'locked' ? `Hoàn thành Bài ${test.range[0]} – ${test.range[1]}` : access === 'plan' ? 'Ngoài gói học' : access === 'soon' ? 'Sắp ra mắt' : record ? `Cao nhất ${fmt(record.best)}/10` : 'Chưa làm';
+  return `<button type="button" data-action="open-test" data-test="${esc(test.id)}" ${active ? 'aria-current="true"' : ''} aria-label="${esc(test.title)} — ${esc(state)}"
+    class="w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl border border-dashed transition-colors ${active ? 'border-gold bg-amber-50' : 'border-amber-300/70 hover:border-gold'} ${access === 'open' ? '' : 'opacity-70'}">
+    <span class="size-9 shrink-0 grid place-items-center rounded-lg ${tone}">${badge}</span>
+    <span class="min-w-0 flex-1">
+      <span class="block font-medium leading-tight">${esc(test.title)}</span>
+      <span class="block mt-0.5 text-xs ${passed ? 'text-emerald-600 font-semibold' : 'text-ink-2'} tabular-nums">${esc(state)}</span>
+    </span>
+  </button>`;
+}
+
+/* ----- Điểm kiểm tra trong bảng tiến trình ----- */
+function testScoresHtml() {
+  const record = userTests();
+  const chips = testList().map((test) => {
+    const r = record[test.id];
+    const fmt = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
+    const tone = !r ? 'bg-paper text-ink-3' : r.best >= TEST_PASS ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-600';
+    return `<span title="${esc(test.title)} · ${esc(test.subtitle || '')}" class="h-8 px-2.5 rounded-lg inline-flex items-center gap-1.5 text-xs font-semibold tabular-nums ${tone}">${icon('flag', 'size-3.5')}${esc(test.title.replace('Kiểm tra ', 'KT'))}<span>${r ? fmt(r.best) : '–'}</span></span>`;
+  }).join('');
+  return chips ? `<div class="mt-3 flex flex-wrap gap-1.5">${chips}</div>` : '';
 }
 
 /* ========================================================================== */
